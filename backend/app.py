@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+from prompt_parser import parse_prompt
 
 app = Flask(
     __name__,
@@ -14,16 +15,15 @@ def home():
 
 @app.route("/generate", methods=["POST"])
 def generate():
+
     data = request.json
     prompt = data.get("prompt")
 
-    print("User Prompt:", prompt)
+    parsed = parse_prompt(prompt)
 
-    return jsonify({
-        "status": "success",
-        "message": "Prompt received",
-        "prompt": prompt
-    })
+    print("Parsed Prompt:", parsed)
+
+    return jsonify(parsed)
 
 
 if __name__ == "__main__":
