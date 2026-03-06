@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from prompt_parser import parse_prompt
+from field_extractor import build_field_schema
 
 app = Flask(
     __name__,
@@ -19,11 +20,20 @@ def generate():
     data = request.json
     prompt = data.get("prompt")
 
-    parsed = parse_prompt(prompt)
+    parsed_prompt = parse_prompt(prompt)
 
-    print("Parsed Prompt:", parsed)
+    fields = parsed_prompt["fields"]
 
-    return jsonify(parsed)
+    field_schema = build_field_schema(fields)
+
+    response = {
+        "module": parsed_prompt["module"],
+        "framework": parsed_prompt["framework"],
+        "language": parsed_prompt["language"],
+        "fields": field_schema
+    }
+
+    return jsonify(response)
 
 
 if __name__ == "__main__":
