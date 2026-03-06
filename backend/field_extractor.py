@@ -5,13 +5,13 @@ def detect_field_type(field):
     if "password" in field:
         return "password"
 
-    if "email" in field:
+    if "email" in field or "mail" in field:
         return "email"
 
-    if "phone" in field:
+    if "phone" in field or "phone number" in field:
         return "tel"
 
-    if "dob" in field or "birth" in field:
+    if "dob" in field or "date of birth" in field:
         return "date"
 
     if "age" in field or "income" in field or "salary" in field:

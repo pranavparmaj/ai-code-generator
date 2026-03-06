@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from prompt_parser import parse_prompt
 from field_extractor import build_field_schema
+from code_generator import generate_module
 
 app = Flask(
     __name__,
@@ -20,17 +21,25 @@ def generate():
     data = request.json
     prompt = data.get("prompt")
 
+    # Step 1: Parse prompt
     parsed_prompt = parse_prompt(prompt)
 
+    # Step 2: Extract fields
     fields = parsed_prompt["fields"]
 
+    # Step 3: Detect field types
     field_schema = build_field_schema(fields)
+
+    # Step 4: Generate module code
+    module = parsed_prompt["module"]
+    generated_code = generate_module(module, field_schema)
 
     response = {
         "module": parsed_prompt["module"],
         "framework": parsed_prompt["framework"],
         "language": parsed_prompt["language"],
-        "fields": field_schema
+        "fields": field_schema,
+        "generated_code": generated_code
     }
 
     return jsonify(response)
