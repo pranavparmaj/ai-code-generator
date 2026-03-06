@@ -1,0 +1,19 @@
+body{
+font-family: Arial;
+margin:40px;
+}
+
+textarea{
+width:600px;
+height:120px;
+}
+
+button{
+padding:10px 20px;
+font-size:16px;
+}
+
+pre{
+background:#f4f4f4;
+padding:15px;
+}

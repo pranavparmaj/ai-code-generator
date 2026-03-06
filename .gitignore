@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+vector_db/
+generated_projects/
+.env
+.DS_Storegi
