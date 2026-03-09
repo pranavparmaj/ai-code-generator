@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+</head>
+
+<body>
+
+<h2>Login</h2>
+
+<form method="POST">
+
+{% for field, info in fields.items() %}
+
+<div>
+
+<label>{{ field.capitalize() }}</label>
+
+<input type="{{ info.type }}" name="{{ field }}">
+
+</div>
+
+{% endfor %}
+
+<button type="submit">Login</button>
+
+</form>
+
+</body>
+</html>

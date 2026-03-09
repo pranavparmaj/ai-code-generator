@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Registration</title>
+</head>
+
+<body>
+
+<h2>Registration Form</h2>
+
+<form method="POST">
+
+{% for field, info in fields.items() %}
+
+<div>
+
+<label>{{ field.capitalize() }}</label>
+
+{% if info.type == "textarea" %}
+
+<textarea name="{{ field }}"></textarea>
+
+{% else %}
+
+<input type="{{ info.type }}" name="{{ field }}">
+
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+<button type="submit">Register</button>
+
+</form>
+
+</body>
+</html>

@@ -14,4 +14,6 @@ async function sendPrompt() {
 
     document.getElementById("response").innerText =
         JSON.stringify(data, null, 2);
+
+    
 }
