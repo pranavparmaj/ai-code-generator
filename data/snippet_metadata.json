@@ -1,0 +1,25 @@
+[
+ {
+  "name": "login_route",
+  "framework": "flask",
+  "module": "login",
+  "description": "Flask route for user login",
+  "file": "snippets/flask/login_route.py"
+ },
+
+ {
+  "name": "register_route",
+  "framework": "flask",
+  "module": "registration",
+  "description": "Flask route for user registration",
+  "file": "snippets/flask/register_route.py"
+ },
+
+ {
+  "name": "password_hash",
+  "framework": "flask",
+  "module": "authentication",
+  "description": "Password hashing utility",
+  "file": "snippets/flask/password_hash.py"
+ }
+]
