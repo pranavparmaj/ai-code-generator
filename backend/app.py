@@ -7,6 +7,13 @@ from code_assembler import assemble_module
 from code_validator import validate_module
 from project_generator import generate_project
 
+import sys
+import os
+
+sys.path.append(os.path.abspath(".."))
+
+from utils.zip_exporter import create_zip
+
 
 app = Flask(
     __name__,
@@ -51,12 +58,15 @@ def generate():
         assembled["backend"]
     )
 
-        # Step 7: Generate project files
+    # Step 7: Generate project files
     project_path = generate_project(
         module,
         assembled["html"],
         assembled["backend"]
     )
+
+    # Step 8: Create downloadable ZIP
+    zip_path = create_zip(project_path)
 
     response = {
         "module": module,
@@ -66,7 +76,8 @@ def generate():
         "generated_html": assembled["html"],
         "backend_code": assembled["backend"],
         "validation": validation,
-        "project_path": project_path
+        "project_path": project_path,
+        "download_zip": zip_path
     }
 
     return jsonify(response)
