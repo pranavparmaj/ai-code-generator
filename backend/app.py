@@ -5,6 +5,7 @@ from code_generator import generate_module
 from rag_engine import retrieve_relevant_snippets
 from code_assembler import assemble_module
 from code_validator import validate_module
+from project_generator import generate_project
 
 
 app = Flask(
@@ -50,6 +51,13 @@ def generate():
         assembled["backend"]
     )
 
+        # Step 7: Generate project files
+    project_path = generate_project(
+        module,
+        assembled["html"],
+        assembled["backend"]
+    )
+
     response = {
         "module": module,
         "framework": parsed_prompt["framework"],
@@ -57,7 +65,8 @@ def generate():
         "fields": field_schema,
         "generated_html": assembled["html"],
         "backend_code": assembled["backend"],
-        "validation": validation
+        "validation": validation,
+        "project_path": project_path
     }
 
     return jsonify(response)
