@@ -10,9 +10,20 @@ def create_project_structure(module):
 
     project_path = os.path.join(BASE_DIR, project_name)
 
+    templates_path = os.path.join(project_path, "templates")
+    routes_path = os.path.join(project_path, "routes")
+    static_path = os.path.join(project_path, "static")
+
     os.makedirs(project_path, exist_ok=True)
-    os.makedirs(os.path.join(project_path, "templates"), exist_ok=True)
-    os.makedirs(os.path.join(project_path, "routes"), exist_ok=True)
+    os.makedirs(templates_path, exist_ok=True)
+    os.makedirs(routes_path, exist_ok=True)
+    os.makedirs(static_path, exist_ok=True)
+
+    # create __init__.py for routes package
+    init_path = os.path.join(routes_path, "__init__.py")
+
+    with open(init_path, "w") as f:
+        f.write("")
 
     return project_path
 
@@ -24,6 +35,23 @@ def write_files(project_path, module, html_code, backend_code):
 
     with open(html_path, "w") as f:
         f.write(html_code)
+
+        # basic CSS file
+    css_path = os.path.join(project_path, "static", "style.css")
+
+    css_code = """
+    body {
+        font-family: Arial;
+        margin: 40px;
+    }
+
+    form {
+        width: 400px;
+    }
+    """
+
+    with open(css_path, "w") as f:
+        f.write(css_code)
 
     # backend route
     route_path = os.path.join(project_path, "routes", f"{module}.py")
