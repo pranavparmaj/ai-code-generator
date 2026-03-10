@@ -4,6 +4,7 @@ from field_extractor import build_field_schema
 from code_generator import generate_module
 from rag_engine import retrieve_relevant_snippets
 from code_assembler import assemble_module
+from code_validator import validate_module
 
 
 app = Flask(
@@ -43,13 +44,20 @@ def generate():
     # Step 5: Assemble module
     assembled = assemble_module(module, generated_html, snippets)
 
+        # Step 6: Validate code
+    validation = validate_module(
+        assembled["html"],
+        assembled["backend"]
+    )
+
     response = {
         "module": module,
         "framework": parsed_prompt["framework"],
         "language": parsed_prompt["language"],
         "fields": field_schema,
         "generated_html": assembled["html"],
-        "backend_code": assembled["backend"]
+        "backend_code": assembled["backend"],
+        "validation": validation
     }
 
     return jsonify(response)
