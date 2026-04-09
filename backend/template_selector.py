@@ -1,4 +1,5 @@
 MODULE_TEMPLATE_MAP = {
+    "crud": "crud_overview.html",
     "login": "login_form.html",
     "registration": "registration_form.html",
     "dashboard": "dashboard.html",

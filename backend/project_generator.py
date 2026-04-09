@@ -68,6 +68,30 @@ def render_base_template(project_title):
 
 
 def render_home_template(module, project_title):
+    if module == "crud":
+        return """{% extends "base.html" %}
+{% block content %}
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Generated CRUD workspace</p>
+        <h2>Role-based resource management starter</h2>
+        <p>This starter includes sign-in, dashboard metrics, resource list/search, create/edit pages, detail views, and protected destructive actions.</p>
+        <div class="button-row">
+            <a class="button primary" href="/login">Open login</a>
+            <a class="button secondary" href="/dashboard">Open dashboard</a>
+        </div>
+    </div>
+    <div class="info-panel">
+        <h3>Default roles</h3>
+        <ul>
+            <li>Admin: full create, edit, delete access</li>
+            <li>Member: read-only access to list and detail pages</li>
+            <li>Seeded demo data appears automatically on first run</li>
+        </ul>
+    </div>
+</section>
+{% endblock %}
+"""
     module_title = module.replace("_", " ").title()
     return f"""{{% extends "base.html" %}}
 {{% block content %}}
@@ -155,6 +179,190 @@ def render_dashboard_template():
     </div>
 </section>
 {% endblock %}
+"""
+
+
+def render_crud_dashboard_template(resource_label):
+    return f"""{{% extends "base.html" %}}
+{{% block content %}}
+<section class="metric-grid">
+    <article class="metric-card">
+        <p>Total {resource_label.lower()}s</p>
+        <h2>{{{{ stats.total_items }}}}</h2>
+    </article>
+    <article class="metric-card">
+        <p>Active items</p>
+        <h2>{{{{ stats.active_items }}}}</h2>
+    </article>
+    <article class="metric-card">
+        <p>Draft items</p>
+        <h2>{{{{ stats.draft_items }}}}</h2>
+    </article>
+</section>
+<section class="hero-card">
+    <div>
+        <h3>Management actions</h3>
+        <ul>
+            <li><a href="/{{{{ resource_plural }}}}">Open table view</a></li>
+            <li><a href="/{{{{ resource_plural }}}}/new">Create a new {resource_label.lower()}</a></li>
+            <li>Use search and status filters from the list screen</li>
+        </ul>
+    </div>
+    <div class="info-panel">
+        <h3>Access summary</h3>
+        <p>Signed in as <strong>{{{{ current_role }}}}</strong>. Admin users can create, edit, and delete records.</p>
+    </div>
+</section>
+{{% endblock %}}
+"""
+
+
+def render_crud_login_template():
+    return """{% extends "base.html" %}
+{% block content %}
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Role-based auth</p>
+        <h2>Sign in to the generated workspace</h2>
+        <p>Use one of the seeded demo accounts to explore the CRUD workflow.</p>
+        <ul>
+            <li>Admin: <code>admin / admin123</code></li>
+            <li>Member: <code>member / member123</code></li>
+        </ul>
+    </div>
+    <form method="POST">
+        <div class="field">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" required>
+        </div>
+        <div class="field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" required>
+        </div>
+        <button class="button primary" type="submit">Sign in</button>
+    </form>
+</section>
+{% endblock %}
+"""
+
+
+def render_crud_list_template(fields, resource_label, resource_plural):
+    searchable_columns = "".join([f"<th>{field['label']}</th>" for field in fields[:4]])
+    row_values = "".join([f"<td>{{{{ item.get('{field['name']}', '') }}}}</td>" for field in fields[:4]])
+    return f"""{{% extends "base.html" %}}
+{{% block content %}}
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">{resource_label} management</p>
+        <h2>{{{{ resource_label }}}} table</h2>
+        <p>Search, filter, inspect, and manage records from one place.</p>
+    </div>
+    <form method="GET" action="/{resource_plural}">
+        <div class="form-grid">
+            <div class="field">
+                <label for="q">Search</label>
+                <input id="q" name="q" type="text" value="{{{{ query }}}}" placeholder="Search records">
+            </div>
+            <div class="field">
+                <label for="status">Status</label>
+                <input id="status" name="status" type="text" value="{{{{ status }}}}" placeholder="active or draft">
+            </div>
+        </div>
+        <div class="button-row">
+            <button class="button primary" type="submit">Apply filters</button>
+            {{% if role == "admin" %}}<a class="button secondary" href="/{resource_plural}/new">Create {resource_label}</a>{{% endif %}}
+        </div>
+    </form>
+</section>
+<section class="hero-card">
+    <div style="grid-column: 1 / -1;">
+        <table class="table">
+            <thead>
+                <tr>
+                    {searchable_columns}
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{% for item in items %}}
+                <tr>
+                    {row_values}
+                    <td>
+                        <a href="/{resource_plural}/{{{{ item.id }}}}">View</a>
+                        {{% if role == "admin" %}}
+                        <a href="/{resource_plural}/{{{{ item.id }}}}/edit">Edit</a>
+                        <form method="POST" action="/{resource_plural}/{{{{ item.id }}}}/delete" style="display:inline;">
+                            <button type="submit" class="link-button">Delete</button>
+                        </form>
+                        {{% endif %}}
+                    </td>
+                </tr>
+                {{% else %}}
+                <tr>
+                    <td colspan="{len(fields[:4]) + 1}">No records matched the current filters.</td>
+                </tr>
+                {{% endfor %}}
+            </tbody>
+        </table>
+    </div>
+</section>
+{{% endblock %}}
+"""
+
+
+def render_crud_form_template(resource_label, resource_plural):
+    return f"""{{% extends "base.html" %}}
+{{% block content %}}
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">{resource_label} workflow</p>
+        <h2>{{{{ page_title }}}}</h2>
+        <p>Capture and validate core record details for this generated CRUD module.</p>
+    </div>
+    <form method="POST" action="{{{{ action_url }}}}">
+        <div class="form-grid">
+            {{% for field in fields %}}
+            <div class="field {{% if field.type == 'textarea' %}}full{{% endif %}}">
+                <label for="{{{{ field.name }}}}">{{{{ field.label }}}}</label>
+                {{% if field.type == "textarea" %}}
+                <textarea id="{{{{ field.name }}}}" name="{{{{ field.name }}}}" placeholder="{{{{ field.placeholder }}}}">{{{{ form_data.get(field.name, '') }}}}</textarea>
+                {{% else %}}
+                <input id="{{{{ field.name }}}}" type="{{{{ field.type }}}}" name="{{{{ field.name }}}}" value="{{{{ form_data.get(field.name, '') }}}}" placeholder="{{{{ field.placeholder }}}}" {{% if field.required %}}required{{% endif %}}>
+                {{% endif %}}
+            </div>
+            {{% endfor %}}
+        </div>
+        <div class="button-row">
+            <button class="button primary" type="submit">{{{{ submit_label }}}}</button>
+            <a class="button secondary" href="/{resource_plural}">Back to table</a>
+        </div>
+    </form>
+</section>
+{{% endblock %}}
+"""
+
+
+def render_crud_detail_template(fields, resource_label, resource_plural):
+    detail_rows = "".join([f"<li><strong>{field['label']}:</strong> {{{{ item.get('{field['name']}', '') }}}}</li>" for field in fields])
+    return f"""{{% extends "base.html" %}}
+{{% block content %}}
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">{resource_label} detail</p>
+        <h2>{{{{ resource_label }}}} overview</h2>
+        <ul>
+            {detail_rows}
+        </ul>
+    </div>
+    <div class="info-panel">
+        <h3>Actions</h3>
+        <div class="button-row">
+            <a class="button primary" href="/{resource_plural}">Back to list</a>
+            <a class="button secondary" href="/{resource_plural}/{{{{ item.id }}}}/edit">Edit</a>
+        </div>
+    </div>
+</section>
+{{% endblock %}}
 """
 
 
@@ -314,6 +522,14 @@ input, textarea {
     background: #fbfdff;
 }
 
+select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: #fbfdff;
+}
+
 textarea {
     min-height: 120px;
     resize: vertical;
@@ -330,6 +546,26 @@ textarea {
     padding: 22px;
 }
 
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    text-align: left;
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--line);
+}
+
+.link-button {
+    background: none;
+    border: none;
+    color: var(--teal);
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+}
+
 @media (max-width: 760px) {
     .hero-card, .metric-grid, .form-grid {
         grid-template-columns: 1fr;
@@ -341,6 +577,7 @@ textarea {
 def render_storage_service():
     return """import json
 import os
+import uuid
 from datetime import datetime
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "app_data.json")
@@ -348,7 +585,7 @@ DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "ap
 
 def _read():
     if not os.path.exists(DATA_PATH):
-        return {"records": []}
+        return {"records": [], "items": {}}
     with open(DATA_PATH, "r", encoding="utf-8") as handle:
         return json.load(handle)
 
@@ -370,10 +607,81 @@ def append_record(category, data):
     _write(payload)
 
 
-def build_dashboard_stats():
+def list_items(resource):
+    payload = _read()
+    return payload.setdefault("items", {}).setdefault(resource, [])
+
+
+def get_item(resource, item_id):
+    items = list_items(resource)
+    for item in items:
+        if item.get("id") == item_id:
+            return item
+    return None
+
+
+def create_item(resource, data):
+    payload = _read()
+    items = payload.setdefault("items", {}).setdefault(resource, [])
+    record = dict(data)
+    record["id"] = uuid.uuid4().hex[:8]
+    record.setdefault("status", "active")
+    record["created_at"] = datetime.utcnow().isoformat()
+    items.append(record)
+    _write(payload)
+    return record
+
+
+def update_item(resource, item_id, data):
+    payload = _read()
+    items = payload.setdefault("items", {}).setdefault(resource, [])
+    for index, item in enumerate(items):
+        if item.get("id") == item_id:
+            updated = dict(item)
+            updated.update(data)
+            updated["id"] = item_id
+            updated["updated_at"] = datetime.utcnow().isoformat()
+            items[index] = updated
+            _write(payload)
+            return updated
+    return None
+
+
+def delete_item(resource, item_id):
+    payload = _read()
+    items = payload.setdefault("items", {}).setdefault(resource, [])
+    payload["items"][resource] = [item for item in items if item.get("id") != item_id]
+    _write(payload)
+
+
+def seed_items(resource, rows):
+    payload = _read()
+    items = payload.setdefault("items", {}).setdefault(resource, [])
+    if items:
+        return
+    for row in rows:
+        record = dict(row)
+        record["id"] = uuid.uuid4().hex[:8]
+        record.setdefault("status", "active")
+        record["created_at"] = datetime.utcnow().isoformat()
+        items.append(record)
+    _write(payload)
+
+
+def build_dashboard_stats(resource=None):
     payload = _read()
     records = payload.get("records", [])
     categories = sorted({item["category"] for item in records})
+    if resource:
+        items = payload.get("items", {}).get(resource, [])
+        active_items = len([item for item in items if str(item.get("status", "")).lower() == "active"])
+        draft_items = len([item for item in items if str(item.get("status", "")).lower() == "draft"])
+        return {
+            "total_items": len(items),
+            "active_items": active_items,
+            "draft_items": draft_items,
+            "last_updated": items[-1]["created_at"] if items else "No items yet",
+        }
     return {
         "total_submissions": len(records),
         "module_count": len(categories),
@@ -392,7 +700,39 @@ class Config:
 """
 
 
-def render_app_py(module):
+def render_app_py(context):
+    module = context["module"]
+    if module == "crud":
+        return f"""from flask import Flask, render_template
+from config import Config
+from routes.auth import bp as auth_bp
+from routes.crud import bp as crud_bp
+from services.storage import seed_items
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(crud_bp)
+
+    @app.route("/")
+    def home():
+        return render_template("home.html", page_title="Generated CRUD Home", description="Use the generated sign-in and CRUD flows to explore the starter.")
+
+    seed_items("{context["resource_name"]}", [
+        {{"name": "Starter record", "status": "active", "description": "Seeded demo item"}},
+        {{"name": "Draft record", "status": "draft", "description": "Another seeded demo item"}},
+    ])
+    return app
+
+
+app = create_app()
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+"""
     dashboard_import = f"from routes.{module} import bp as module_bp\n"
     dashboard_route = ""
     if module != "dashboard":
@@ -430,6 +770,30 @@ if __name__ == "__main__":
 
 
 def render_tests(module):
+    if module == "crud":
+        return """from app import create_app
+
+
+def test_home_page():
+    app = create_app()
+    client = app.test_client()
+    response = client.get("/")
+    assert response.status_code == 200
+
+
+def test_login_page():
+    app = create_app()
+    client = app.test_client()
+    response = client.get("/login")
+    assert response.status_code == 200
+
+
+def test_crud_redirect_when_logged_out():
+    app = create_app()
+    client = app.test_client()
+    response = client.get("/resources")
+    assert response.status_code == 302
+"""
     return f"""from app import create_app
 
 
@@ -478,8 +842,9 @@ Generated with the AI Code Generator.
 
 ## Demo
 - Login credentials: `admin / admin123`
+- Member credentials: `member / member123`
 - Home page: `/`
-- Module page: `/{context["module"]}`
+- Module page: `/{context["resource_plural"] if context["module"] == "crud" else context["module"]}`
 - Dashboard: `/dashboard`
 """
 
@@ -508,9 +873,46 @@ def render_quickstart():
 """
 
 
+def render_auth_route():
+    return """from flask import Blueprint, flash, redirect, render_template, request, session, url_for
+
+bp = Blueprint("auth", __name__)
+
+USERS = {
+    "admin": {"password": "admin123", "role": "admin"},
+    "member": {"password": "member123", "role": "member"},
+}
+
+
+@bp.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username", "").strip().lower()
+        password = request.form.get("password", "").strip()
+        user = USERS.get(username)
+        if user and user["password"] == password:
+            session["user"] = username
+            session["role"] = user["role"]
+            flash(f"Signed in as {user['role']}.", "success")
+            return redirect(url_for("crud.dashboard"))
+        flash("Invalid credentials. Use one of the seeded demo accounts.", "error")
+    return render_template("login.html", page_title="Workspace Login", description="Use a demo account to enter the generated CRUD workspace.")
+
+
+@bp.route("/logout")
+def logout():
+    session.clear()
+    flash("Signed out.", "success")
+    return redirect(url_for("auth.login"))
+"""
+
+
 def write_files(project_path, context, html_code, backend_code):
     module = context["module"]
-    html_path = os.path.join(project_path, "templates", f"{module}.html")
+    html_filename = f"{module}.html"
+    if module == "crud":
+        html_filename = f"{context['resource_name']}_overview.html"
+    html_path = os.path.join(project_path, "templates", html_filename)
     with open(html_path, "w", encoding="utf-8") as f:
         f.write(html_code)
 
@@ -520,7 +922,7 @@ def write_files(project_path, context, html_code, backend_code):
 
     app_path = os.path.join(project_path, "app.py")
     with open(app_path, "w", encoding="utf-8") as f:
-        f.write(render_app_py(module))
+        f.write(render_app_py(context))
 
     config_path = os.path.join(project_path, "config.py")
     with open(config_path, "w", encoding="utf-8") as f:
@@ -540,7 +942,10 @@ def write_files(project_path, context, html_code, backend_code):
 
     dashboard_template_path = os.path.join(project_path, "templates", "dashboard.html")
     with open(dashboard_template_path, "w", encoding="utf-8") as f:
-        f.write(render_dashboard_template())
+        if module == "crud":
+            f.write(render_crud_dashboard_template(context["resource_name"].title()))
+        else:
+            f.write(render_dashboard_template())
 
     css_path = os.path.join(project_path, "static", "style.css")
     with open(css_path, "w", encoding="utf-8") as f:
@@ -576,7 +981,29 @@ def write_files(project_path, context, html_code, backend_code):
 
     data_path = os.path.join(project_path, "data", "app_data.json")
     with open(data_path, "w", encoding="utf-8") as f:
-        json.dump({"records": []}, f, indent=2)
+        json.dump({"records": [], "items": {}}, f, indent=2)
+
+    if module == "crud":
+        auth_route_path = os.path.join(project_path, "routes", "auth.py")
+        with open(auth_route_path, "w", encoding="utf-8") as f:
+            f.write(render_auth_route())
+
+        resource = context["resource_name"]
+        list_path = os.path.join(project_path, "templates", f"{resource}_list.html")
+        with open(list_path, "w", encoding="utf-8") as f:
+            f.write(render_crud_list_template(context["field_schema"], resource.title(), context["resource_plural"]))
+
+        form_path = os.path.join(project_path, "templates", f"{resource}_form.html")
+        with open(form_path, "w", encoding="utf-8") as f:
+            f.write(render_crud_form_template(resource.title(), context["resource_plural"]))
+
+        detail_path = os.path.join(project_path, "templates", f"{resource}_detail.html")
+        with open(detail_path, "w", encoding="utf-8") as f:
+            f.write(render_crud_detail_template(context["field_schema"], resource.title(), context["resource_plural"]))
+
+        login_path = os.path.join(project_path, "templates", "login.html")
+        with open(login_path, "w", encoding="utf-8") as f:
+            f.write(render_crud_login_template())
 
     return project_path
 

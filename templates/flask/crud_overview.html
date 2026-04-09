@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{ page_title }}</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #f7fbff 0%, #eef4fb 100%);
+    color: #14213d;
+}
+.shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 22px 60px;
+}
+.hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 18px;
+    align-items: stretch;
+}
+.card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 18px 48px rgba(20, 33, 61, 0.08);
+}
+.eyebrow {
+    color: #0f6c7a;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+.metric {
+    background: #12344d;
+    color: white;
+    border-radius: 18px;
+    padding: 16px;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+.table th,
+.table td {
+    text-align: left;
+    padding: 12px 10px;
+    border-bottom: 1px solid #e5edf5;
+}
+.badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #dceef1;
+    color: #0f6c7a;
+    font-size: 12px;
+    font-weight: bold;
+}
+@media (max-width: 760px) {
+    .hero,
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+    <div class="hero">
+        <div class="card">
+            <div class="eyebrow">{{ project_name }}</div>
+            <h1>{{ page_title }}</h1>
+            <p>{{ description }}</p>
+            <div class="grid">
+                <div class="metric">
+                    <strong>Create</strong>
+                    <p>Add new {{ resource_name }} records from a guided form.</p>
+                </div>
+                <div class="metric" style="background:#0f6c7a;">
+                    <strong>Search</strong>
+                    <p>Filter records using quick text search and status controls.</p>
+                </div>
+                <div class="metric" style="background:#435b74;">
+                    <strong>Roles</strong>
+                    <p>Admin users can edit and delete records; members get safe read-only views.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="badge">CRUD overview</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{ resource_name.title() }}</th>
+                        <th>Status</th>
+                        <th>Owner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Example {{ resource_name.title() }}</td>
+                        <td>Active</td>
+                        <td>Admin</td>
+                    </tr>
+                    <tr>
+                        <td>Second {{ resource_name.title() }}</td>
+                        <td>Draft</td>
+                        <td>Member</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

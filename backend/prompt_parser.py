@@ -3,6 +3,9 @@ from datetime import datetime
 
 
 MODULE_ALIASES = {
+    "crud": "crud",
+    "create read update delete": "crud",
+    "management system": "crud",
     "login": "login",
     "sign in": "login",
     "signin": "login",
@@ -23,6 +26,7 @@ FRAMEWORKS = {
 LANGUAGES = ["python"]
 
 DEFAULT_FIELDS = {
+    "crud": ["name", "status", "description"],
     "login": ["username", "password"],
     "registration": ["first_name", "last_name", "email", "password", "confirm_password"],
     "dashboard": [],
@@ -30,6 +34,12 @@ DEFAULT_FIELDS = {
     "contact": ["name", "email", "subject", "message"],
     "feedback": ["name", "email", "rating", "message"],
 }
+
+RESOURCE_HINTS = [
+    "product", "products", "customer", "customers", "employee", "employees",
+    "ticket", "tickets", "task", "tasks", "order", "orders", "invoice", "invoices",
+    "student", "students", "asset", "assets", "project", "projects", "inventory",
+]
 
 ROLE_PATTERNS = [
     "admin",
@@ -79,6 +89,11 @@ def detect_module(prompt, option_module=None):
         return option_module
 
     prompt = normalize_prompt(prompt).lower()
+    if any(keyword in prompt for keyword in ["crud", "create read update delete"]):
+        return "crud"
+    crud_signals = ["list", "create", "edit", "update", "delete"]
+    if sum(1 for signal in crud_signals if re.search(rf"\b{signal}\b", prompt)) >= 3:
+        return "crud"
     for alias, module in MODULE_ALIASES.items():
         if alias in prompt:
             return module
@@ -182,6 +197,34 @@ def extract_entities(prompt, fields):
     return entities[:12]
 
 
+def extract_resource_name(prompt, module, option_project_name=""):
+    prompt_lower = normalize_prompt(prompt).lower()
+    singular_map = {
+        "products": "product",
+        "customers": "customer",
+        "employees": "employee",
+        "tickets": "ticket",
+        "tasks": "task",
+        "orders": "order",
+        "invoices": "invoice",
+        "students": "student",
+        "assets": "asset",
+        "projects": "project",
+    }
+    for resource in RESOURCE_HINTS:
+        if re.search(rf"\b{re.escape(resource)}\b", prompt_lower):
+            return singular_map.get(resource, resource.rstrip("s"))
+
+    if module == "crud":
+        project_bits = slugify(option_project_name or "").split("_")
+        for bit in project_bits:
+            if bit and bit not in {"flask", "crud", "app", "system", "manager"}:
+                return singular_map.get(bit, bit.rstrip("s"))
+        return "record"
+
+    return module
+
+
 def extract_workflows(prompt, notes=""):
     source = f"{normalize_prompt(prompt)} {notes}".lower()
     workflows = []
@@ -192,6 +235,8 @@ def extract_workflows(prompt, notes=""):
 
 
 def detect_intent(module, workflows, constraints):
+    if module == "crud":
+        return "resource_management"
     if module == "dashboard":
         return "monitoring"
     if module == "login":
@@ -241,6 +286,7 @@ def parse_prompt(prompt, options=None):
     workflows = extract_workflows(prompt, options.get("notes", ""))
     intent = detect_intent(module, workflows, constraints)
     entities = extract_entities(prompt, fields)
+    resource_name = extract_resource_name(prompt, module, options.get("project_name", ""))
 
     project_name = build_project_name(module, {"project_name": options.get("project_name"), "framework": framework})
 
@@ -265,6 +311,8 @@ def parse_prompt(prompt, options=None):
         "intent": intent,
         "prompt_summary": build_summary(module, roles, workflows, constraints, fields),
         "goal": sentence_case(options.get("description") or normalize_prompt(prompt) or f"Generated {module} application"),
+        "resource_name": resource_name,
+        "resource_plural": f"{resource_name}s" if not resource_name.endswith("s") else resource_name,
     }
 
     return result

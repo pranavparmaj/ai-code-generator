@@ -26,6 +26,11 @@ logging.basicConfig(
 
 SAMPLE_PROMPTS = [
     {
+        "title": "Product CRUD",
+        "prompt": "Create a CRUD app for products with name, status, price and description fields. Add search, filters, dashboard metrics and role-based access.",
+        "module": "crud",
+    },
+    {
         "title": "Customer Registration",
         "prompt": "Create a registration module with first name, last name, email, password, company and address fields.",
         "module": "registration",
