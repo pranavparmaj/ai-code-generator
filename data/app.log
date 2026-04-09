@@ -45,3 +45,58 @@
 2026-04-09 19:44:41,991 INFO Generation succeeded for project=flask_contact_20260409_194441 module=contact
 2026-04-09 19:44:41,991 INFO 127.0.0.1 - - [09/Apr/2026 19:44:41] "POST /generate HTTP/1.1" 200 -
 2026-04-09 19:44:42,017 INFO 127.0.0.1 - - [09/Apr/2026 19:44:42] "GET /history HTTP/1.1" 200 -
+2026-04-09 19:53:03,630 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\prompt_parser.py', reloading
+2026-04-09 19:53:05,988 INFO  * Restarting with stat
+2026-04-09 19:53:18,410 WARNING  * Debugger is active!
+2026-04-09 19:53:18,410 INFO  * Debugger PIN: 122-359-464
+2026-04-09 19:53:27,524 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\code_assembler.py', reloading
+2026-04-09 19:53:28,309 INFO  * Restarting with stat
+2026-04-09 19:53:36,851 WARNING  * Debugger is active!
+2026-04-09 19:53:36,860 INFO  * Debugger PIN: 122-359-464
+2026-04-09 19:53:54,170 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-09 19:53:54,992 INFO  * Restarting with stat
+2026-04-09 19:54:03,693 WARNING  * Debugger is active!
+2026-04-09 19:54:03,695 INFO  * Debugger PIN: 122-359-464
+2026-04-09 19:54:21,011 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-09 19:54:21,751 INFO  * Restarting with stat
+2026-04-09 19:54:30,132 WARNING  * Debugger is active!
+2026-04-09 19:54:30,132 INFO  * Debugger PIN: 122-359-464
+2026-04-09 19:54:39,303 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-09 19:54:40,083 INFO  * Restarting with stat
+2026-04-09 19:54:48,292 WARNING  * Debugger is active!
+2026-04-09 19:54:48,292 INFO  * Debugger PIN: 122-359-464
+2026-04-09 19:55:05,579 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\app.py', reloading
+2026-04-09 19:55:06,776 INFO  * Restarting with stat
+2026-04-09 19:55:18,397 WARNING  * Debugger is active!
+2026-04-09 19:55:18,399 INFO  * Debugger PIN: 122-359-464
+2026-04-09 19:56:03,644 ERROR Generation failed
+Traceback (most recent call last):
+  File "D:\ai_code_generator\backend\app.py", line 123, in generate
+    project_path = generate_project(parsed_prompt, assembled["html"], assembled["backend"])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ai_code_generator\backend\project_generator.py", line 1013, in generate_project
+    write_files(project_path, context, html_code, backend_code)
+  File "D:\ai_code_generator\backend\project_generator.py", line 989, in write_files
+    f.write(render_auth_route(module))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ai_code_generator\backend\project_generator.py", line 882, in render_auth_route
+    "admin": {"password": "admin123", "role": "admin"},
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Invalid format specifier ' "admin123", "role": "admin"' for object of type 'str'
+2026-04-09 19:56:33,563 ERROR Generation failed
+Traceback (most recent call last):
+  File "D:\ai_code_generator\backend\app.py", line 123, in generate
+    project_path = generate_project(parsed_prompt, assembled["html"], assembled["backend"])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ai_code_generator\backend\project_generator.py", line 1013, in generate_project
+    write_files(project_path, context, html_code, backend_code)
+  File "D:\ai_code_generator\backend\project_generator.py", line 989, in write_files
+    f.write(render_auth_route(module))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ai_code_generator\backend\project_generator.py", line 882, in render_auth_route
+    "admin": {"password": "admin123", "role": "admin"},
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Invalid format specifier ' "admin123", "role": "admin"' for object of type 'str'
+2026-04-09 19:56:50,630 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-09 19:56:51,561 INFO  * Restarting with stat
+2026-04-09 19:58:21,634 INFO Generation succeeded for project=employee_management_app_v3 module=employee_management

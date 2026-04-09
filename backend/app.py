@@ -31,6 +31,16 @@ SAMPLE_PROMPTS = [
         "module": "crud",
     },
     {
+        "title": "Employee Management",
+        "prompt": "Build an employee management system with name, department, role, status and email fields. Include login, dashboard, search, filters and edit/delete actions.",
+        "module": "employee_management",
+    },
+    {
+        "title": "Ticket System",
+        "prompt": "Create a support ticket system with title, priority, status, assignee and description fields. Add table view, filters, dashboard and role-based access.",
+        "module": "ticket_system",
+    },
+    {
         "title": "Customer Registration",
         "prompt": "Create a registration module with first name, last name, email, password, company and address fields.",
         "module": "registration",

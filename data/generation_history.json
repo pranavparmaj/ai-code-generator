@@ -1,6 +1,36 @@
 [
   {
     "status": "success",
+    "project_name": "employee_management_app_v3",
+    "module": "employee_management",
+    "framework": "flask",
+    "prompt": "Build an employee management system with name, department, role, status and email fields. Include login, dashboard, search, filters and edit/delete actions.",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\employee_management_app_v3.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\employee_management_app_v3.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\employee_management_app_v3",
+    "quality_score": 90,
+    "created_at": "2026-04-09T14:28:21.616446"
+  },
+  {
+    "status": "failed",
+    "project_name": "employee_management_app",
+    "module": "employee_management",
+    "framework": "flask",
+    "prompt": "Build an employee management system with name, department, role, status and email fields. Include login, dashboard, search, filters and edit/delete actions.",
+    "error": "Invalid format specifier ' \"admin123\", \"role\": \"admin\"' for object of type 'str'",
+    "created_at": "2026-04-09T14:26:33.567281"
+  },
+  {
+    "status": "failed",
+    "project_name": "employee_management_app",
+    "module": "employee_management",
+    "framework": "flask",
+    "prompt": "Build an employee management system with name, department, role, status and email fields. Include login, dashboard, search, filters and edit/delete actions.",
+    "error": "Invalid format specifier ' \"admin123\", \"role\": \"admin\"' for object of type 'str'",
+    "created_at": "2026-04-09T14:26:03.646505"
+  },
+  {
+    "status": "success",
     "project_name": "flask_contact_20260409_194441",
     "module": "contact",
     "framework": "flask",

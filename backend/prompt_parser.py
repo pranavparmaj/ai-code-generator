@@ -6,6 +6,19 @@ MODULE_ALIASES = {
     "crud": "crud",
     "create read update delete": "crud",
     "management system": "crud",
+    "inventory": "inventory_management",
+    "inventory management": "inventory_management",
+    "employee management": "employee_management",
+    "employee manager": "employee_management",
+    "customer management": "customer_management",
+    "customer portal": "customer_management",
+    "ticket system": "ticket_system",
+    "ticket tracker": "ticket_system",
+    "support ticket": "ticket_system",
+    "task manager": "task_manager",
+    "task management": "task_manager",
+    "product catalog": "product_catalog",
+    "product management": "product_catalog",
     "login": "login",
     "sign in": "login",
     "signin": "login",
@@ -27,6 +40,12 @@ LANGUAGES = ["python"]
 
 DEFAULT_FIELDS = {
     "crud": ["name", "status", "description"],
+    "inventory_management": ["name", "sku", "status", "quantity", "description"],
+    "employee_management": ["name", "department", "role", "status", "email"],
+    "customer_management": ["name", "company", "status", "email", "phone"],
+    "ticket_system": ["title", "priority", "status", "assignee", "description"],
+    "task_manager": ["title", "status", "owner", "due_date", "description"],
+    "product_catalog": ["name", "status", "price", "category", "description"],
     "login": ["username", "password"],
     "registration": ["first_name", "last_name", "email", "password", "confirm_password"],
     "dashboard": [],
@@ -40,6 +59,16 @@ RESOURCE_HINTS = [
     "ticket", "tickets", "task", "tasks", "order", "orders", "invoice", "invoices",
     "student", "students", "asset", "assets", "project", "projects", "inventory",
 ]
+
+CRUD_FAMILY_MODULES = {
+    "crud": "record",
+    "inventory_management": "item",
+    "employee_management": "employee",
+    "customer_management": "customer",
+    "ticket_system": "ticket",
+    "task_manager": "task",
+    "product_catalog": "product",
+}
 
 ROLE_PATTERNS = [
     "admin",
@@ -89,14 +118,14 @@ def detect_module(prompt, option_module=None):
         return option_module
 
     prompt = normalize_prompt(prompt).lower()
+    for alias, module in MODULE_ALIASES.items():
+        if alias in prompt:
+            return module
     if any(keyword in prompt for keyword in ["crud", "create read update delete"]):
         return "crud"
     crud_signals = ["list", "create", "edit", "update", "delete"]
     if sum(1 for signal in crud_signals if re.search(rf"\b{signal}\b", prompt)) >= 3:
         return "crud"
-    for alias, module in MODULE_ALIASES.items():
-        if alias in prompt:
-            return module
 
     return "registration"
 
@@ -215,12 +244,12 @@ def extract_resource_name(prompt, module, option_project_name=""):
         if re.search(rf"\b{re.escape(resource)}\b", prompt_lower):
             return singular_map.get(resource, resource.rstrip("s"))
 
-    if module == "crud":
+    if module in CRUD_FAMILY_MODULES:
         project_bits = slugify(option_project_name or "").split("_")
         for bit in project_bits:
             if bit and bit not in {"flask", "crud", "app", "system", "manager"}:
                 return singular_map.get(bit, bit.rstrip("s"))
-        return "record"
+        return CRUD_FAMILY_MODULES.get(module, "record")
 
     return module
 
@@ -235,7 +264,7 @@ def extract_workflows(prompt, notes=""):
 
 
 def detect_intent(module, workflows, constraints):
-    if module == "crud":
+    if module in CRUD_FAMILY_MODULES:
         return "resource_management"
     if module == "dashboard":
         return "monitoring"
@@ -271,6 +300,12 @@ def build_project_name(module, options):
     return f"{options.get('framework', 'flask')}_{module}_{timestamp}"
 
 
+def detect_app_family(module):
+    if module in CRUD_FAMILY_MODULES:
+        return "crud"
+    return "standard"
+
+
 def parse_prompt(prompt, options=None):
     options = options or {}
 
@@ -292,6 +327,7 @@ def parse_prompt(prompt, options=None):
 
     result = {
         "module": module,
+        "app_family": detect_app_family(module),
         "framework": framework,
         "language": language,
         "fields": fields,

@@ -286,7 +286,7 @@ def assemble_module(module, html_code, snippets, context):
 
     if module == "login":
         backend_code = build_login_backend(context["field_schema"], snippets, context)
-    elif module == "crud":
+    elif context.get("app_family") == "crud":
         backend_code = build_crud_backend(context["field_schema"], snippets, context)
     elif module == "dashboard":
         backend_code = build_dashboard_backend(snippets, context)

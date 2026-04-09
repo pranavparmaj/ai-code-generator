@@ -68,7 +68,7 @@ def render_base_template(project_title):
 
 
 def render_home_template(module, project_title):
-    if module == "crud":
+    if module in {"crud", "inventory_management", "employee_management", "customer_management", "ticket_system", "task_manager", "product_catalog"}:
         return """{% extends "base.html" %}
 {% block content %}
 <section class="hero-card">
@@ -702,11 +702,11 @@ class Config:
 
 def render_app_py(context):
     module = context["module"]
-    if module == "crud":
+    if context.get("app_family") == "crud":
         return f"""from flask import Flask, render_template
 from config import Config
 from routes.auth import bp as auth_bp
-from routes.crud import bp as crud_bp
+from routes.{module} import bp as crud_bp
 from services.storage import seed_items
 
 
@@ -770,7 +770,7 @@ if __name__ == "__main__":
 
 
 def render_tests(module):
-    if module == "crud":
+    if module in {"crud", "inventory_management", "employee_management", "customer_management", "ticket_system", "task_manager", "product_catalog"}:
         return """from app import create_app
 
 
@@ -844,7 +844,7 @@ Generated with the AI Code Generator.
 - Login credentials: `admin / admin123`
 - Member credentials: `member / member123`
 - Home page: `/`
-- Module page: `/{context["resource_plural"] if context["module"] == "crud" else context["module"]}`
+- Module page: `/{context["resource_plural"] if context.get("app_family") == "crud" else context["module"]}`
 - Dashboard: `/dashboard`
 """
 
@@ -873,15 +873,15 @@ def render_quickstart():
 """
 
 
-def render_auth_route():
-    return """from flask import Blueprint, flash, redirect, render_template, request, session, url_for
+def render_auth_route(module):
+    return f"""from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 
 bp = Blueprint("auth", __name__)
 
-USERS = {
-    "admin": {"password": "admin123", "role": "admin"},
-    "member": {"password": "member123", "role": "member"},
-}
+USERS = {{
+    "admin": {{"password": "admin123", "role": "admin"}},
+    "member": {{"password": "member123", "role": "member"}},
+}}
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -893,8 +893,8 @@ def login():
         if user and user["password"] == password:
             session["user"] = username
             session["role"] = user["role"]
-            flash(f"Signed in as {user['role']}.", "success")
-            return redirect(url_for("crud.dashboard"))
+            flash(f"Signed in as {{user['role']}}.", "success")
+            return redirect(url_for("{module}.dashboard"))
         flash("Invalid credentials. Use one of the seeded demo accounts.", "error")
     return render_template("login.html", page_title="Workspace Login", description="Use a demo account to enter the generated CRUD workspace.")
 
@@ -910,7 +910,7 @@ def logout():
 def write_files(project_path, context, html_code, backend_code):
     module = context["module"]
     html_filename = f"{module}.html"
-    if module == "crud":
+    if context.get("app_family") == "crud":
         html_filename = f"{context['resource_name']}_overview.html"
     html_path = os.path.join(project_path, "templates", html_filename)
     with open(html_path, "w", encoding="utf-8") as f:
@@ -942,7 +942,7 @@ def write_files(project_path, context, html_code, backend_code):
 
     dashboard_template_path = os.path.join(project_path, "templates", "dashboard.html")
     with open(dashboard_template_path, "w", encoding="utf-8") as f:
-        if module == "crud":
+        if context.get("app_family") == "crud":
             f.write(render_crud_dashboard_template(context["resource_name"].title()))
         else:
             f.write(render_dashboard_template())
@@ -983,10 +983,10 @@ def write_files(project_path, context, html_code, backend_code):
     with open(data_path, "w", encoding="utf-8") as f:
         json.dump({"records": [], "items": {}}, f, indent=2)
 
-    if module == "crud":
+    if context.get("app_family") == "crud":
         auth_route_path = os.path.join(project_path, "routes", "auth.py")
         with open(auth_route_path, "w", encoding="utf-8") as f:
-            f.write(render_auth_route())
+            f.write(render_auth_route(module))
 
         resource = context["resource_name"]
         list_path = os.path.join(project_path, "templates", f"{resource}_list.html")
