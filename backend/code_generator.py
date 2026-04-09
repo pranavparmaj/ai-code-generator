@@ -1,27 +1,21 @@
 import os
 from jinja2 import Environment, FileSystemLoader
+from template_selector import select_template
 
 TEMPLATE_DIR = os.path.abspath("../templates/flask")
 
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 
-def generate_module(module, field_schema):
-
-    if module == "registration":
-        template_name = "registration_form.html"
-
-    elif module == "login":
-        template_name = "login_form.html"
-
-    elif module == "dashboard":
-        template_name = "dashboard.html"
-
-    else:
-        return "Unsupported module"
-
+def generate_module(module, field_schema, generation_context):
+    template_name = select_template(module)
     template = env.get_template(template_name)
-
-    rendered = template.render(fields=field_schema)
-
+    rendered = template.render(
+        fields=field_schema,
+        module=module,
+        page_title=generation_context["title"],
+        description=generation_context["description"],
+        project_name=generation_context["project_name"],
+        include_sample_data=generation_context["include_sample_data"],
+    )
     return rendered

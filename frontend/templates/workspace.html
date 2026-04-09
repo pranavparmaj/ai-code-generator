@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Code Generator</title>
+    <link rel="stylesheet" href="/static/workspace.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="control-panel">
+        <div class="brand-card">
+            <p class="eyebrow">Builder workspace</p>
+            <h1>AI Code Generator</h1>
+            <p>Generate fuller Flask starter apps with previews, validation, exports, and saved history.</p>
+        </div>
+
+        <section class="panel">
+            <div class="section-heading">
+                <h2>Build Request</h2>
+                <button class="secondary-button" id="use_sample" type="button">Use Sample</button>
+            </div>
+
+            <label for="prompt">Prompt</label>
+            <textarea id="prompt" placeholder="Describe the module you want to generate."></textarea>
+
+            <div class="grid two-up">
+                <div>
+                    <label for="module">Module</label>
+                    <select id="module">
+                        <option value="registration">Registration</option>
+                        <option value="login">Login</option>
+                        <option value="dashboard">Dashboard</option>
+                        <option value="contact">Contact</option>
+                        <option value="profile">Profile</option>
+                        <option value="feedback">Feedback</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="framework">Framework</label>
+                    <select id="framework">
+                        <option value="flask">Flask</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid two-up">
+                <div>
+                    <label for="project_name">Project Name</label>
+                    <input id="project_name" type="text" placeholder="customer_portal">
+                </div>
+                <div>
+                    <label for="title">Page Title</label>
+                    <input id="title" type="text" placeholder="Customer Portal">
+                </div>
+            </div>
+
+            <label for="fields">Fields (comma-separated)</label>
+            <input id="fields" type="text" placeholder="first_name, last_name, email, password">
+
+            <div class="grid two-up">
+                <div>
+                    <label for="database">Storage</label>
+                    <select id="database">
+                        <option value="json">Local JSON</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="styling">Style Preset</label>
+                    <select id="styling">
+                        <option value="modern">Modern</option>
+                    </select>
+                </div>
+            </div>
+
+            <label for="notes">Notes / business rules</label>
+            <textarea id="notes" class="small-area" placeholder="Example: Make company optional, redirect to dashboard on success."></textarea>
+
+            <div class="check-row">
+                <label><input id="include_tests" type="checkbox" checked> Include tests</label>
+                <label><input id="include_readme" type="checkbox" checked> Include README</label>
+                <label><input id="include_sample_data" type="checkbox" checked> Include sample data</label>
+            </div>
+
+            <button class="primary-button" id="generate_button" type="button">Generate Project</button>
+
+            <div id="loading" class="loading-card hidden">
+                <p>Generation in progress</p>
+                <ul id="progress_steps" class="progress-list"></ul>
+            </div>
+            <p id="error_banner" class="error-banner hidden"></p>
+        </section>
+
+        <section class="panel">
+            <div class="section-heading">
+                <h2>Sample Prompts</h2>
+                <span id="analytics_badge" class="badge">0 runs</span>
+            </div>
+            <div id="sample_list" class="sample-list"></div>
+        </section>
+    </aside>
+
+    <main class="workspace">
+        <section class="hero-strip">
+            <div>
+                <p class="eyebrow">Generation studio</p>
+                <h2 id="project_heading">Ready to generate</h2>
+                <p id="project_subheading">Use the form to generate a runnable Flask starter and inspect every output before download.</p>
+            </div>
+            <div class="hero-actions">
+                <a id="download_link" class="ghost-button disabled" target="_blank">Download ZIP</a>
+                <button id="copy_backend" class="secondary-button" type="button">Copy Backend</button>
+            </div>
+        </section>
+
+        <section class="analytics-grid">
+            <article class="metric-card">
+                <p>Total runs</p>
+                <h3 id="metric_total">0</h3>
+            </article>
+            <article class="metric-card">
+                <p>Successful</p>
+                <h3 id="metric_success">0</h3>
+            </article>
+            <article class="metric-card">
+                <p>Failed</p>
+                <h3 id="metric_failed">0</h3>
+            </article>
+            <article class="metric-card">
+                <p>Last project</p>
+                <h3 id="metric_last">None yet</h3>
+            </article>
+        </section>
+
+        <section class="panel result-panel">
+            <div class="tabs">
+                <button class="tab active" data-tab="preview" type="button">Live Preview</button>
+                <button class="tab" data-tab="html" type="button">HTML</button>
+                <button class="tab" data-tab="backend" type="button">Backend</button>
+                <button class="tab" data-tab="validation" type="button">Validation</button>
+                <button class="tab" data-tab="explanation" type="button">Why This Was Generated</button>
+                <button class="tab" data-tab="history" type="button">History</button>
+            </div>
+
+            <div class="tab-panel active" id="tab-preview">
+                <iframe id="preview_frame" title="Generated preview"></iframe>
+            </div>
+
+            <div class="tab-panel" id="tab-html">
+                <div class="code-card">
+                    <div class="code-toolbar">
+                        <div>
+                            <p class="code-title">Generated HTML</p>
+                            <p class="code-subtitle">Highlighted markup preview for the exported template.</p>
+                        </div>
+                        <button class="secondary-button copy-button" type="button" data-copy-target="html_output">Copy HTML</button>
+                    </div>
+                    <pre class="code-block language-html"><code id="html_output"></code></pre>
+                </div>
+            </div>
+
+            <div class="tab-panel" id="tab-backend">
+                <div class="code-card">
+                    <div class="code-toolbar">
+                        <div>
+                            <p class="code-title">Generated Backend</p>
+                            <p class="code-subtitle">Highlighted Flask route and service code.</p>
+                        </div>
+                        <button class="secondary-button copy-button" type="button" data-copy-target="backend_output">Copy Backend</button>
+                    </div>
+                    <pre class="code-block language-python"><code id="backend_output"></code></pre>
+                </div>
+            </div>
+
+            <div class="tab-panel" id="tab-validation">
+                <div class="code-card">
+                    <div class="code-toolbar">
+                        <div>
+                            <p class="code-title">Validation Report</p>
+                            <p class="code-subtitle">Highlighted JSON diagnostics from the generation pipeline.</p>
+                        </div>
+                        <button class="secondary-button copy-button" type="button" data-copy-target="validation_output">Copy Validation</button>
+                    </div>
+                    <pre class="code-block language-json"><code id="validation_output"></code></pre>
+                </div>
+            </div>
+
+            <div class="tab-panel" id="tab-explanation">
+                <div class="explanation-stack">
+                    <p id="explanation_output">Generation notes will appear here.</p>
+                    <div>
+                        <h3>Retrieved snippets</h3>
+                        <ul id="snippet_list"></ul>
+                    </div>
+                    <div>
+                        <h3>Pipeline stages</h3>
+                        <ul id="stage_list"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-panel" id="tab-history">
+                <div id="history_list" class="history-list"></div>
+            </div>
+        </section>
+    </main>
+</div>
+<script src="/static/workspace-enhanced.js"></script>
+</body>
+</html>

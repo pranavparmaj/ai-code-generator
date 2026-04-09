@@ -1,30 +1,123 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login</title>
+<title>{{ page_title }}</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(145deg, #f8fbff 0%, #eef4ff 55%, #f3f8f4 100%);
+    color: #14213d;
+}
+.shell {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 48px 24px;
+}
+.hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 28px;
+    align-items: center;
+}
+.headline {
+    background: white;
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(20, 33, 61, 0.10);
+}
+.eyebrow {
+    color: #0f6c7a;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.panel {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(20, 33, 61, 0.10);
+}
+.field {
+    margin-bottom: 16px;
+}
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #d8e1ef;
+    border-radius: 12px;
+    background: #f8fbff;
+}
+button {
+    width: 100%;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 999px;
+    background: #12344d;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.mini-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+.mini-card {
+    background: #12344d;
+    color: white;
+    border-radius: 18px;
+    padding: 16px;
+}
+@media (max-width: 760px) {
+    .hero {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 </head>
 
 <body>
-
-<h2>Login</h2>
-
-<form method="POST">
-
-{% for field, info in fields.items() %}
-
-<div>
-
-<label>{{ field.capitalize() }}</label>
-
-<input type="{{ info.type }}" name="{{ field }}">
-
+<div class="shell">
+    <div class="hero">
+        <div class="headline">
+            <div class="eyebrow">{{ project_name }}</div>
+            <h1>{{ page_title }}</h1>
+            <p>{{ description }}</p>
+            <div class="mini-grid">
+                <div class="mini-card">
+                    <strong>Fast access</strong>
+                    <p>Designed for teams that need secure sign-in with a clean first-run experience.</p>
+                </div>
+                <div class="mini-card" style="background:#0f6c7a;">
+                    <strong>Demo mode</strong>
+                    <p>Use the sample credentials from the generated README to walk through the flow.</p>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <h2>Welcome back</h2>
+            <p>Sign in to continue to your workspace.</p>
+            <form method="POST">
+            {% for field in fields %}
+                <div class="field">
+                    <label for="{{ field.name }}">{{ field.label }}</label>
+                    <input id="{{ field.name }}" type="{{ field.type }}" name="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %}>
+                </div>
+            {% endfor %}
+            <button type="submit">Sign In</button>
+            </form>
+        </div>
+    </div>
 </div>
-
-{% endfor %}
-
-<button type="submit">Login</button>
-
-</form>
-
 </body>
 </html>

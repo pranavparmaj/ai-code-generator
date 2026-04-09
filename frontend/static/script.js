@@ -2,6 +2,11 @@ async function sendPrompt() {
 
     const prompt = document.getElementById("prompt").value;
 
+    const loading = document.getElementById("loading");
+
+    // Show loading indicator
+    loading.style.display = "block";
+
     const response = await fetch("/generate", {
         method: "POST",
         headers: {
@@ -12,8 +17,20 @@ async function sendPrompt() {
 
     const data = await response.json();
 
-    document.getElementById("response").innerText =
-        JSON.stringify(data, null, 2);
+    // Hide loading indicator
+    loading.style.display = "none";
 
-    
+    document.getElementById("html_output").textContent =
+        data.generated_html;
+
+    document.getElementById("backend_output").textContent =
+        data.backend_code;
+
+    document.getElementById("validation_output").textContent =
+        JSON.stringify(data.validation, null, 2);
+
+    const downloadLink = document.getElementById("download_link");
+
+    downloadLink.href = data.download_zip;
+    downloadLink.innerText = "Download Generated Project";
 }

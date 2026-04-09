@@ -1,0 +1,86 @@
+[
+  {
+    "status": "success",
+    "project_name": "customer_portal",
+    "module": "registration",
+    "framework": "flask",
+    "prompt": "Create a contact form with name, email, subject and message fields.\n",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\customer_portal.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\customer_portal.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\customer_portal",
+    "quality_score": 95,
+    "created_at": "2026-04-09T06:46:12.325843"
+  },
+  {
+    "status": "success",
+    "project_name": "customer_portal",
+    "module": "registration",
+    "framework": "flask",
+    "prompt": "Create a contact form with name, email, subject and message fields.\n",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\customer_portal.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\customer_portal.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\customer_portal",
+    "quality_score": 95,
+    "created_at": "2026-04-09T06:45:49.605123"
+  },
+  {
+    "status": "success",
+    "project_name": "customer_portal",
+    "module": "registration",
+    "framework": "flask",
+    "prompt": "Create a registration module with full name, email, password and date of birth.",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\customer_portal.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\customer_portal.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\customer_portal",
+    "quality_score": 95,
+    "created_at": "2026-04-09T06:44:19.434381"
+  },
+  {
+    "status": "success",
+    "project_name": "customer_portal",
+    "module": "registration",
+    "framework": "flask",
+    "prompt": "Create a registration module with first name, last name, email, password and company fields.",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\customer_portal.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\customer_portal.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\customer_portal",
+    "quality_score": 95,
+    "created_at": "2026-04-09T06:43:29.760848"
+  },
+  {
+    "status": "success",
+    "project_name": "quality_upgrade_app",
+    "module": "registration",
+    "framework": "flask",
+    "prompt": "Create a secure registration module for admin and customer onboarding with first name, last name, email, password and company fields. Redirect to dashboard after success and validate required fields.",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\quality_upgrade_app.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\quality_upgrade_app.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\quality_upgrade_app",
+    "quality_score": 95,
+    "created_at": "2026-04-08T17:21:47.215752"
+  },
+  {
+    "status": "success",
+    "project_name": "smoke_registration_app_v2",
+    "module": "registration",
+    "framework": "flask",
+    "prompt": "Create a registration module with first name, last name, email, password and address fields.",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\smoke_registration_app_v2.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\smoke_registration_app_v2.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\smoke_registration_app_v2",
+    "quality_score": 100,
+    "created_at": "2026-04-08T15:36:46.053386"
+  },
+  {
+    "status": "success",
+    "project_name": "smoke_registration_app",
+    "module": "registration",
+    "framework": "flask",
+    "prompt": "Create a registration module with first name, last name, email, password and address fields.",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\smoke_registration_app.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\smoke_registration_app.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\smoke_registration_app",
+    "quality_score": 100,
+    "created_at": "2026-04-08T15:35:41.879418"
+  }
+]

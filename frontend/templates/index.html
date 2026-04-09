@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>AI Code Generator</title>
     <link rel="stylesheet" href="/static/style.css">
@@ -14,8 +15,23 @@
 <br><br>
 
 <button onclick="sendPrompt()">Generate Code</button>
+<p id="loading" style="display:none; font-weight:bold;">
+⏳ Generating code...
+</p>
 
-<pre id="response"></pre>
+<hr>
+
+<h3>Generated HTML</h3>
+<pre id="html_output"></pre>
+
+<h3>Backend Code</h3>
+<pre id="backend_output"></pre>
+
+<h3>Validation</h3>
+<pre id="validation_output"></pre>
+
+<h3>Download Project</h3>
+<a id="download_link" target="_blank"></a>
 
 <script src="/static/script.js"></script>
 

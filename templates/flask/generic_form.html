@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{ page_title }}</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #eef6f8 0%, #f8fbff 100%);
+    color: #14213d;
+}
+.shell {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 44px 20px 64px;
+}
+.header {
+    margin-bottom: 24px;
+}
+.header span {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #dceef1;
+    color: #0f6c7a;
+    font-size: 12px;
+    font-weight: bold;
+}
+.panel {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 18px 48px rgba(20, 33, 61, 0.09);
+}
+.field {
+    margin-bottom: 16px;
+}
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+input, textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #dce5f2;
+    border-radius: 14px;
+    background: #fbfdff;
+}
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+button {
+    padding: 14px 22px;
+    border: none;
+    border-radius: 999px;
+    background: #12344d;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div class="shell">
+    <div class="header">
+        <span>{{ project_name }}</span>
+        <h1>{{ page_title }}</h1>
+        <p>{{ description }}</p>
+    </div>
+    <div class="panel">
+        <form method="POST">
+        {% for field in fields %}
+            <div class="field">
+                <label for="{{ field.name }}">{{ field.label }}</label>
+                {% if field.type == "textarea" %}
+                <textarea id="{{ field.name }}" name="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %}></textarea>
+                {% else %}
+                <input id="{{ field.name }}" type="{{ field.type }}" name="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %}>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
