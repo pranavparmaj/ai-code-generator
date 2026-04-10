@@ -28,6 +28,12 @@ def build_explanation(context, snippets):
         f"Selected `{context['module']}` as the target module based on the parsed prompt intent `{context['intent']}`.",
         f"Used `{context['framework']}` with `{len(context['field_schema'])}` inferred field(s): {', '.join(field['name'] for field in context['field_schema']) or 'none'}.",
     ]
+    if context.get("app_family") == "workflow" and context.get("module_plan"):
+        reasons.append(
+            "Built an ordered workflow plan of "
+            + " -> ".join(step["module"] for step in context["module_plan"])
+            + " so the exported app can share redirects, auth, and storage."
+        )
     if context.get("roles"):
         reasons.append(f"Detected primary user roles: {', '.join(context['roles'])}.")
     if context.get("workflows"):
@@ -39,6 +45,140 @@ def build_explanation(context, snippets):
     else:
         reasons.append("No matching snippets were found, so the module was assembled from templates and default route logic.")
     return " ".join(reasons)
+
+
+def build_workflow_backend(context, snippets):
+    snippet_comment = build_snippet_comment(snippets)
+    modules = {step["module"]: step for step in context.get("module_plan", [])}
+    next_map = {edge["from"]: edge["to"] for edge in context.get("workflow_edges", [])}
+    registration_next = next_map.get("registration", "login")
+    login_next = next_map.get("login", "dashboard")
+    sections = [
+        """from flask import Blueprint, flash, redirect, render_template, request, session, url_for
+from services.storage import append_record, build_dashboard_stats, create_user, get_user_by_username, update_user_profile, list_records
+
+bp = Blueprint("workflow", __name__)
+""",
+        snippet_comment,
+        """
+
+def require_login():
+    if "user" not in session:
+        flash("Sign in to continue.", "error")
+        return redirect(url_for("workflow.login"))
+    return None
+""",
+    ]
+
+    if "registration" in modules:
+        sections.append(
+            """
+
+@bp.route("/registration", methods=["GET", "POST"])
+def registration():
+    if request.method == "POST":
+        form_data = {key: request.form.get(key, "").strip() for key in ["username", "password", "first_name", "last_name", "dob"]}
+        errors = []
+        for key, label in [("username", "Username"), ("password", "Password"), ("first_name", "First name"), ("last_name", "Last name")]:
+            if not form_data.get(key):
+                errors.append(f"{label} is required.")
+        if get_user_by_username(form_data.get("username", "")):
+            errors.append("That username already exists.")
+        if errors:
+            for error in errors:
+                flash(error, "error")
+            return render_template("registration.html", page_title="Registration", description="Create an account to continue to sign in.")
+        create_user(form_data)
+        flash("Registration completed. Sign in with your new account.", "success")
+        return redirect(url_for("workflow.%s"))
+    return render_template("registration.html", page_title="Registration", description="Create an account to continue to sign in.")
+""" % registration_next
+        )
+
+    if "login" in modules:
+        sections.append(
+            """
+
+@bp.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+        user = get_user_by_username(username)
+        if user and user.get("password") == password:
+            session["user"] = username
+            session["role"] = user.get("role", "member")
+            flash("Signed in successfully.", "success")
+            return redirect(url_for("workflow.%s"))
+        flash("Invalid credentials.", "error")
+    return render_template("login.html", page_title="Login", description="Sign in to access your generated workflow app.")
+""" % login_next
+        )
+
+    if "dashboard" in modules:
+        sections.append(
+            """
+
+@bp.route("/dashboard")
+def dashboard():
+    redirect_response = require_login()
+    if redirect_response:
+        return redirect_response
+    stats = build_dashboard_stats()
+    recent_entries = list_records()[:5]
+    return render_template("dashboard.html", page_title="Workflow Dashboard", description="A shared dashboard across the generated modules.", stats=stats, recent_entries=recent_entries)
+"""
+        )
+
+    if "profile" in modules:
+        sections.append(
+            """
+
+@bp.route("/profile", methods=["GET", "POST"])
+def profile():
+    redirect_response = require_login()
+    if redirect_response:
+        return redirect_response
+    user = get_user_by_username(session["user"]) or {}
+    if request.method == "POST":
+        profile_data = {key: request.form.get(key, "").strip() for key in ["full_name", "email", "phone", "address"]}
+        update_user_profile(session["user"], profile_data)
+        flash("Profile updated.", "success")
+        return redirect(url_for("workflow.%s"))
+    return render_template("profile.html", page_title="Profile", description="Manage your generated account profile.", form_data=user)
+""" % next_map.get("profile", "profile")
+        )
+
+    for simple_module in ("contact", "feedback"):
+        if simple_module in modules:
+            sections.append(
+                f"""
+
+@bp.route("/{simple_module}", methods=["GET", "POST"])
+def {simple_module}():
+    redirect_response = require_login()
+    if redirect_response:
+        return redirect_response
+    if request.method == "POST":
+        form_data = {{key: request.form.get(key, "").strip() for key in {[field["name"] for field in modules[simple_module].get("field_schema", [])]}}}
+        append_record("{simple_module}", form_data)
+        flash("{simple_module.title()} submitted successfully.", "success")
+        return redirect(url_for("workflow.{next_map.get(simple_module, 'dashboard')}"))
+    return render_template("{simple_module}.html", page_title="{simple_module.title()}", description="Generated {simple_module} step in the workflow.", form_data={{}})
+"""
+            )
+
+    sections.append(
+        """
+
+@bp.route("/logout")
+def logout():
+    session.clear()
+    flash("Signed out.", "success")
+    return redirect(url_for("workflow.login"))
+"""
+    )
+    return "".join(sections)
 
 
 def build_login_backend(fields, snippets, context):
@@ -284,7 +424,9 @@ def success():
 def assemble_module(module, html_code, snippets, context):
     assembled_code = {"html": html_code}
 
-    if module == "login":
+    if context.get("app_family") == "workflow":
+        backend_code = build_workflow_backend(context, snippets)
+    elif module == "login":
         backend_code = build_login_backend(context["field_schema"], snippets, context)
     elif context.get("app_family") == "crud":
         backend_code = build_crud_backend(context["field_schema"], snippets, context)

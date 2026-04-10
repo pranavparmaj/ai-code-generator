@@ -55,6 +55,11 @@ SAMPLE_PROMPTS = [
         "prompt": "Create a contact form with name, email, subject and message fields.",
         "module": "contact",
     },
+    {
+        "title": "Auth Workflow",
+        "prompt": "Generate a registration system with username, password, first name, last name and DOB followed by a login system with username and password and then a dashboard.",
+        "module": "registration",
+    },
 ]
 
 app = Flask(
@@ -105,8 +110,19 @@ def generate():
 
     try:
         parsed_prompt = parse_prompt(prompt, options)
-        field_schema = build_field_schema(parsed_prompt["fields"])
-        parsed_prompt["field_schema"] = field_schema
+        if parsed_prompt.get("app_family") == "workflow":
+            field_schema_map = {}
+            for step in parsed_prompt["module_plan"]:
+                step_schema = build_field_schema(step["fields"])
+                step["field_schema"] = step_schema
+                field_schema_map[step["module"]] = step_schema
+            field_schema = parsed_prompt["module_plan"][0]["field_schema"]
+            parsed_prompt["field_schema_map"] = field_schema_map
+            parsed_prompt["field_schema"] = field_schema
+            parsed_prompt["fields"] = parsed_prompt["module_plan"][0]["fields"]
+        else:
+            field_schema = build_field_schema(parsed_prompt["fields"])
+            parsed_prompt["field_schema"] = field_schema
 
         module = parsed_prompt["module"]
         generated_html = generate_module(module, field_schema, parsed_prompt)

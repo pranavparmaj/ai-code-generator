@@ -68,6 +68,31 @@ def render_base_template(project_title):
 
 
 def render_home_template(module, project_title):
+    if module == "workflow":
+        return """{% extends "base.html" %}
+{% block content %}
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Generated workflow app</p>
+        <h2>Integrated multi-step starter</h2>
+        <p>This starter combines registration, login, dashboard, and additional workflow modules into one Flask app.</p>
+        <div class="button-row">
+            <a class="button primary" href="/registration">Start workflow</a>
+            <a class="button secondary" href="/login">Open login</a>
+        </div>
+    </div>
+    <div class="info-panel">
+        <h3>What is included</h3>
+        <ul>
+            <li>Shared auth and session flow</li>
+            <li>Redirects between workflow pages</li>
+            <li>Common storage for users and submissions</li>
+            <li>Dashboard summary for the whole workflow</li>
+        </ul>
+    </div>
+</section>
+{% endblock %}
+"""
     if module in {"crud", "inventory_management", "employee_management", "customer_management", "ticket_system", "task_manager", "product_catalog"}:
         return """{% extends "base.html" %}
 {% block content %}
@@ -180,6 +205,117 @@ def render_dashboard_template(storage_label):
     </div>
 </section>
 {{% endblock %}}
+"""
+
+
+def render_workflow_dashboard_template(module_labels):
+    links = "".join([f'<li><a href="/{module}">{label}</a></li>' for module, label in module_labels])
+    return f"""{{% extends "base.html" %}}
+{{% block content %}}
+<section class="metric-grid">
+    <article class="metric-card">
+        <p>Total users</p>
+        <h2>{{{{ stats.total_users }}}}</h2>
+    </article>
+    <article class="metric-card">
+        <p>Total submissions</p>
+        <h2>{{{{ stats.total_submissions }}}}</h2>
+    </article>
+    <article class="metric-card">
+        <p>Active modules</p>
+        <h2>{{{{ stats.module_count }}}}</h2>
+    </article>
+</section>
+<section class="hero-card">
+    <div>
+        <h3>Workflow modules</h3>
+        <ul>
+            {links}
+        </ul>
+    </div>
+    <div class="info-panel">
+        <h3>Recent activity</h3>
+        <ul>
+            {{% for entry in recent_entries %}}
+            <li>{{{{ entry.category }}}}: {{{{ entry.timestamp }}}}</li>
+            {{% else %}}
+            <li>No workflow submissions yet.</li>
+            {{% endfor %}}
+        </ul>
+    </div>
+</section>
+{{% endblock %}}
+"""
+
+
+def render_workflow_form_template(module, page_title, description, fields, submit_label):
+    body = []
+    for field in fields:
+        if field["type"] == "textarea":
+            body.append(
+                f"""            <div class="field full">
+                <label for="{field["name"]}">{field["label"]}</label>
+                <textarea id="{field["name"]}" name="{field["name"]}" placeholder="{field["placeholder"]}">{{{{ form_data.get('{field["name"]}', '') }}}}</textarea>
+            </div>"""
+            )
+        else:
+            required = "required" if field["required"] else ""
+            body.append(
+                f"""            <div class="field">
+                <label for="{field["name"]}">{field["label"]}</label>
+                <input id="{field["name"]}" type="{field["type"]}" name="{field["name"]}" value="{{{{ form_data.get('{field["name"]}', '') }}}}" placeholder="{field["placeholder"]}" {required}>
+            </div>"""
+            )
+    field_markup = "\n".join(body)
+    return f"""{{% extends "base.html" %}}
+{{% block content %}}
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Workflow module</p>
+        <h2>{page_title}</h2>
+        <p>{description}</p>
+    </div>
+    <form method="POST" action="/{module}">
+        <div class="form-grid">
+{field_markup}
+        </div>
+        <div class="button-row">
+            <button class="button primary" type="submit">{submit_label}</button>
+            <a class="button secondary" href="/dashboard">Back to dashboard</a>
+        </div>
+    </form>
+</section>
+{{% endblock %}}
+"""
+
+
+def render_workflow_login_template():
+    return """{% extends "base.html" %}
+{% block content %}
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Workflow auth</p>
+        <h2>Sign in to continue</h2>
+        <p>Use the registration step or sign in with a previously created account.</p>
+    </div>
+    <form method="POST" action="/login">
+        <div class="form-grid">
+            <div class="field">
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" required>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" required>
+            </div>
+        </div>
+        <div class="button-row">
+            <button class="button primary" type="submit">Sign in</button>
+            <a class="button secondary" href="/registration">Create account</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
 """
 
 
@@ -617,6 +753,48 @@ def append_record(category, data):
     _write(payload)
 
 
+def list_records(category=None):
+    payload = _read()
+    records = payload.get("records", [])
+    if category:
+        records = [record for record in records if record.get("category") == category]
+    return list(reversed(records))
+
+
+def create_user(data):
+    payload = _read()
+    users = payload.setdefault("users", [])
+    record = dict(data)
+    record["id"] = uuid.uuid4().hex[:8]
+    record.setdefault("role", "member")
+    record["created_at"] = datetime.utcnow().isoformat()
+    users.append(record)
+    _write(payload)
+    return record
+
+
+def get_user_by_username(username):
+    payload = _read()
+    for user in payload.setdefault("users", []):
+        if user.get("username", "").lower() == str(username).lower():
+            return user
+    return None
+
+
+def update_user_profile(username, updates):
+    payload = _read()
+    users = payload.setdefault("users", [])
+    for index, user in enumerate(users):
+        if user.get("username", "").lower() == str(username).lower():
+            updated = dict(user)
+            updated.update(updates)
+            updated["updated_at"] = datetime.utcnow().isoformat()
+            users[index] = updated
+            _write(payload)
+            return updated
+    return None
+
+
 def list_items(resource):
     payload = _read()
     return payload.setdefault("items", {}).setdefault(resource, [])
@@ -697,6 +875,7 @@ def build_dashboard_stats(resource=None):
         "module_count": len(categories),
         "categories": categories,
         "last_updated": records[-1]["timestamp"] if records else "No activity yet",
+        "total_users": len(payload.get("users", [])),
     }
 """
 
@@ -743,6 +922,19 @@ def init_storage():
         )
         '''
     )
+    cursor.execute(
+        '''
+        CREATE TABLE IF NOT EXISTS users (
+            id TEXT PRIMARY KEY,
+            username TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL,
+            role TEXT NOT NULL,
+            data TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            updated_at TEXT
+        )
+        '''
+    )
     connection.commit()
     connection.close()
 
@@ -756,6 +948,88 @@ def append_record(category, data):
     )
     connection.commit()
     connection.close()
+
+
+def list_records(category=None):
+    init_storage()
+    connection = _connect()
+    if category:
+        rows = connection.execute(
+            "SELECT category, data, timestamp FROM generic_records WHERE category = ? ORDER BY timestamp DESC",
+            (category,),
+        ).fetchall()
+    else:
+        rows = connection.execute(
+            "SELECT category, data, timestamp FROM generic_records ORDER BY timestamp DESC"
+        ).fetchall()
+    connection.close()
+    return [{"category": row["category"], "data": json.loads(row["data"]), "timestamp": row["timestamp"]} for row in rows]
+
+
+def create_user(data):
+    init_storage()
+    user_id = uuid.uuid4().hex[:8]
+    record = dict(data)
+    record.setdefault("role", "member")
+    created_at = datetime.utcnow().isoformat()
+    connection = _connect()
+    connection.execute(
+        "INSERT INTO users (id, username, password, role, data, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (
+            user_id,
+            record.get("username", ""),
+            record.get("password", ""),
+            record.get("role", "member"),
+            json.dumps(record),
+            created_at,
+            None,
+        ),
+    )
+    connection.commit()
+    connection.close()
+    record["id"] = user_id
+    record["created_at"] = created_at
+    return record
+
+
+def get_user_by_username(username):
+    init_storage()
+    connection = _connect()
+    row = connection.execute(
+        "SELECT id, username, password, role, data, created_at, updated_at FROM users WHERE lower(username) = lower(?)",
+        (username,),
+    ).fetchone()
+    connection.close()
+    if not row:
+        return None
+    payload = json.loads(row["data"])
+    payload["id"] = row["id"]
+    payload["username"] = row["username"]
+    payload["password"] = row["password"]
+    payload["role"] = row["role"]
+    payload["created_at"] = row["created_at"]
+    if row["updated_at"]:
+        payload["updated_at"] = row["updated_at"]
+    return payload
+
+
+def update_user_profile(username, updates):
+    init_storage()
+    user = get_user_by_username(username)
+    if not user:
+        return None
+    updated = dict(user)
+    updated.update(updates)
+    updated_at = datetime.utcnow().isoformat()
+    connection = _connect()
+    connection.execute(
+        "UPDATE users SET data = ?, role = ?, updated_at = ? WHERE lower(username) = lower(?)",
+        (json.dumps(updated), updated.get("role", "member"), updated_at, username),
+    )
+    connection.commit()
+    connection.close()
+    updated["updated_at"] = updated_at
+    return updated
 
 
 def _row_to_item(row):
@@ -882,6 +1156,7 @@ def build_dashboard_stats(resource=None):
     rows = connection.execute(
         "SELECT category, timestamp FROM generic_records ORDER BY timestamp DESC"
     ).fetchall()
+    user_count = connection.execute("SELECT COUNT(*) AS count FROM users").fetchone()["count"]
     connection.close()
     categories = sorted({row["category"] for row in rows})
     return {
@@ -889,6 +1164,7 @@ def build_dashboard_stats(resource=None):
         "module_count": len(categories),
         "categories": categories,
         "last_updated": rows[0]["timestamp"] if rows else "No activity yet",
+        "total_users": user_count,
     }
 """
 
@@ -904,6 +1180,32 @@ class Config:
 
 def render_app_py(context):
     module = context["module"]
+    if context.get("app_family") == "workflow":
+        return """from flask import Flask, render_template
+from config import Config
+from routes.workflow import bp as workflow_bp
+from services.storage import init_storage
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    app.register_blueprint(workflow_bp)
+    init_storage()
+
+    @app.route("/")
+    def home():
+        return render_template("home.html", page_title="Generated Workflow Home", description="Start with registration or sign in to continue through the generated workflow.")
+
+    return app
+
+
+app = create_app()
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+"""
     if context.get("app_family") == "crud":
         return f"""from flask import Flask, render_template
 from config import Config
@@ -974,6 +1276,30 @@ if __name__ == "__main__":
 
 
 def render_tests(module):
+    if module == "workflow":
+        return """from app import create_app
+
+
+def test_home_page():
+    app = create_app()
+    client = app.test_client()
+    response = client.get("/")
+    assert response.status_code == 200
+
+
+def test_registration_page():
+    app = create_app()
+    client = app.test_client()
+    response = client.get("/registration")
+    assert response.status_code == 200
+
+
+def test_login_page():
+    app = create_app()
+    client = app.test_client()
+    response = client.get("/login")
+    assert response.status_code == 200
+"""
     if module in {"crud", "inventory_management", "employee_management", "customer_management", "ticket_system", "task_manager", "product_catalog"}:
         return """from app import create_app
 
@@ -1018,9 +1344,18 @@ def test_module_page():
 
 def render_readme(context):
     module_title = context["module"].replace("_", " ").title()
+    if context.get("app_family") == "workflow":
+        module_title = "Workflow"
     roles = ", ".join(context.get("roles", [])) or "General user"
     workflows = ", ".join(context.get("workflows", [])) or "Standard form flow"
     constraints = ", ".join(context.get("constraints", [])) or "None explicitly parsed"
+    workflow_plan = ""
+    module_page = f"/{context['resource_plural'] if context.get('app_family') == 'crud' else context['module']}"
+    demo_block = "- Login credentials: `admin / admin123`\n- Member credentials: `member / member123`"
+    if context.get("app_family") == "workflow":
+        workflow_plan = "- Workflow modules: " + " -> ".join(step["module"] for step in context.get("module_plan", [])) + "\n"
+        module_page = "/registration"
+        demo_block = "- Start at `/registration` to create a workflow account.\n- After registering, sign in with the same username and password."
     return f"""# {context["title"]}
 
 Generated with the AI Code Generator.
@@ -1037,6 +1372,7 @@ Generated with the AI Code Generator.
 - Workflows: {workflows}
 - Constraints: {constraints}
 - Summary: {context.get("prompt_summary", "Not available")}
+{workflow_plan}
 
 ## Run
 1. Create and activate a virtual environment.
@@ -1045,10 +1381,9 @@ Generated with the AI Code Generator.
 4. Open the local URL shown in the terminal.
 
 ## Demo
-- Login credentials: `admin / admin123`
-- Member credentials: `member / member123`
+{demo_block}
 - Home page: `/`
-- Module page: `/{context["resource_plural"] if context.get("app_family") == "crud" else context["module"]}`
+- Module page: `{module_page}`
 - Dashboard: `/dashboard`
 """
 
@@ -1111,8 +1446,135 @@ def logout():
 """
 
 
+def render_workflow_route(context):
+    modules = [step["module"] for step in context.get("module_plan", [])]
+    next_map = {edge["from"]: edge["to"] for edge in context.get("workflow_edges", [])}
+    registration_next = next_map.get("registration", "login")
+    login_next = next_map.get("login", "dashboard")
+    lines = [
+        'from flask import Blueprint, flash, redirect, render_template, request, session, url_for',
+        'from services.storage import append_record, build_dashboard_stats, create_user, get_user_by_username, list_records, update_user_profile',
+        '',
+        'bp = Blueprint("workflow", __name__)',
+        '',
+        'def require_login():',
+        '    if "user" not in session:',
+        '        flash("Sign in to continue.", "error")',
+        '        return redirect(url_for("workflow.login"))',
+        '    return None',
+    ]
+
+    if "registration" in modules:
+        registration_fields = next(step["field_schema"] for step in context["module_plan"] if step["module"] == "registration")
+        keys = [field["name"] for field in registration_fields]
+        lines.extend([
+            '',
+            '@bp.route("/registration", methods=["GET", "POST"])',
+            'def registration():',
+            '    form_data = {}',
+            '    if request.method == "POST":',
+            f'        form_data = {{key: request.form.get(key, "").strip() for key in {keys}}}',
+            '        errors = []',
+            '        for required_key in ["username", "password"]:',
+            '            if required_key in form_data and not form_data.get(required_key):',
+            '                errors.append(f"{required_key.replace(\'_\', \' \').title()} is required.")',
+            '        username = form_data.get("username", "")',
+            '        if username and get_user_by_username(username):',
+            '            errors.append("That username already exists.")',
+            '        if errors:',
+            '            for error in errors:',
+            '                flash(error, "error")',
+            '            return render_template("registration.html", page_title="Registration", description="Create an account to continue.", form_data=form_data)',
+            '        create_user(form_data)',
+            '        flash("Registration completed. Please sign in.", "success")',
+            f'        return redirect(url_for("workflow.{registration_next}"))',
+            '    return render_template("registration.html", page_title="Registration", description="Create an account to continue.", form_data=form_data)',
+        ])
+
+    if "login" in modules:
+        lines.extend([
+            '',
+            '@bp.route("/login", methods=["GET", "POST"])',
+            'def login():',
+            '    if request.method == "POST":',
+            '        username = request.form.get("username", "").strip()',
+            '        password = request.form.get("password", "").strip()',
+            '        user = get_user_by_username(username)',
+            '        if user and user.get("password") == password:',
+            '            session["user"] = username',
+            '            session["role"] = user.get("role", "member")',
+            '            flash("Signed in successfully.", "success")',
+            f'            return redirect(url_for("workflow.{login_next}"))',
+            '        flash("Invalid credentials.", "error")',
+            '    return render_template("login.html", page_title="Login", description="Sign in to access your generated workflow app.")',
+        ])
+
+    if "dashboard" in modules:
+        lines.extend([
+            '',
+            '@bp.route("/dashboard")',
+            'def dashboard():',
+            '    redirect_response = require_login()',
+            '    if redirect_response:',
+            '        return redirect_response',
+            '    stats = build_dashboard_stats()',
+            '    recent_entries = list_records()[:5]',
+            '    return render_template("dashboard.html", page_title="Workflow Dashboard", description="A shared dashboard across the generated modules.", stats=stats, recent_entries=recent_entries)',
+        ])
+
+    if "profile" in modules:
+        profile_fields = next(step["field_schema"] for step in context["module_plan"] if step["module"] == "profile")
+        keys = [field["name"] for field in profile_fields]
+        lines.extend([
+            '',
+            '@bp.route("/profile", methods=["GET", "POST"])',
+            'def profile():',
+            '    redirect_response = require_login()',
+            '    if redirect_response:',
+            '        return redirect_response',
+            '    user = get_user_by_username(session["user"]) or {}',
+            '    if request.method == "POST":',
+            f'        form_data = {{key: request.form.get(key, "").strip() for key in {keys}}}',
+            '        update_user_profile(session["user"], form_data)',
+            '        flash("Profile updated.", "success")',
+            f'        return redirect(url_for("workflow.{next_map.get("profile", "profile")}"))',
+            '    return render_template("profile.html", page_title="Profile", description="Manage your generated account profile.", form_data=user)',
+        ])
+
+    for module_name in ("contact", "feedback"):
+        if module_name in modules:
+            fields = next(step["field_schema"] for step in context["module_plan"] if step["module"] == module_name)
+            keys = [field["name"] for field in fields]
+            lines.extend([
+                '',
+                f'@bp.route("/{module_name}", methods=["GET", "POST"])',
+                f'def {module_name}():',
+                '    redirect_response = require_login()',
+                '    if redirect_response:',
+                '        return redirect_response',
+                '    form_data = {}',
+                '    if request.method == "POST":',
+                f'        form_data = {{key: request.form.get(key, "").strip() for key in {keys}}}',
+                f'        append_record("{module_name}", form_data)',
+                f'        flash("{module_name.title()} submitted successfully.", "success")',
+                f'        return redirect(url_for("workflow.{next_map.get(module_name, "dashboard")}"))',
+                f'    return render_template("{module_name}.html", page_title="{module_name.title()}", description="Generated workflow module.", form_data=form_data)',
+            ])
+
+    lines.extend([
+        '',
+        '@bp.route("/logout")',
+        'def logout():',
+        '    session.clear()',
+        '    flash("Signed out.", "success")',
+        '    return redirect(url_for("workflow.login"))',
+        '',
+    ])
+    return "\n".join(lines)
+
+
 def write_files(project_path, context, html_code, backend_code):
-    module = context["module"]
+    module = "workflow" if context.get("app_family") == "workflow" else context["module"]
     html_filename = f"{module}.html"
     if context.get("app_family") == "crud":
         html_filename = f"{context['resource_name']}_overview.html"
@@ -1122,7 +1584,10 @@ def write_files(project_path, context, html_code, backend_code):
 
     route_path = os.path.join(project_path, "routes", f"{module}.py")
     with open(route_path, "w", encoding="utf-8") as f:
-        f.write(backend_code)
+        if context.get("app_family") == "workflow":
+            f.write(render_workflow_route(context))
+        else:
+            f.write(backend_code)
 
     app_path = os.path.join(project_path, "app.py")
     with open(app_path, "w", encoding="utf-8") as f:
@@ -1148,6 +1613,13 @@ def write_files(project_path, context, html_code, backend_code):
     with open(dashboard_template_path, "w", encoding="utf-8") as f:
         if context.get("app_family") == "crud":
             f.write(render_crud_dashboard_template(context["resource_name"].title(), context["database"]))
+        elif context.get("app_family") == "workflow":
+            module_labels = [
+                (step["module"], step["module"].replace("_", " ").title())
+                for step in context.get("module_plan", [])
+                if step["module"] != "dashboard"
+            ]
+            f.write(render_workflow_dashboard_template(module_labels))
         else:
             f.write(render_dashboard_template(context["database"]))
 
@@ -1189,7 +1661,35 @@ def write_files(project_path, context, html_code, backend_code):
     if context["database"] == "json":
         data_path = os.path.join(project_path, "data", "app_data.json")
         with open(data_path, "w", encoding="utf-8") as f:
-            json.dump({"records": [], "items": {}}, f, indent=2)
+            json.dump({"records": [], "items": {}, "users": []}, f, indent=2)
+
+    if context.get("app_family") == "workflow":
+        login_path = os.path.join(project_path, "templates", "login.html")
+        with open(login_path, "w", encoding="utf-8") as f:
+            f.write(render_workflow_login_template())
+
+        for step in context.get("module_plan", []):
+            module_name = step["module"]
+            if module_name in {"login", "dashboard"}:
+                continue
+            template_path = os.path.join(project_path, "templates", f"{module_name}.html")
+            with open(template_path, "w", encoding="utf-8") as f:
+                submit_label = "Save and Continue"
+                if module_name == "registration":
+                    submit_label = "Create Account"
+                elif module_name == "profile":
+                    submit_label = "Save Profile"
+                elif module_name in {"contact", "feedback"}:
+                    submit_label = "Submit"
+                f.write(
+                    render_workflow_form_template(
+                        module_name,
+                        step["module"].replace("_", " ").title(),
+                        step.get("description") or f"Generated {module_name} workflow step.",
+                        step["field_schema"],
+                        submit_label,
+                    )
+                )
 
     if context.get("app_family") == "crud":
         auth_route_path = os.path.join(project_path, "routes", "auth.py")

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{ page_title }}</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #f7fbff 0%, #edf3fb 100%);
+    color: #14213d;
+}
+.shell {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 40px 22px 60px;
+}
+.hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 18px;
+}
+.card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 18px 48px rgba(20, 33, 61, 0.08);
+}
+.eyebrow {
+    color: #0f6c7a;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 18px 0 22px;
+    align-items: center;
+}
+.flow-step {
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: #dceef1;
+    color: #0f6c7a;
+    font-size: 13px;
+    font-weight: bold;
+}
+.flow-arrow {
+    color: #526071;
+    font-weight: bold;
+}
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+.metric {
+    border-radius: 18px;
+    padding: 16px;
+    color: white;
+    background: #12344d;
+}
+.metric.alt {
+    background: #0f6c7a;
+}
+.module-stack {
+    display: grid;
+    gap: 14px;
+}
+.module-card {
+    border: 1px solid #dfe7f1;
+    border-radius: 18px;
+    padding: 16px;
+    background: #fbfdff;
+}
+.module-card h3 {
+    margin: 0 0 10px;
+}
+.pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.pill {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #eef5ff;
+    color: #12344d;
+    font-size: 12px;
+    font-weight: bold;
+}
+.note {
+    font-size: 13px;
+    color: #526071;
+    line-height: 1.5;
+}
+@media (max-width: 760px) {
+    .hero, .metric-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+    <div class="hero">
+        <div class="card">
+            <div class="eyebrow">{{ project_name }}</div>
+            <h1>{{ page_title }}</h1>
+            <p>{{ description }}</p>
+            <div class="flow">
+                {% for step in module_plan %}
+                <div class="flow-step">{{ step.module.replace('_', ' ').title() }}</div>
+                {% if not loop.last %}
+                <div class="flow-arrow">-></div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="metric-grid">
+                <div class="metric">
+                    <strong>Shared Auth</strong>
+                    <p>Registration and login feed a single session flow.</p>
+                </div>
+                <div class="metric alt">
+                    <strong>Module Redirects</strong>
+                    <p>Each step redirects to the next planned page automatically.</p>
+                </div>
+                <div class="metric" style="background:#435b74;">
+                    <strong>Single Export</strong>
+                    <p>One integrated Flask app with shared storage and dashboard stats.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="eyebrow">Workflow modules</div>
+            <div class="module-stack">
+                {% for step in module_plan %}
+                <div class="module-card">
+                    <h3>{{ step.module.replace('_', ' ').title() }}</h3>
+                    <p class="note">{{ step.description }}</p>
+                    <div class="pills">
+                        {% for field in step.field_schema %}
+                        <span class="pill">{{ field.label }}</span>
+                        {% else %}
+                        <span class="pill">No fields</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <p class="note">The exported app uses one route set, one storage backend, and one navigation flow across all modules in this workflow.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

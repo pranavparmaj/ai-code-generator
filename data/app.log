@@ -209,3 +209,78 @@ AttributeError: 'NoneType' object has no attribute 'strip'
 2026-04-10 18:02:47,727 INFO Generation succeeded for project=flask_profile_20260410_180247 module=profile
 2026-04-10 18:02:47,729 INFO 127.0.0.1 - - [10/Apr/2026 18:02:47] "POST /generate HTTP/1.1" 200 -
 2026-04-10 18:02:47,803 INFO 127.0.0.1 - - [10/Apr/2026 18:02:47] "GET /history HTTP/1.1" 200 -
+2026-04-10 18:30:26,617 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\prompt_parser.py', reloading
+2026-04-10 18:30:29,321 INFO  * Restarting with stat
+2026-04-10 18:30:43,213 WARNING  * Debugger is active!
+2026-04-10 18:30:43,220 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:30:46,272 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\app.py', reloading
+2026-04-10 18:30:46,970 INFO  * Restarting with stat
+2026-04-10 18:30:55,455 WARNING  * Debugger is active!
+2026-04-10 18:30:55,472 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:31:05,605 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\code_generator.py', reloading
+2026-04-10 18:31:06,301 INFO  * Restarting with stat
+2026-04-10 18:31:14,872 WARNING  * Debugger is active!
+2026-04-10 18:31:14,872 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:33:26,395 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\code_assembler.py', reloading
+2026-04-10 18:33:27,321 INFO  * Restarting with stat
+2026-04-10 18:33:38,457 WARNING  * Debugger is active!
+2026-04-10 18:33:38,457 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:34:50,408 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-10 18:34:51,105 INFO  * Restarting with stat
+2026-04-10 18:34:59,188 WARNING  * Debugger is active!
+2026-04-10 18:34:59,188 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:35:49,878 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-10 18:35:50,605 INFO  * Restarting with stat
+2026-04-10 18:35:58,624 WARNING  * Debugger is active!
+2026-04-10 18:35:58,624 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:36:45,205 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-10 18:36:46,105 INFO  * Restarting with stat
+2026-04-10 18:36:54,126 WARNING  * Debugger is active!
+2026-04-10 18:36:54,126 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:37:59,988 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-10 18:38:00,808 INFO  * Restarting with stat
+2026-04-10 18:38:08,955 WARNING  * Debugger is active!
+2026-04-10 18:38:08,972 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:38:42,394 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-10 18:38:43,143 INFO  * Restarting with stat
+2026-04-10 18:38:51,059 WARNING  * Debugger is active!
+2026-04-10 18:38:51,063 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:39:00,199 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-10 18:39:00,920 INFO  * Restarting with stat
+2026-04-10 18:39:09,055 WARNING  * Debugger is active!
+2026-04-10 18:39:09,055 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:39:16,172 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-10 18:39:16,968 INFO  * Restarting with stat
+2026-04-10 18:39:24,687 WARNING  * Debugger is active!
+2026-04-10 18:39:24,692 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:39:39,905 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-10 18:39:40,641 INFO  * Restarting with stat
+2026-04-10 18:39:48,391 WARNING  * Debugger is active!
+2026-04-10 18:39:48,391 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:40:36,013 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\code_assembler.py', reloading
+2026-04-10 18:40:36,804 INFO  * Restarting with stat
+2026-04-10 18:40:44,955 WARNING  * Debugger is active!
+2026-04-10 18:40:44,972 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:41:08,289 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\project_generator.py', reloading
+2026-04-10 18:41:09,142 INFO  * Restarting with stat
+2026-04-10 18:41:17,279 WARNING  * Debugger is active!
+2026-04-10 18:41:17,281 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:42:24,790 INFO Generation succeeded for project=verify_contact_regression_app module=contact
+2026-04-10 18:42:25,609 INFO Generation succeeded for project=verify_auth_workflow_app module=registration
+2026-04-10 18:46:15,624 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-10 18:46:15,624 INFO [33mPress CTRL+C to quit[0m
+2026-04-10 18:46:15,624 INFO  * Restarting with stat
+2026-04-10 18:46:22,333 WARNING  * Debugger is active!
+2026-04-10 18:46:22,338 INFO  * Debugger PIN: 122-359-464
+2026-04-10 18:47:18,232 INFO 127.0.0.1 - - [10/Apr/2026 18:47:18] "GET / HTTP/1.1" 200 -
+2026-04-10 18:47:18,363 INFO 127.0.0.1 - - [10/Apr/2026 18:47:18] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-10 18:47:18,373 INFO 127.0.0.1 - - [10/Apr/2026 18:47:18] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-10 18:47:18,394 INFO 127.0.0.1 - - [10/Apr/2026 18:47:18] "GET /samples HTTP/1.1" 200 -
+2026-04-10 18:47:18,401 INFO 127.0.0.1 - - [10/Apr/2026 18:47:18] "GET /history HTTP/1.1" 200 -
+2026-04-10 18:48:02,342 INFO Generation succeeded for project=flask_registration_20260410_184802 module=registration
+2026-04-10 18:48:02,351 INFO 127.0.0.1 - - [10/Apr/2026 18:48:02] "POST /generate HTTP/1.1" 200 -
+2026-04-10 18:48:02,364 INFO 127.0.0.1 - - [10/Apr/2026 18:48:02] "GET /history HTTP/1.1" 200 -
+2026-04-10 18:52:22,273 INFO Generation succeeded for project=flask_registration_20260410_185222 module=registration
+2026-04-10 18:52:22,273 INFO 127.0.0.1 - - [10/Apr/2026 18:52:22] "POST /generate HTTP/1.1" 200 -
+2026-04-10 18:52:22,284 INFO 127.0.0.1 - - [10/Apr/2026 18:52:22] "GET /history HTTP/1.1" 200 -

@@ -1,4 +1,5 @@
 MODULE_TEMPLATE_MAP = {
+    "workflow": "workflow_overview.html",
     "crud": "crud_overview.html",
     "inventory_management": "crud_overview.html",
     "employee_management": "crud_overview.html",

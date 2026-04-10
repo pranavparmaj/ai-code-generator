@@ -70,6 +70,9 @@ CRUD_FAMILY_MODULES = {
     "product_catalog": "product",
 }
 
+WORKFLOW_MODULES = {"registration", "login", "dashboard", "profile", "contact", "feedback"}
+WORKFLOW_CONNECTOR_PATTERN = re.compile(r"\b(?:followed by|and then|then|after that|next|plus)\b", re.IGNORECASE)
+
 ROLE_PATTERNS = [
     "admin",
     "administrator",
@@ -291,6 +294,58 @@ def build_summary(module, roles, workflows, constraints, fields):
     return " | ".join(parts)
 
 
+def detect_modules_in_order(prompt):
+    prompt_text = normalize_prompt(prompt)
+    matches = []
+    for alias, module in MODULE_ALIASES.items():
+        for match in re.finditer(rf"\b{re.escape(alias)}\b", prompt_text, flags=re.IGNORECASE):
+            matches.append((match.start(), module))
+    matches.sort(key=lambda item: item[0])
+
+    ordered = []
+    for _, module in matches:
+        if module not in ordered:
+            ordered.append(module)
+    return ordered
+
+
+def split_workflow_segments(prompt):
+    parts = [segment.strip(" ,.;") for segment in WORKFLOW_CONNECTOR_PATTERN.split(normalize_prompt(prompt)) if segment.strip(" ,.;")]
+    return parts
+
+
+def build_workflow_plan(prompt, options):
+    ordered_modules = [module for module in detect_modules_in_order(prompt) if module in WORKFLOW_MODULES]
+    connectors_present = bool(WORKFLOW_CONNECTOR_PATTERN.search(normalize_prompt(prompt)))
+    if len(ordered_modules) < 2 or not connectors_present:
+        return None
+
+    segments = split_workflow_segments(prompt)
+    plan = []
+    seen_modules = set()
+    for segment in segments:
+        segment_module = detect_module(segment, None)
+        if segment_module not in WORKFLOW_MODULES or segment_module in seen_modules:
+            continue
+        segment_fields = extract_fields(segment) or DEFAULT_FIELDS.get(segment_module, [])
+        plan.append({
+            "module": segment_module,
+            "fields": segment_fields,
+            "title": f"{segment_module.replace('_', ' ').title()} Step",
+            "description": sentence_case(segment),
+        })
+        seen_modules.add(segment_module)
+
+    if len(plan) < 2:
+        return None
+
+    workflow_edges = []
+    for current_step, next_step in zip(plan, plan[1:]):
+        workflow_edges.append({"from": current_step["module"], "to": next_step["module"]})
+
+    return {"module_plan": plan, "workflow_edges": workflow_edges}
+
+
 def build_project_name(module, options):
     project_name = slugify(options.get("project_name", ""))
     if project_name != "generated_project":
@@ -309,13 +364,19 @@ def detect_app_family(module):
 def parse_prompt(prompt, options=None):
     options = options or {}
 
+    workflow_plan = build_workflow_plan(prompt, options)
     module = detect_module(prompt, options.get("module"))
     framework = detect_framework(prompt, options.get("framework"))
     language = detect_language(prompt, framework, options.get("language"))
 
     explicit_fields = parse_field_list((options.get("fields") or "").split(","))
     prompt_fields = extract_fields(prompt)
-    fields = explicit_fields or prompt_fields or DEFAULT_FIELDS.get(module, [])
+    if workflow_plan:
+        primary_step = workflow_plan["module_plan"][0]
+        fields = primary_step["fields"]
+        module = primary_step["module"]
+    else:
+        fields = explicit_fields or prompt_fields or DEFAULT_FIELDS.get(module, [])
     roles = extract_roles(prompt)
     constraints = extract_constraints(prompt, options.get("notes", ""))
     workflows = extract_workflows(prompt, options.get("notes", ""))
@@ -327,7 +388,7 @@ def parse_prompt(prompt, options=None):
 
     result = {
         "module": module,
-        "app_family": detect_app_family(module),
+        "app_family": "workflow" if workflow_plan else detect_app_family(module),
         "framework": framework,
         "language": language,
         "fields": fields,
@@ -350,5 +411,16 @@ def parse_prompt(prompt, options=None):
         "resource_name": resource_name,
         "resource_plural": f"{resource_name}s" if not resource_name.endswith("s") else resource_name,
     }
+
+    if workflow_plan:
+        result["module_plan"] = workflow_plan["module_plan"]
+        result["workflow_edges"] = workflow_plan["workflow_edges"]
+        result["workflow_modules"] = [step["module"] for step in workflow_plan["module_plan"]]
+        result["title"] = options.get("title") or "Workflow Workspace"
+        result["prompt_summary"] = (
+            f"Workflow: {' -> '.join(step['module'] for step in workflow_plan['module_plan'])} | "
+            f"Roles: {', '.join(roles) if roles else 'none'} | "
+            f"Fields: {', '.join(fields) if fields else 'none'}"
+        )
 
     return result
