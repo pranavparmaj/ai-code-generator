@@ -87,6 +87,7 @@ def render_home_template(module, project_title):
             <li>Admin: full create, edit, delete access</li>
             <li>Member: read-only access to list and detail pages</li>
             <li>Seeded demo data appears automatically on first run</li>
+            <li>Storage backend is selected during generation</li>
         </ul>
     </div>
 </section>
@@ -109,7 +110,7 @@ def render_home_template(module, project_title):
         <h3>What is included</h3>
         <ul>
             <li>Server-side validation</li>
-            <li>JSON-backed sample storage</li>
+            <li>Generated storage service for JSON or SQLite</li>
             <li>Companion templates and styling</li>
             <li>Smoke tests and setup instructions</li>
         </ul>
@@ -145,44 +146,44 @@ def render_success_template():
 """
 
 
-def render_dashboard_template():
-    return """{% extends "base.html" %}
-{% block content %}
+def render_dashboard_template(storage_label):
+    return f"""{{% extends "base.html" %}}
+{{% block content %}}
 <section class="metric-grid">
     <article class="metric-card">
         <p>Total submissions</p>
-        <h2>{{ stats.total_submissions }}</h2>
+        <h2>{{{{ stats.total_submissions }}}}</h2>
     </article>
     <article class="metric-card">
         <p>Active modules</p>
-        <h2>{{ stats.module_count }}</h2>
+        <h2>{{{{ stats.module_count }}}}</h2>
     </article>
     <article class="metric-card">
         <p>Last updated</p>
-        <h2>{{ stats.last_updated }}</h2>
+        <h2>{{{{ stats.last_updated }}}}</h2>
     </article>
 </section>
 <section class="hero-card">
     <div>
         <h3>Recent categories</h3>
         <ul>
-            {% for category in stats.categories %}
-            <li>{{ category }}</li>
-            {% else %}
+            {{% for category in stats.categories %}}
+            <li>{{{{ category }}}}</li>
+            {{% else %}}
             <li>No submissions stored yet.</li>
-            {% endfor %}
+            {{% endfor %}}
         </ul>
     </div>
     <div class="info-panel">
         <h3>Storage</h3>
-        <p>Data is stored locally in <code>data/app_data.json</code> for easy inspection during development.</p>
+        <p>Data is stored locally using <code>{storage_label}</code> for easy inspection during development.</p>
     </div>
 </section>
-{% endblock %}
+{{% endblock %}}
 """
 
 
-def render_crud_dashboard_template(resource_label):
+def render_crud_dashboard_template(resource_label, storage_label):
     return f"""{{% extends "base.html" %}}
 {{% block content %}}
 <section class="metric-grid">
@@ -211,6 +212,7 @@ def render_crud_dashboard_template(resource_label):
     <div class="info-panel">
         <h3>Access summary</h3>
         <p>Signed in as <strong>{{{{ current_role }}}}</strong>. Admin users can create, edit, and delete records.</p>
+        <p>Storage backend: <code>{storage_label}</code></p>
     </div>
 </section>
 {{% endblock %}}
@@ -574,7 +576,7 @@ textarea {
 """
 
 
-def render_storage_service():
+def render_json_storage_service():
     return """import json
 import os
 import uuid
@@ -583,7 +585,15 @@ from datetime import datetime
 DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "app_data.json")
 
 
+def init_storage():
+    os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
+    if not os.path.exists(DATA_PATH):
+        with open(DATA_PATH, "w", encoding="utf-8") as handle:
+            json.dump({"records": [], "items": {}}, handle, indent=2)
+
+
 def _read():
+    init_storage()
     if not os.path.exists(DATA_PATH):
         return {"records": [], "items": {}}
     with open(DATA_PATH, "r", encoding="utf-8") as handle:
@@ -691,6 +701,198 @@ def build_dashboard_stats(resource=None):
 """
 
 
+def render_sqlite_storage_service():
+    return """import json
+import os
+import sqlite3
+import uuid
+from datetime import datetime
+
+DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "app_data.sqlite3")
+
+
+def _connect():
+    connection = sqlite3.connect(DB_PATH)
+    connection.row_factory = sqlite3.Row
+    connection.execute("PRAGMA journal_mode=OFF")
+    return connection
+
+
+def init_storage():
+    connection = _connect()
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+        CREATE TABLE IF NOT EXISTS generic_records (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            category TEXT NOT NULL,
+            data TEXT NOT NULL,
+            timestamp TEXT NOT NULL
+        )
+        '''
+    )
+    cursor.execute(
+        '''
+        CREATE TABLE IF NOT EXISTS resource_items (
+            id TEXT PRIMARY KEY,
+            resource TEXT NOT NULL,
+            data TEXT NOT NULL,
+            status TEXT,
+            created_at TEXT NOT NULL,
+            updated_at TEXT
+        )
+        '''
+    )
+    connection.commit()
+    connection.close()
+
+
+def append_record(category, data):
+    init_storage()
+    connection = _connect()
+    connection.execute(
+        "INSERT INTO generic_records (category, data, timestamp) VALUES (?, ?, ?)",
+        (category, json.dumps(data), datetime.utcnow().isoformat()),
+    )
+    connection.commit()
+    connection.close()
+
+
+def _row_to_item(row):
+    payload = json.loads(row["data"])
+    payload["id"] = row["id"]
+    payload["status"] = row["status"] or payload.get("status", "")
+    payload["created_at"] = row["created_at"]
+    if row["updated_at"]:
+        payload["updated_at"] = row["updated_at"]
+    return payload
+
+
+def list_items(resource):
+    init_storage()
+    connection = _connect()
+    rows = connection.execute(
+        "SELECT id, data, status, created_at, updated_at FROM resource_items WHERE resource = ? ORDER BY created_at DESC",
+        (resource,),
+    ).fetchall()
+    connection.close()
+    return [_row_to_item(row) for row in rows]
+
+
+def get_item(resource, item_id):
+    init_storage()
+    connection = _connect()
+    row = connection.execute(
+        "SELECT id, data, status, created_at, updated_at FROM resource_items WHERE resource = ? AND id = ?",
+        (resource, item_id),
+    ).fetchone()
+    connection.close()
+    return _row_to_item(row) if row else None
+
+
+def create_item(resource, data):
+    init_storage()
+    item_id = uuid.uuid4().hex[:8]
+    record = dict(data)
+    record.setdefault("status", "active")
+    created_at = datetime.utcnow().isoformat()
+    connection = _connect()
+    connection.execute(
+        "INSERT INTO resource_items (id, resource, data, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
+        (item_id, resource, json.dumps(record), record.get("status", "active"), created_at, None),
+    )
+    connection.commit()
+    connection.close()
+    record["id"] = item_id
+    record["created_at"] = created_at
+    return record
+
+
+def update_item(resource, item_id, data):
+    init_storage()
+    existing = get_item(resource, item_id)
+    if not existing:
+        return None
+    updated = dict(existing)
+    updated.update(data)
+    updated["id"] = item_id
+    updated_at = datetime.utcnow().isoformat()
+    connection = _connect()
+    connection.execute(
+        "UPDATE resource_items SET data = ?, status = ?, updated_at = ? WHERE resource = ? AND id = ?",
+        (json.dumps(updated), updated.get("status", ""), updated_at, resource, item_id),
+    )
+    connection.commit()
+    connection.close()
+    updated["updated_at"] = updated_at
+    return updated
+
+
+def delete_item(resource, item_id):
+    init_storage()
+    connection = _connect()
+    connection.execute(
+        "DELETE FROM resource_items WHERE resource = ? AND id = ?",
+        (resource, item_id),
+    )
+    connection.commit()
+    connection.close()
+
+
+def seed_items(resource, rows):
+    init_storage()
+    connection = _connect()
+    count = connection.execute(
+        "SELECT COUNT(*) AS count FROM resource_items WHERE resource = ?",
+        (resource,),
+    ).fetchone()["count"]
+    if count:
+        connection.close()
+        return
+    for row in rows:
+        item_id = uuid.uuid4().hex[:8]
+        record = dict(row)
+        record.setdefault("status", "active")
+        created_at = datetime.utcnow().isoformat()
+        connection.execute(
+            "INSERT INTO resource_items (id, resource, data, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
+            (item_id, resource, json.dumps(record), record.get("status", "active"), created_at, None),
+        )
+    connection.commit()
+    connection.close()
+
+
+def build_dashboard_stats(resource=None):
+    init_storage()
+    connection = _connect()
+    if resource:
+        rows = connection.execute(
+            "SELECT status, created_at FROM resource_items WHERE resource = ? ORDER BY created_at DESC",
+            (resource,),
+        ).fetchall()
+        connection.close()
+        active_items = len([row for row in rows if str(row["status"]).lower() == "active"])
+        draft_items = len([row for row in rows if str(row["status"]).lower() == "draft"])
+        return {
+            "total_items": len(rows),
+            "active_items": active_items,
+            "draft_items": draft_items,
+            "last_updated": rows[0]["created_at"] if rows else "No items yet",
+        }
+    rows = connection.execute(
+        "SELECT category, timestamp FROM generic_records ORDER BY timestamp DESC"
+    ).fetchall()
+    connection.close()
+    categories = sorted({row["category"] for row in rows})
+    return {
+        "total_submissions": len(rows),
+        "module_count": len(categories),
+        "categories": categories,
+        "last_updated": rows[0]["timestamp"] if rows else "No activity yet",
+    }
+"""
+
+
 def render_config():
     return """import os
 
@@ -707,7 +909,7 @@ def render_app_py(context):
 from config import Config
 from routes.auth import bp as auth_bp
 from routes.{module} import bp as crud_bp
-from services.storage import seed_items
+from services.storage import init_storage, seed_items
 
 
 def create_app():
@@ -715,6 +917,7 @@ def create_app():
     app.config.from_object(Config)
     app.register_blueprint(auth_bp)
     app.register_blueprint(crud_bp)
+    init_storage()
 
     @app.route("/")
     def home():
@@ -744,7 +947,7 @@ if __name__ == "__main__":
 """
     return f"""from flask import Flask, render_template
 from config import Config
-from services.storage import build_dashboard_stats
+from services.storage import build_dashboard_stats, init_storage
 {dashboard_import}
 
 
@@ -752,6 +955,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     app.register_blueprint(module_bp)
+    init_storage()
 
     @app.route("/")
     def home():
@@ -825,7 +1029,7 @@ Generated with the AI Code Generator.
 - Framework: {context["framework"]}
 - Language: {context["language"]}
 - Module: {module_title}
-- Storage: Local JSON file in `data/app_data.json`
+- Storage: {context["database"].upper()}
 
 ## Prompt Analysis
 - Intent: {context.get("intent", "data_collection")}
@@ -943,9 +1147,9 @@ def write_files(project_path, context, html_code, backend_code):
     dashboard_template_path = os.path.join(project_path, "templates", "dashboard.html")
     with open(dashboard_template_path, "w", encoding="utf-8") as f:
         if context.get("app_family") == "crud":
-            f.write(render_crud_dashboard_template(context["resource_name"].title()))
+            f.write(render_crud_dashboard_template(context["resource_name"].title(), context["database"]))
         else:
-            f.write(render_dashboard_template())
+            f.write(render_dashboard_template(context["database"]))
 
     css_path = os.path.join(project_path, "static", "style.css")
     with open(css_path, "w", encoding="utf-8") as f:
@@ -953,7 +1157,10 @@ def write_files(project_path, context, html_code, backend_code):
 
     storage_path = os.path.join(project_path, "services", "storage.py")
     with open(storage_path, "w", encoding="utf-8") as f:
-        f.write(render_storage_service())
+        if context["database"] == "sqlite":
+            f.write(render_sqlite_storage_service())
+        else:
+            f.write(render_json_storage_service())
 
     requirements_path = os.path.join(project_path, "requirements.txt")
     with open(requirements_path, "w", encoding="utf-8") as f:
@@ -979,9 +1186,10 @@ def write_files(project_path, context, html_code, backend_code):
     with open(tests_path, "w", encoding="utf-8") as f:
         f.write(render_tests(module))
 
-    data_path = os.path.join(project_path, "data", "app_data.json")
-    with open(data_path, "w", encoding="utf-8") as f:
-        json.dump({"records": [], "items": {}}, f, indent=2)
+    if context["database"] == "json":
+        data_path = os.path.join(project_path, "data", "app_data.json")
+        with open(data_path, "w", encoding="utf-8") as f:
+            json.dump({"records": [], "items": {}}, f, indent=2)
 
     if context.get("app_family") == "crud":
         auth_route_path = os.path.join(project_path, "routes", "auth.py")

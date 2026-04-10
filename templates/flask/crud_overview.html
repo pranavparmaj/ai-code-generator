@@ -16,7 +16,7 @@ body {
 }
 .hero {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     gap: 18px;
     align-items: stretch;
 }
@@ -39,22 +39,77 @@ body {
     gap: 14px;
     margin-top: 18px;
 }
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+.nav-chip {
+    padding: 9px 14px;
+    border-radius: 999px;
+    background: #dceef1;
+    color: #0f6c7a;
+    font-size: 13px;
+    font-weight: bold;
+}
+.nav-chip.active {
+    background: #12344d;
+    color: white;
+}
 .metric {
     background: #12344d;
     color: white;
     border-radius: 18px;
     padding: 16px;
 }
+.section-title {
+    margin: 0 0 8px;
+    font-size: 22px;
+}
+.subgrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 18px;
+    margin-top: 18px;
+}
+.toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 180px 180px;
+    gap: 12px;
+    margin-top: 18px;
+}
+.toolbar input,
+.toolbar select,
+.field input,
+.field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #d8e3ef;
+    border-radius: 14px;
+    background: #fbfdff;
+    color: #14213d;
+}
+.field textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+.table-wrap {
+    overflow-x: auto;
+    margin-top: 12px;
+}
 .table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 16px;
+    min-width: 620px;
 }
 .table th,
 .table td {
     text-align: left;
     padding: 12px 10px;
     border-bottom: 1px solid #e5edf5;
+    vertical-align: top;
 }
 .badge {
     display: inline-block;
@@ -65,9 +120,45 @@ body {
     font-size: 12px;
     font-weight: bold;
 }
+.pill {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #eff7ff;
+    color: #12344d;
+    font-size: 12px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+}
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+}
+.field.full {
+    grid-column: 1 / -1;
+}
+.cta {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: #12344d;
+    color: white;
+    font-weight: bold;
+}
+.note {
+    color: #526071;
+    font-size: 13px;
+    line-height: 1.5;
+}
 @media (max-width: 760px) {
     .hero,
-    .grid {
+    .grid,
+    .subgrid,
+    .toolbar,
+    .form-grid {
         grid-template-columns: 1fr;
     }
 }
@@ -75,6 +166,13 @@ body {
 </head>
 <body>
 <div class="shell">
+    <div class="nav">
+        <div class="nav-chip active">Dashboard</div>
+        <div class="nav-chip">{{ resource_plural.title() }}</div>
+        <div class="nav-chip">Create {{ resource_name.title() }}</div>
+        <div class="nav-chip">Detail</div>
+        <div class="nav-chip">Role-Based Access</div>
+    </div>
     <div class="hero">
         <div class="card">
             <div class="eyebrow">{{ project_name }}</div>
@@ -87,7 +185,7 @@ body {
                 </div>
                 <div class="metric" style="background:#0f6c7a;">
                     <strong>Search</strong>
-                    <p>Filter records using quick text search and status controls.</p>
+                    <p>Filter records using quick text search and status/category controls.</p>
                 </div>
                 <div class="metric" style="background:#435b74;">
                     <strong>Roles</strong>
@@ -97,27 +195,94 @@ body {
         </div>
         <div class="card">
             <div class="badge">CRUD overview</div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>{{ resource_name.title() }}</th>
-                        <th>Status</th>
-                        <th>Owner</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Example {{ resource_name.title() }}</td>
-                        <td>Active</td>
-                        <td>Admin</td>
-                    </tr>
-                    <tr>
-                        <td>Second {{ resource_name.title() }}</td>
-                        <td>Draft</td>
-                        <td>Member</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h2 class="section-title">{{ resource_name.title() }} fields</h2>
+            <div>
+                {% for field in fields %}
+                <span class="pill">{{ field.label }}</span>
+                {% endfor %}
+            </div>
+            <p class="note">This preview represents the generated multi-page app. The exported project includes login, dashboard, list/search, create/edit form, detail, and delete flows.</p>
+        </div>
+    </div>
+
+    <div class="subgrid">
+        <div class="card">
+            <div class="badge">List + search view</div>
+            <div class="toolbar">
+                <input type="text" placeholder="Search {{ resource_plural }}">
+                <select>
+                    <option>Status: active</option>
+                    <option>Status: draft</option>
+                </select>
+                <select>
+                    <option>Role: admin</option>
+                    <option>Role: member</option>
+                </select>
+            </div>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            {% for field in fields[:4] %}
+                            <th>{{ field.label }}</th>
+                            {% endfor %}
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for field in fields[:4] %}
+                            <td>
+                                {% if field.name == "status" %}
+                                Active
+                                {% elif field.type == "number" %}
+                                120
+                                {% elif field.type == "email" %}
+                                owner@example.com
+                                {% else %}
+                                Demo {{ field.label }}
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                            <td>View · Edit · Delete</td>
+                        </tr>
+                        <tr>
+                            {% for field in fields[:4] %}
+                            <td>
+                                {% if field.name == "status" %}
+                                Draft
+                                {% elif field.type == "number" %}
+                                40
+                                {% elif field.type == "email" %}
+                                member@example.com
+                                {% else %}
+                                Sample {{ field.label }}
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                            <td>View · Edit</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="badge">Create / edit form</div>
+            <h2 class="section-title">New {{ resource_name.title() }}</h2>
+            <div class="form-grid">
+                {% for field in fields %}
+                <div class="field {% if field.type == 'textarea' %}full{% endif %}">
+                    <label>{{ field.label }}</label>
+                    {% if field.type == "textarea" %}
+                    <textarea placeholder="{{ field.placeholder }}"></textarea>
+                    {% else %}
+                    <input type="{{ field.type }}" placeholder="{{ field.placeholder }}">
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="cta">Create {{ resource_name.title() }}</div>
         </div>
     </div>
 </div>
