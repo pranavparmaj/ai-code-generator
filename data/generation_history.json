@@ -1,6 +1,18 @@
 [
   {
     "status": "success",
+    "project_name": "flask_crud_20260411_124126",
+    "module": "crud",
+    "framework": "flask",
+    "prompt": "generate a registration system with fields name, surname, phone number, username and password followed by login and employee management ",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260411_124126.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\flask_crud_20260411_124126.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260411_124126",
+    "quality_score": 90,
+    "created_at": "2026-04-11T07:11:26.921578"
+  },
+  {
+    "status": "success",
     "project_name": "flask_crud_20260411_122049",
     "module": "crud",
     "framework": "flask",
