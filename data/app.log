@@ -284,3 +284,15 @@ AttributeError: 'NoneType' object has no attribute 'strip'
 2026-04-10 18:52:22,273 INFO Generation succeeded for project=flask_registration_20260410_185222 module=registration
 2026-04-10 18:52:22,273 INFO 127.0.0.1 - - [10/Apr/2026 18:52:22] "POST /generate HTTP/1.1" 200 -
 2026-04-10 18:52:22,284 INFO 127.0.0.1 - - [10/Apr/2026 18:52:22] "GET /history HTTP/1.1" 200 -
+2026-04-10 19:24:20,987 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\generation_history.py', reloading
+2026-04-10 19:24:23,455 INFO  * Restarting with stat
+2026-04-10 19:24:35,111 WARNING  * Debugger is active!
+2026-04-10 19:24:35,114 INFO  * Debugger PIN: 122-359-464
+2026-04-11 11:10:58,511 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-11 11:10:58,511 INFO [33mPress CTRL+C to quit[0m
+2026-04-11 11:10:58,511 INFO  * Restarting with stat
+2026-04-11 11:11:08,331 WARNING  * Debugger is active!
+2026-04-11 11:11:08,339 INFO  * Debugger PIN: 122-359-464
+2026-04-11 11:35:31,939 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\app.py', reloading
+2026-04-11 11:35:33,395 INFO  * Restarting with stat

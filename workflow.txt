@@ -1,0 +1,557 @@
+**End-To-End Flow**
+
+Here’s exactly how your project works, from the moment you type a prompt to the moment you get the generated app output.
+
+**1. You enter a prompt in the UI**
+The process starts in the frontend workspace:
+- [workspace.html](D:\ai_code_generator\frontend\templates\workspace.html)
+- [workspace-enhanced.js](D:\ai_code_generator\frontend\static\workspace-enhanced.js)
+- [workspace.css](D:\ai_code_generator\frontend\static\workspace.css)
+
+You provide:
+- prompt text
+- selected module
+- framework
+- project name
+- title
+- fields
+- storage type
+- notes/business rules
+- include tests/readme/sample data toggles
+
+When you click `Generate Project`, the frontend sends a JSON request to `/generate`.
+
+That payload looks conceptually like:
+```json
+{
+  "prompt": "Create a CRUD app for products with name, status, price and description fields.",
+  "options": {
+    "module": "crud",
+    "framework": "flask",
+    "project_name": "product_app",
+    "title": "Product App",
+    "fields": "name,status,price,description",
+    "database": "sqlite"
+  }
+}
+```
+
+---
+
+**2. Flask receives the request**
+The backend entry point is:
+- [app.py](D:\ai_code_generator\backend\app.py)
+
+Inside `/generate`, the app orchestrates the full pipeline:
+1. parse prompt
+2. build field schema
+3. generate HTML preview
+4. retrieve relevant snippets
+5. assemble backend code
+6. validate code
+7. export runnable project
+8. zip project
+9. return JSON response to frontend
+
+So [app.py](D:\ai_code_generator\backend\app.py) is the coordinator, not the place where each generation decision is made.
+
+---
+
+**3. Prompt parsing happens**
+The raw prompt is analyzed in:
+- [prompt_parser.py](D:\ai_code_generator\backend\prompt_parser.py)
+
+This file decides what the user is asking for.
+
+It extracts:
+- module type
+- framework
+- language
+- fields
+- roles
+- constraints
+- workflows
+- entities
+- intent
+- resource name
+- app family
+
+Examples:
+- `Build a login form...` -> `login`
+- `Create a contact form...` -> `contact`
+- `Create a CRUD app for products...` -> `crud`
+- `Generate a registration system ... followed by a login system ... and then a dashboard` -> workflow plan
+
+If the prompt is a normal single-module prompt:
+- it returns one module
+
+If the prompt is a chained workflow prompt:
+- it returns:
+  - primary module
+  - module plan
+  - workflow edges
+
+Example workflow parse result:
+```json
+{
+  "module": "registration",
+  "app_family": "workflow",
+  "module_plan": [
+    {"module": "registration", "fields": ["username", "password", "first_name", "last_name", "dob"]},
+    {"module": "login", "fields": ["username", "password"]},
+    {"module": "dashboard", "fields": []}
+  ],
+  "workflow_edges": [
+    {"from": "registration", "to": "login"},
+    {"from": "login", "to": "dashboard"}
+  ]
+}
+```
+
+This is the most important stage, because everything after this depends on the parsed structure.
+
+---
+
+**4. Field schema is built**
+Once fields are known, the backend converts plain names into rich field definitions using:
+- [field_extractor.py](D:\ai_code_generator\backend\field_extractor.py)
+
+It decides:
+- input type
+- label
+- placeholder
+- required or optional
+- help text
+
+Examples:
+- `email` -> `type=email`
+- `password` -> `type=password`
+- `dob` -> `type=date`
+- `description` -> `textarea`
+- `quantity` -> `number`
+
+So this stage turns:
+```json
+["name", "email", "message"]
+```
+
+into something like:
+```json
+[
+  {"name": "name", "label": "Name", "type": "text", "required": true},
+  {"name": "email", "label": "Email", "type": "email", "required": true},
+  {"name": "message", "label": "Message", "type": "textarea", "required": true}
+]
+```
+
+For workflow prompts, it now builds field schema per step.
+
+---
+
+**5. Template selection happens**
+The generator chooses a preview template using:
+- [template_selector.py](D:\ai_code_generator\backend\template_selector.py)
+
+Examples:
+- `login` -> `login_form.html`
+- `registration` -> `registration_form.html`
+- `dashboard` -> `dashboard.html`
+- CRUD-family modules -> `crud_overview.html`
+- workflow prompts -> `workflow_overview.html`
+- generic modules -> `generic_form.html`
+
+These templates live in:
+- [templates\flask](D:\ai_code_generator\templates\flask)
+
+This stage decides the visual shape of the preview.
+
+---
+
+**6. HTML preview is rendered**
+The chosen template is rendered in:
+- [code_generator.py](D:\ai_code_generator\backend\code_generator.py)
+
+It injects:
+- page title
+- project name
+- description
+- field schema
+- resource name
+- workflow plan if applicable
+
+For single-module prompts:
+- the preview is usually a rendered page
+
+For CRUD-family prompts:
+- the preview shows the app structure: dashboard, list, create form, field set
+
+For workflow prompts:
+- the preview currently shows a workflow overview, not a live interactive multi-page preview
+
+This is why the `Live Preview` sometimes looks static. It’s showing the interpreted app structure, not necessarily the final running exported routes.
+
+---
+
+**7. Snippet retrieval runs**
+The project has a retrieval layer that tries to bring in relevant code examples.
+
+Files involved:
+- [rag_engine.py](D:\ai_code_generator\backend\rag_engine.py)
+- [embedding_engine.py](D:\ai_code_generator\backend\embedding_engine.py)
+- [vector_store.py](D:\ai_code_generator\backend\vector_store.py)
+- [snippet_metadata.json](D:\ai_code_generator\data\snippet_metadata.json)
+
+How it works:
+- snippets are indexed locally
+- embeddings are used when available
+- ranking uses:
+  - module
+  - framework
+  - intent
+  - entities
+  - workflows
+  - prompt overlap
+
+This is not calling Gemini directly. It is local retrieval plus ranking.
+
+The output of this stage is:
+- a list of relevant snippets
+- snippet names used in the explanation output
+
+---
+
+**8. Backend code is assembled**
+After preview HTML and snippet matches are ready, backend logic is assembled in:
+- [code_assembler.py](D:\ai_code_generator\backend\code_assembler.py)
+
+This is where the app decides what route logic to build.
+
+Different builders exist for:
+- login
+- dashboard
+- standard forms
+- CRUD-family apps
+- workflows
+
+Examples:
+- `login` builder creates sign-in route logic
+- form builder creates form POST + validation + success redirect
+- CRUD builder creates:
+  - list page
+  - create page
+  - detail page
+  - edit page
+  - delete action
+  - dashboard
+  - role checks
+- workflow builder creates one integrated route file for:
+  - registration
+  - login
+  - dashboard
+  - optional profile/contact/feedback modules
+
+So this is where the app goes from:
+- “I know what the user wants”
+
+to:
+- “Here is the actual Flask route code”
+
+The backend preview shown in the UI comes from this stage.
+
+---
+
+**9. Explanation text is built**
+Also in:
+- [code_assembler.py](D:\ai_code_generator\backend\code_assembler.py)
+
+The project produces:
+- why this module was selected
+- which fields were inferred
+- which roles/workflows were detected
+- why those snippets were chosen
+- for workflows, which modules were chained together
+
+This is what appears in the `Why This Was Generated` tab.
+
+So the explanation tab is not random text. It is based on the parsed prompt and the selected generation path.
+
+---
+
+**10. Validation runs**
+After the HTML and backend code are assembled, the output is checked in:
+- [code_validator.py](D:\ai_code_generator\backend\code_validator.py)
+
+It validates:
+- Python syntax
+- HTML structure
+- imports
+- route conflicts
+- dependency hints
+- basic security findings
+- lint-style issues
+- quality score
+
+The UI shows this in the `Validation` tab.
+
+This stage does not guarantee full production correctness, but it helps catch broken generated output early.
+
+---
+
+**11. Runnable project export happens**
+Once preview code passes validation, the app exports a full runnable project in:
+- [project_generator.py](D:\ai_code_generator\backend\project_generator.py)
+
+This is one of the most important files in the repo.
+
+It writes:
+- `app.py`
+- `config.py`
+- route files
+- templates
+- static CSS
+- storage services
+- tests
+- README
+- setup files
+- env example
+- quickstart file
+
+Where it writes them:
+- [generated_projects](D:\ai_code_generator\generated_projects)
+
+Different export paths exist:
+
+**Standard module export**
+Examples:
+- registration
+- login
+- contact
+- feedback
+- profile
+
+These get:
+- one app shell
+- module routes
+- templates
+- storage service
+- dashboard/support pages
+
+**CRUD-family export**
+Examples:
+- `crud`
+- `product_catalog`
+- `employee_management`
+- `ticket_system`
+
+These get:
+- auth routes
+- dashboard
+- list/create/edit/detail/delete views
+- JSON or SQLite storage
+- sample data
+- role-based access
+
+**Workflow export**
+Examples:
+- `registration -> login -> dashboard`
+
+These now get:
+- one integrated app
+- one route file for the workflow
+- shared storage
+- registration page
+- login page
+- dashboard page
+- optional profile/contact/feedback pages if included in prompt
+
+This is the stage where the project becomes a real starter app instead of just generated text.
+
+---
+
+**12. Storage backend is written**
+Inside the export step, the project also writes a storage implementation.
+
+In:
+- [project_generator.py](D:\ai_code_generator\backend\project_generator.py)
+
+Depending on the selected storage option:
+- `json` -> writes JSON storage service
+- `sqlite` -> writes SQLite storage service
+
+The generated file is usually:
+- `services/storage.py`
+
+For SQLite exports, generated apps use:
+- `data/app_data.sqlite3`
+
+For JSON exports, generated apps use:
+- `data/app_data.json`
+
+So storage choice mostly affects the exported project, not the preview screen.
+
+---
+
+**13. ZIP file is created**
+After export, the project is zipped using:
+- [zip_exporter.py](D:\ai_code_generator\utils\zip_exporter.py)
+
+The backend then returns:
+- project path
+- ZIP path
+- download URL
+
+So the `Download ZIP` button in the UI is based on the generated export folder, not just preview code.
+
+---
+
+**14. History and analytics are updated**
+Generation metadata is stored using:
+- [generation_history.py](D:\ai_code_generator\backend\generation_history.py)
+
+This powers:
+- total runs
+- successful runs
+- failed runs
+- last project
+- history tab
+
+So every generation updates the dashboard-like workspace metrics.
+
+---
+
+**15. Frontend displays the result**
+The frontend receives the response and updates:
+- project heading
+- preview iframe
+- HTML tab
+- Backend tab
+- Validation tab
+- Explanation tab
+- snippet list
+- pipeline stage list
+- history
+- analytics
+- download link
+
+All of that logic is handled in:
+- [workspace-enhanced.js](D:\ai_code_generator\frontend\static\workspace-enhanced.js)
+
+This is also where:
+- syntax highlighting
+- copy buttons
+- tab switching
+- sample prompt loading
+happens.
+
+---
+
+**What the user actually sees vs what the system actually generates**
+
+This is important.
+
+**Live Preview**
+- shows a rendered preview
+- sometimes static overview
+- especially for CRUD/workflow prompts
+
+**Backend tab**
+- shows assembled backend preview code
+
+**Validation tab**
+- shows generated diagnostics
+
+**Exported ZIP/project**
+- contains the actual runnable Flask app
+
+So the true final product is not just what you see in preview. The real output is the generated project inside:
+- [generated_projects](D:\ai_code_generator\generated_projects)
+
+---
+
+**Three main generation modes in your project now**
+
+**1. Standard module mode**
+Examples:
+- registration
+- login
+- contact
+- feedback
+- profile
+- dashboard
+
+Flow:
+- one module selected
+- fields inferred
+- one main route group exported
+
+**2. CRUD-family mode**
+Examples:
+- product catalog
+- employee management
+- customer management
+- ticket system
+- task manager
+
+Flow:
+- resource-oriented prompt detected
+- dashboard/list/create/edit/detail/delete routes generated
+- search/filter/table views added
+- auth and roles added
+- JSON or SQLite storage added
+
+**3. Workflow mode**
+Examples:
+- registration -> login -> dashboard
+- registration -> login -> profile -> dashboard
+- registration -> login -> feedback -> dashboard
+
+Flow:
+- prompt split into steps
+- module plan created
+- redirects between steps generated
+- one shared exported app created
+
+---
+
+**Simple example: what happens for one prompt**
+
+Prompt:
+```text
+Generate a registration system with username, password, first name, last name and DOB followed by a login system with username and password and then a dashboard.
+```
+
+Step by step:
+1. UI sends prompt to `/generate`
+2. parser detects workflow:
+   - registration
+   - login
+   - dashboard
+3. field schemas are created for each step
+4. workflow preview HTML is rendered
+5. snippets are retrieved
+6. workflow backend preview is assembled
+7. code is validated
+8. project generator exports:
+   - registration page
+   - login page
+   - dashboard
+   - shared app shell
+   - storage backend
+9. ZIP is created
+10. UI shows preview + download
+
+When you unzip and run it:
+- `/registration`
+- `/login`
+- `/dashboard`
+work together as one system
+
+---
+
+**Best one-line explanation of the architecture**
+
+Your project works by converting a prompt into structured generation metadata, then using templates, retrieval, backend assembly, validation, and project export to build a runnable Flask starter application.
+
+If you want, I can give you the next version as:
+1. a flowchart, or  
+2. a file-by-file deep walkthrough of each major backend file.

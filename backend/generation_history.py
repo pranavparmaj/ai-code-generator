@@ -29,7 +29,7 @@ def append_history(entry):
     entries = load_history()
     entry["created_at"] = datetime.utcnow().isoformat()
     entries.insert(0, entry)
-    save_history(entries[:20])
+    save_history(entries[:30])
     return entry
 
 
