@@ -7,6 +7,7 @@ from code_assembler import assemble_module
 from code_validator import validate_module
 from project_generator import generate_project
 from generation_history import append_history, build_analytics, load_history
+import chatbot_engine
 
 import logging
 import sys
@@ -207,6 +208,28 @@ def generate():
             "analytics": build_analytics(),
         }), 500
 
+#Route for chatbot
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        data = request.json or {}
+        user_query = data.get("message", "")
+        context = data.get("context", {})
+
+        print("USER QUERY:", user_query)
+        print("CONTEXT:", context)
+
+        response = chatbot_engine.generate_reply(user_query, context)
+
+        print("BOT RESPONSE:", response)
+
+        return jsonify({
+            "response": response if response else "⚠️ Empty response from chatbot"
+        })
+
+    except Exception as e:
+        print("CHAT ERROR:", str(e))
+        return jsonify({"response": "❌ Backend error"}), 500
 
 
 if __name__ == "__main__":

@@ -250,3 +250,105 @@ window.applySample = applySample;
 
 loadSamples();
 refreshHistory();
+
+
+
+
+// ================= CHATBOT =================
+let chatHistory = [];
+
+function addChatMessage(text, sender) {
+    const container = document.getElementById("chat-messages");
+    if (!container) return;
+
+    const msg = document.createElement("div");
+    msg.classList.add("chat-bubble");
+
+    if (sender === "user") {
+        msg.classList.add("user-bubble");
+    } else {
+        msg.classList.add("bot-bubble");
+    }
+
+    msg.innerHTML = text.replace(/\n/g, "<br>");
+
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+}
+
+async function sendChatMessage() {
+    console.log("Send button clicked"); // DEBUG
+
+    const input = document.getElementById("chat-input");
+    if (!input) {
+        console.log("Input not found");
+        return;
+    }
+
+    const message = input.value.trim();
+    console.log("Message:", message);
+
+    if (!message) return;
+
+    addChatMessage(message, "user");
+    input.value = "";
+
+    addChatMessage("Thinking...", "bot");
+
+    try {
+        const res = await fetch("/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: message,
+                context: {
+                    backend_code: backendOutput.textContent || "",
+                    html_code: htmlOutput.textContent || "",
+                    explanation: explanationOutput.textContent || "",
+                    module: document.getElementById("module").value,
+                    framework: document.getElementById("framework").value
+                }
+            })
+        });
+
+        const data = await res.json();
+
+        const container = document.getElementById("chat-messages");
+        container.removeChild(container.lastChild);
+
+        addChatMessage(data.response || "No response", "bot");
+
+    } catch (err) {
+        console.error(err);
+
+        const container = document.getElementById("chat-messages");
+        container.removeChild(container.lastChild);
+
+        addChatMessage("Error connecting to chatbot", "bot");
+    }
+}
+
+function initChatbot() {
+    const sendBtn = document.getElementById("chat-send-btn");
+    const input = document.getElementById("chat-input");
+
+    if (sendBtn) {
+        sendBtn.addEventListener("click", sendChatMessage);
+    }
+
+    if (input) {
+        input.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                sendChatMessage();
+            }
+        });
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    initChatbot();
+});
+
+// ---chatbot exit
