@@ -305,7 +305,7 @@ async function sendChatMessage() {
                 message: message,
                 context: {
                     backend_code: backendOutput.textContent || "",
-                    html_code: htmlOutput.textContent || "",
+                    
                     explanation: explanationOutput.textContent || "",
                     module: document.getElementById("module").value,
                     framework: document.getElementById("framework").value

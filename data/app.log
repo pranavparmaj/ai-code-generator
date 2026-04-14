@@ -1172,3 +1172,432 @@ AttributeError: 'NoneType' object has no attribute 'strip'
 2026-04-13 18:43:13,397 INFO 127.0.0.1 - - [13/Apr/2026 18:43:13] "POST /chat HTTP/1.1" 200 -
 2026-04-13 18:44:01,991 INFO 127.0.0.1 - - [13/Apr/2026 18:44:01] "POST /chat HTTP/1.1" 200 -
 2026-04-13 18:45:01,336 INFO 127.0.0.1 - - [13/Apr/2026 18:45:01] "POST /chat HTTP/1.1" 200 -
+2026-04-13 22:29:07,434 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-13 22:29:07,434 INFO [33mPress CTRL+C to quit[0m
+2026-04-13 22:29:07,434 INFO  * Restarting with stat
+2026-04-13 22:29:20,271 WARNING  * Debugger is active!
+2026-04-13 22:29:20,278 INFO  * Debugger PIN: 122-359-464
+2026-04-13 22:29:20,333 INFO 127.0.0.1 - - [13/Apr/2026 22:29:20] "GET / HTTP/1.1" 200 -
+2026-04-13 22:29:20,512 INFO 127.0.0.1 - - [13/Apr/2026 22:29:20] "GET /static/workspace.css HTTP/1.1" 200 -
+2026-04-13 22:29:20,594 INFO 127.0.0.1 - - [13/Apr/2026 22:29:20] "GET /static/workspace-enhanced.js HTTP/1.1" 200 -
+2026-04-13 22:29:20,722 INFO 127.0.0.1 - - [13/Apr/2026 22:29:20] "GET /samples HTTP/1.1" 200 -
+2026-04-13 22:29:20,752 INFO 127.0.0.1 - - [13/Apr/2026 22:29:20] "GET /history HTTP/1.1" 200 -
+2026-04-13 22:29:32,253 INFO Generation succeeded for project=flask_crud_20260413_222931 module=crud
+2026-04-13 22:29:32,255 INFO 127.0.0.1 - - [13/Apr/2026 22:29:32] "POST /generate HTTP/1.1" 200 -
+2026-04-13 22:29:32,279 INFO 127.0.0.1 - - [13/Apr/2026 22:29:32] "GET /history HTTP/1.1" 200 -
+2026-04-13 22:29:48,012 INFO 127.0.0.1 - - [13/Apr/2026 22:29:48] "POST /chat HTTP/1.1" 200 -
+2026-04-13 22:32:07,440 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-13 22:32:14,432 INFO  * Restarting with stat
+2026-04-13 22:32:55,244 WARNING  * Debugger is active!
+2026-04-13 22:32:55,247 INFO  * Debugger PIN: 122-359-464
+2026-04-13 22:32:55,265 INFO 127.0.0.1 - - [13/Apr/2026 22:32:55] "GET / HTTP/1.1" 200 -
+2026-04-13 22:32:59,776 INFO 127.0.0.1 - - [13/Apr/2026 22:32:59] "GET / HTTP/1.1" 200 -
+2026-04-13 22:32:59,857 INFO 127.0.0.1 - - [13/Apr/2026 22:32:59] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-13 22:32:59,865 INFO 127.0.0.1 - - [13/Apr/2026 22:32:59] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-13 22:33:00,017 INFO 127.0.0.1 - - [13/Apr/2026 22:33:00] "GET /samples HTTP/1.1" 200 -
+2026-04-13 22:33:00,026 INFO 127.0.0.1 - - [13/Apr/2026 22:33:00] "GET /history HTTP/1.1" 200 -
+2026-04-13 22:33:03,274 INFO 127.0.0.1 - - [13/Apr/2026 22:33:03] "GET / HTTP/1.1" 200 -
+2026-04-13 22:33:07,132 INFO 127.0.0.1 - - [13/Apr/2026 22:33:07] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-13 22:33:07,132 INFO 127.0.0.1 - - [13/Apr/2026 22:33:07] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-13 22:33:07,159 INFO 127.0.0.1 - - [13/Apr/2026 22:33:07] "GET /samples HTTP/1.1" 200 -
+2026-04-13 22:33:07,169 INFO 127.0.0.1 - - [13/Apr/2026 22:33:07] "GET /history HTTP/1.1" 200 -
+2026-04-13 22:33:10,317 INFO 127.0.0.1 - - [13/Apr/2026 22:33:10] "GET / HTTP/1.1" 200 -
+2026-04-13 22:33:10,350 INFO 127.0.0.1 - - [13/Apr/2026 22:33:10] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-13 22:33:10,357 INFO 127.0.0.1 - - [13/Apr/2026 22:33:10] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-13 22:33:10,366 INFO 127.0.0.1 - - [13/Apr/2026 22:33:10] "GET /samples HTTP/1.1" 200 -
+2026-04-13 22:33:10,372 INFO 127.0.0.1 - - [13/Apr/2026 22:33:10] "GET /history HTTP/1.1" 200 -
+2026-04-13 22:33:11,341 INFO 127.0.0.1 - - [13/Apr/2026 22:33:11] "GET / HTTP/1.1" 200 -
+2026-04-13 22:33:11,372 INFO 127.0.0.1 - - [13/Apr/2026 22:33:11] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-13 22:33:11,372 INFO 127.0.0.1 - - [13/Apr/2026 22:33:11] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-13 22:33:11,383 INFO 127.0.0.1 - - [13/Apr/2026 22:33:11] "GET /samples HTTP/1.1" 200 -
+2026-04-13 22:33:11,392 INFO 127.0.0.1 - - [13/Apr/2026 22:33:11] "GET /history HTTP/1.1" 200 -
+2026-04-13 22:33:16,093 INFO Generation succeeded for project=flask_crud_20260413_223315 module=crud
+2026-04-13 22:33:16,095 INFO 127.0.0.1 - - [13/Apr/2026 22:33:16] "POST /generate HTTP/1.1" 200 -
+2026-04-13 22:33:16,128 INFO 127.0.0.1 - - [13/Apr/2026 22:33:16] "GET /history HTTP/1.1" 200 -
+2026-04-13 22:33:42,349 INFO 127.0.0.1 - - [13/Apr/2026 22:33:42] "POST /chat HTTP/1.1" 200 -
+2026-04-14 10:22:41,951 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-14 10:22:41,951 INFO [33mPress CTRL+C to quit[0m
+2026-04-14 10:22:41,951 INFO  * Restarting with stat
+2026-04-14 10:22:52,195 WARNING  * Debugger is active!
+2026-04-14 10:22:52,198 INFO  * Debugger PIN: 122-359-464
+2026-04-14 10:22:55,322 INFO 127.0.0.1 - - [14/Apr/2026 10:22:55] "GET / HTTP/1.1" 200 -
+2026-04-14 10:22:55,390 INFO 127.0.0.1 - - [14/Apr/2026 10:22:55] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 10:22:55,481 INFO 127.0.0.1 - - [14/Apr/2026 10:22:55] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 10:22:55,531 INFO 127.0.0.1 - - [14/Apr/2026 10:22:55] "GET /samples HTTP/1.1" 200 -
+2026-04-14 10:22:55,550 INFO 127.0.0.1 - - [14/Apr/2026 10:22:55] "GET /history HTTP/1.1" 200 -
+2026-04-14 10:22:55,555 INFO 127.0.0.1 - - [14/Apr/2026 10:22:55] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-14 10:27:18,046 INFO Generation succeeded for project=regstration module=registration
+2026-04-14 10:27:18,055 INFO 127.0.0.1 - - [14/Apr/2026 10:27:18] "POST /generate HTTP/1.1" 200 -
+2026-04-14 10:27:18,143 INFO 127.0.0.1 - - [14/Apr/2026 10:27:18] "GET /history HTTP/1.1" 200 -
+2026-04-14 10:31:13,892 INFO 127.0.0.1 - - [14/Apr/2026 10:31:13] "POST /chat HTTP/1.1" 200 -
+2026-04-14 10:31:49,155 INFO 127.0.0.1 - - [14/Apr/2026 10:31:49] "GET /download?path=D:\\ai_code_generator\\generated_projects\\regstration.zip HTTP/1.1" 200 -
+2026-04-14 14:16:36,369 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-14 14:16:36,369 INFO [33mPress CTRL+C to quit[0m
+2026-04-14 14:16:36,369 INFO  * Restarting with stat
+2026-04-14 14:16:43,437 WARNING  * Debugger is active!
+2026-04-14 14:16:43,441 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:19:11,414 INFO 127.0.0.1 - - [14/Apr/2026 14:19:11] "GET / HTTP/1.1" 200 -
+2026-04-14 14:19:11,534 INFO 127.0.0.1 - - [14/Apr/2026 14:19:11] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:19:11,618 INFO 127.0.0.1 - - [14/Apr/2026 14:19:11] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 14:19:11,634 INFO 127.0.0.1 - - [14/Apr/2026 14:19:11] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:19:11,652 INFO 127.0.0.1 - - [14/Apr/2026 14:19:11] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:19:17,702 INFO 127.0.0.1 - - [14/Apr/2026 14:19:17] "GET / HTTP/1.1" 200 -
+2026-04-14 14:19:17,725 INFO 127.0.0.1 - - [14/Apr/2026 14:19:17] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:19:17,726 INFO 127.0.0.1 - - [14/Apr/2026 14:19:17] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 14:19:17,786 INFO 127.0.0.1 - - [14/Apr/2026 14:19:17] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:19:17,789 INFO 127.0.0.1 - - [14/Apr/2026 14:19:17] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:19:37,124 INFO Generation succeeded for project=flask_crud_20260414_141936 module=crud
+2026-04-14 14:19:37,125 INFO 127.0.0.1 - - [14/Apr/2026 14:19:37] "POST /generate HTTP/1.1" 200 -
+2026-04-14 14:19:37,149 INFO 127.0.0.1 - - [14/Apr/2026 14:19:37] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:19:52,839 INFO 127.0.0.1 - - [14/Apr/2026 14:19:52] "POST /chat HTTP/1.1" 200 -
+2026-04-14 14:19:57,642 INFO 127.0.0.1 - - [14/Apr/2026 14:19:57] "POST /chat HTTP/1.1" 200 -
+2026-04-14 14:20:37,517 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:20:38,226 INFO  * Restarting with stat
+2026-04-14 14:20:46,327 WARNING  * Debugger is active!
+2026-04-14 14:20:46,330 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:21:00,066 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:21:00,684 INFO  * Restarting with stat
+2026-04-14 14:21:07,299 WARNING  * Debugger is active!
+2026-04-14 14:21:07,302 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:21:14,331 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:21:14,906 INFO  * Restarting with stat
+2026-04-14 14:21:21,464 WARNING  * Debugger is active!
+2026-04-14 14:21:21,471 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:21:22,843 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:21:23,426 INFO  * Restarting with stat
+2026-04-14 14:21:29,854 WARNING  * Debugger is active!
+2026-04-14 14:21:29,870 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:21:42,374 INFO 127.0.0.1 - - [14/Apr/2026 14:21:42] "GET / HTTP/1.1" 200 -
+2026-04-14 14:21:42,450 INFO 127.0.0.1 - - [14/Apr/2026 14:21:42] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:21:42,451 INFO 127.0.0.1 - - [14/Apr/2026 14:21:42] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 14:21:42,481 INFO 127.0.0.1 - - [14/Apr/2026 14:21:42] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:21:42,484 INFO 127.0.0.1 - - [14/Apr/2026 14:21:42] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:21:46,835 INFO Generation succeeded for project=flask_crud_20260414_142146 module=crud
+2026-04-14 14:21:46,837 INFO 127.0.0.1 - - [14/Apr/2026 14:21:46] "POST /generate HTTP/1.1" 200 -
+2026-04-14 14:21:46,860 INFO 127.0.0.1 - - [14/Apr/2026 14:21:46] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:22:06,986 INFO 127.0.0.1 - - [14/Apr/2026 14:22:06] "POST /chat HTTP/1.1" 200 -
+2026-04-14 14:22:17,254 INFO 127.0.0.1 - - [14/Apr/2026 14:22:17] "POST /chat HTTP/1.1" 200 -
+2026-04-14 14:25:33,394 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:25:34,165 INFO  * Restarting with stat
+2026-04-14 14:25:41,528 WARNING  * Debugger is active!
+2026-04-14 14:25:41,531 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:27:50,457 INFO 127.0.0.1 - - [14/Apr/2026 14:27:50] "GET / HTTP/1.1" 200 -
+2026-04-14 14:27:50,534 INFO 127.0.0.1 - - [14/Apr/2026 14:27:50] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:27:50,570 INFO 127.0.0.1 - - [14/Apr/2026 14:27:50] "GET /static/workspace-enhanced.js HTTP/1.1" 200 -
+2026-04-14 14:27:50,579 INFO 127.0.0.1 - - [14/Apr/2026 14:27:50] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:27:50,587 INFO 127.0.0.1 - - [14/Apr/2026 14:27:50] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:27:58,971 INFO Generation succeeded for project=flask_crud_20260414_142758 module=crud
+2026-04-14 14:27:58,972 INFO 127.0.0.1 - - [14/Apr/2026 14:27:58] "POST /generate HTTP/1.1" 200 -
+2026-04-14 14:27:58,989 INFO 127.0.0.1 - - [14/Apr/2026 14:27:58] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:28:14,744 INFO 127.0.0.1 - - [14/Apr/2026 14:28:14] "POST /chat HTTP/1.1" 200 -
+2026-04-14 14:28:30,044 INFO 127.0.0.1 - - [14/Apr/2026 14:28:30] "POST /chat HTTP/1.1" 200 -
+2026-04-14 14:29:29,667 INFO 127.0.0.1 - - [14/Apr/2026 14:29:29] "GET / HTTP/1.1" 200 -
+2026-04-14 14:29:29,713 INFO 127.0.0.1 - - [14/Apr/2026 14:29:29] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:29:29,748 INFO 127.0.0.1 - - [14/Apr/2026 14:29:29] "GET /static/workspace-enhanced.js HTTP/1.1" 200 -
+2026-04-14 14:29:29,755 INFO 127.0.0.1 - - [14/Apr/2026 14:29:29] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:29:29,760 INFO 127.0.0.1 - - [14/Apr/2026 14:29:29] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:29:31,102 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "GET / HTTP/1.1" 200 -
+2026-04-14 14:29:31,120 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:29:31,121 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 14:29:31,138 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:29:31,141 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:29:31,482 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "GET / HTTP/1.1" 200 -
+2026-04-14 14:29:31,500 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:29:31,503 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 14:29:31,511 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:29:31,515 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:29:31,712 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "GET / HTTP/1.1" 200 -
+2026-04-14 14:29:31,730 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:29:31,732 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 14:29:31,738 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:29:31,741 INFO 127.0.0.1 - - [14/Apr/2026 14:29:31] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:29:54,902 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-14 14:29:54,902 INFO [33mPress CTRL+C to quit[0m
+2026-04-14 14:29:54,905 INFO  * Restarting with stat
+2026-04-14 14:30:01,976 WARNING  * Debugger is active!
+2026-04-14 14:30:01,982 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:30:05,252 INFO 127.0.0.1 - - [14/Apr/2026 14:30:05] "GET / HTTP/1.1" 200 -
+2026-04-14 14:30:05,329 INFO 127.0.0.1 - - [14/Apr/2026 14:30:05] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:30:05,332 INFO 127.0.0.1 - - [14/Apr/2026 14:30:05] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 14:30:05,362 INFO 127.0.0.1 - - [14/Apr/2026 14:30:05] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:30:05,366 INFO 127.0.0.1 - - [14/Apr/2026 14:30:05] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:30:21,813 INFO Generation succeeded for project=flask_employee_management_20260414_143021 module=employee_management
+2026-04-14 14:30:21,814 INFO 127.0.0.1 - - [14/Apr/2026 14:30:21] "POST /generate HTTP/1.1" 200 -
+2026-04-14 14:30:21,837 INFO 127.0.0.1 - - [14/Apr/2026 14:30:21] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:30:35,423 INFO 127.0.0.1 - - [14/Apr/2026 14:30:35] "POST /chat HTTP/1.1" 200 -
+2026-04-14 14:33:24,336 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:33:25,066 INFO  * Restarting with stat
+2026-04-14 14:33:33,063 WARNING  * Debugger is active!
+2026-04-14 14:33:33,068 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:33:46,834 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:33:47,417 INFO  * Restarting with stat
+2026-04-14 14:33:54,531 WARNING  * Debugger is active!
+2026-04-14 14:33:54,535 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:33:57,058 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:33:57,664 INFO  * Restarting with stat
+2026-04-14 14:40:47,894 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-14 14:40:47,894 INFO [33mPress CTRL+C to quit[0m
+2026-04-14 14:40:47,895 INFO  * Restarting with stat
+2026-04-14 14:40:54,342 WARNING  * Debugger is active!
+2026-04-14 14:40:54,344 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:41:39,471 INFO 127.0.0.1 - - [14/Apr/2026 14:41:39] "GET / HTTP/1.1" 200 -
+2026-04-14 14:41:39,601 INFO 127.0.0.1 - - [14/Apr/2026 14:41:39] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 14:41:39,606 INFO 127.0.0.1 - - [14/Apr/2026 14:41:39] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:41:39,621 INFO 127.0.0.1 - - [14/Apr/2026 14:41:39] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:41:39,629 INFO 127.0.0.1 - - [14/Apr/2026 14:41:39] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:42:07,142 INFO Generation succeeded for project=flask_crud_20260414_144206 module=crud
+2026-04-14 14:42:07,144 INFO 127.0.0.1 - - [14/Apr/2026 14:42:07] "POST /generate HTTP/1.1" 200 -
+2026-04-14 14:42:07,160 INFO 127.0.0.1 - - [14/Apr/2026 14:42:07] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:42:20,950 INFO 127.0.0.1 - - [14/Apr/2026 14:42:20] "POST /chat HTTP/1.1" 200 -
+2026-04-14 14:45:34,705 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:45:35,487 INFO  * Restarting with stat
+2026-04-14 14:45:42,141 WARNING  * Debugger is active!
+2026-04-14 14:45:42,144 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:46:00,431 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:46:01,010 INFO  * Restarting with stat
+2026-04-14 14:46:07,732 WARNING  * Debugger is active!
+2026-04-14 14:46:07,735 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:46:45,331 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:46:45,963 INFO  * Restarting with stat
+2026-04-14 14:46:52,634 WARNING  * Debugger is active!
+2026-04-14 14:46:52,636 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:47:00,040 INFO 127.0.0.1 - - [14/Apr/2026 14:47:00] "GET / HTTP/1.1" 200 -
+2026-04-14 14:47:00,114 INFO 127.0.0.1 - - [14/Apr/2026 14:47:00] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:47:00,114 INFO 127.0.0.1 - - [14/Apr/2026 14:47:00] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 14:47:00,120 INFO 127.0.0.1 - - [14/Apr/2026 14:47:00] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:47:00,126 INFO 127.0.0.1 - - [14/Apr/2026 14:47:00] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:47:00,951 INFO 127.0.0.1 - - [14/Apr/2026 14:47:00] "GET / HTTP/1.1" 200 -
+2026-04-14 14:47:00,968 INFO 127.0.0.1 - - [14/Apr/2026 14:47:00] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:47:00,970 INFO 127.0.0.1 - - [14/Apr/2026 14:47:00] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 14:47:00,978 INFO 127.0.0.1 - - [14/Apr/2026 14:47:00] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:47:00,981 INFO 127.0.0.1 - - [14/Apr/2026 14:47:00] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:47:05,541 INFO 127.0.0.1 - - [14/Apr/2026 14:47:05] "GET / HTTP/1.1" 200 -
+2026-04-14 14:47:05,574 INFO 127.0.0.1 - - [14/Apr/2026 14:47:05] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 14:47:05,575 INFO 127.0.0.1 - - [14/Apr/2026 14:47:05] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 14:47:05,618 INFO 127.0.0.1 - - [14/Apr/2026 14:47:05] "GET /samples HTTP/1.1" 200 -
+2026-04-14 14:47:05,623 INFO 127.0.0.1 - - [14/Apr/2026 14:47:05] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:47:28,447 INFO Generation succeeded for project=flask_crud_20260414_144728 module=crud
+2026-04-14 14:47:28,448 INFO 127.0.0.1 - - [14/Apr/2026 14:47:28] "POST /generate HTTP/1.1" 200 -
+2026-04-14 14:47:28,465 INFO 127.0.0.1 - - [14/Apr/2026 14:47:28] "GET /history HTTP/1.1" 200 -
+2026-04-14 14:47:53,767 INFO 127.0.0.1 - - [14/Apr/2026 14:47:53] "POST /chat HTTP/1.1" 200 -
+2026-04-14 14:48:03,052 INFO 127.0.0.1 - - [14/Apr/2026 14:48:03] "POST /chat HTTP/1.1" 200 -
+2026-04-14 14:48:14,220 INFO 127.0.0.1 - - [14/Apr/2026 14:48:14] "POST /chat HTTP/1.1" 200 -
+2026-04-14 14:52:07,938 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:52:08,766 INFO  * Restarting with stat
+2026-04-14 14:52:18,334 WARNING  * Debugger is active!
+2026-04-14 14:52:18,337 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:52:39,375 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:52:40,114 INFO  * Restarting with stat
+2026-04-14 14:52:48,107 WARNING  * Debugger is active!
+2026-04-14 14:52:48,110 INFO  * Debugger PIN: 118-888-737
+2026-04-14 14:52:49,442 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 14:52:50,027 INFO  * Restarting with stat
+2026-04-14 15:00:02,815 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-14 15:00:02,815 INFO [33mPress CTRL+C to quit[0m
+2026-04-14 15:00:02,817 INFO  * Restarting with stat
+2026-04-14 15:00:11,873 WARNING  * Debugger is active!
+2026-04-14 15:00:11,877 INFO  * Debugger PIN: 118-888-737
+2026-04-14 15:00:30,868 INFO 127.0.0.1 - - [14/Apr/2026 15:00:30] "GET / HTTP/1.1" 200 -
+2026-04-14 15:00:30,954 INFO 127.0.0.1 - - [14/Apr/2026 15:00:30] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 15:00:30,957 INFO 127.0.0.1 - - [14/Apr/2026 15:00:30] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 15:00:30,992 INFO 127.0.0.1 - - [14/Apr/2026 15:00:30] "GET /samples HTTP/1.1" 200 -
+2026-04-14 15:00:30,997 INFO 127.0.0.1 - - [14/Apr/2026 15:00:30] "GET /history HTTP/1.1" 200 -
+2026-04-14 15:00:37,104 INFO Generation succeeded for project=flask_crud_20260414_150036 module=crud
+2026-04-14 15:00:37,105 INFO 127.0.0.1 - - [14/Apr/2026 15:00:37] "POST /generate HTTP/1.1" 200 -
+2026-04-14 15:00:37,125 INFO 127.0.0.1 - - [14/Apr/2026 15:00:37] "GET /history HTTP/1.1" 200 -
+2026-04-14 15:00:57,542 INFO 127.0.0.1 - - [14/Apr/2026 15:00:57] "POST /chat HTTP/1.1" 200 -
+2026-04-14 15:05:54,259 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 15:05:54,997 INFO  * Restarting with stat
+2026-04-14 15:06:03,258 WARNING  * Debugger is active!
+2026-04-14 15:06:03,261 INFO  * Debugger PIN: 118-888-737
+2026-04-14 15:06:59,888 INFO 127.0.0.1 - - [14/Apr/2026 15:06:59] "GET / HTTP/1.1" 200 -
+2026-04-14 15:06:59,963 INFO 127.0.0.1 - - [14/Apr/2026 15:06:59] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 15:06:59,963 INFO 127.0.0.1 - - [14/Apr/2026 15:06:59] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 15:06:59,992 INFO 127.0.0.1 - - [14/Apr/2026 15:06:59] "GET /samples HTTP/1.1" 200 -
+2026-04-14 15:07:00,000 INFO 127.0.0.1 - - [14/Apr/2026 15:07:00] "GET /history HTTP/1.1" 200 -
+2026-04-14 15:07:04,526 INFO Generation succeeded for project=flask_crud_20260414_150704 module=crud
+2026-04-14 15:07:04,526 INFO 127.0.0.1 - - [14/Apr/2026 15:07:04] "POST /generate HTTP/1.1" 200 -
+2026-04-14 15:07:04,542 INFO 127.0.0.1 - - [14/Apr/2026 15:07:04] "GET /history HTTP/1.1" 200 -
+2026-04-14 15:07:19,059 INFO 127.0.0.1 - - [14/Apr/2026 15:07:19] "POST /chat HTTP/1.1" 200 -
+2026-04-14 15:07:36,235 INFO 127.0.0.1 - - [14/Apr/2026 15:07:36] "POST /chat HTTP/1.1" 200 -
+2026-04-14 15:08:10,153 INFO 127.0.0.1 - - [14/Apr/2026 15:08:10] "POST /chat HTTP/1.1" 200 -
+2026-04-14 15:13:03,289 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-14 15:13:03,289 INFO [33mPress CTRL+C to quit[0m
+2026-04-14 15:13:03,291 INFO  * Restarting with stat
+2026-04-14 15:13:10,712 WARNING  * Debugger is active!
+2026-04-14 15:13:10,714 INFO  * Debugger PIN: 118-888-737
+2026-04-14 15:13:10,852 INFO 127.0.0.1 - - [14/Apr/2026 15:13:10] "GET / HTTP/1.1" 200 -
+2026-04-14 15:13:10,921 INFO 127.0.0.1 - - [14/Apr/2026 15:13:10] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 15:13:10,961 INFO 127.0.0.1 - - [14/Apr/2026 15:13:10] "GET /static/workspace-enhanced.js HTTP/1.1" 200 -
+2026-04-14 15:13:10,971 INFO 127.0.0.1 - - [14/Apr/2026 15:13:10] "GET /samples HTTP/1.1" 200 -
+2026-04-14 15:13:10,978 INFO 127.0.0.1 - - [14/Apr/2026 15:13:10] "GET /history HTTP/1.1" 200 -
+2026-04-14 15:13:18,727 INFO Generation succeeded for project=flask_crud_20260414_151318 module=crud
+2026-04-14 15:13:18,728 INFO 127.0.0.1 - - [14/Apr/2026 15:13:18] "POST /generate HTTP/1.1" 200 -
+2026-04-14 15:13:18,745 INFO 127.0.0.1 - - [14/Apr/2026 15:13:18] "GET /history HTTP/1.1" 200 -
+2026-04-14 15:13:34,007 INFO 127.0.0.1 - - [14/Apr/2026 15:13:34] "POST /chat HTTP/1.1" 200 -
+2026-04-14 15:15:37,286 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 15:15:38,033 INFO  * Restarting with stat
+2026-04-14 15:15:45,575 WARNING  * Debugger is active!
+2026-04-14 15:15:45,578 INFO  * Debugger PIN: 118-888-737
+2026-04-14 15:20:03,659 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 15:20:04,430 INFO  * Restarting with stat
+2026-04-14 15:20:40,588 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-14 15:20:40,588 INFO [33mPress CTRL+C to quit[0m
+2026-04-14 15:20:40,591 INFO  * Restarting with stat
+2026-04-14 15:20:47,263 WARNING  * Debugger is active!
+2026-04-14 15:20:47,266 INFO  * Debugger PIN: 118-888-737
+2026-04-14 15:20:50,311 INFO 127.0.0.1 - - [14/Apr/2026 15:20:50] "GET / HTTP/1.1" 200 -
+2026-04-14 15:20:50,383 INFO 127.0.0.1 - - [14/Apr/2026 15:20:50] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 15:20:50,383 INFO 127.0.0.1 - - [14/Apr/2026 15:20:50] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 15:20:50,411 INFO 127.0.0.1 - - [14/Apr/2026 15:20:50] "GET /samples HTTP/1.1" 200 -
+2026-04-14 15:20:50,418 INFO 127.0.0.1 - - [14/Apr/2026 15:20:50] "GET /history HTTP/1.1" 200 -
+2026-04-14 15:21:01,194 INFO Generation succeeded for project=flask_crud_20260414_152101 module=crud
+2026-04-14 15:21:01,194 INFO 127.0.0.1 - - [14/Apr/2026 15:21:01] "POST /generate HTTP/1.1" 200 -
+2026-04-14 15:21:01,212 INFO 127.0.0.1 - - [14/Apr/2026 15:21:01] "GET /history HTTP/1.1" 200 -
+2026-04-14 15:21:17,102 INFO 127.0.0.1 - - [14/Apr/2026 15:21:17] "POST /chat HTTP/1.1" 200 -
+2026-04-14 16:53:18,767 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-14 16:53:18,770 INFO [33mPress CTRL+C to quit[0m
+2026-04-14 16:53:18,775 INFO  * Restarting with stat
+2026-04-14 16:53:43,979 WARNING  * Debugger is active!
+2026-04-14 16:53:43,992 INFO  * Debugger PIN: 118-888-737
+2026-04-14 16:57:51,213 INFO 127.0.0.1 - - [14/Apr/2026 16:57:51] "GET / HTTP/1.1" 200 -
+2026-04-14 16:57:51,500 INFO 127.0.0.1 - - [14/Apr/2026 16:57:51] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 16:57:51,508 INFO 127.0.0.1 - - [14/Apr/2026 16:57:51] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 16:57:51,565 INFO 127.0.0.1 - - [14/Apr/2026 16:57:51] "GET /samples HTTP/1.1" 200 -
+2026-04-14 16:57:51,565 INFO 127.0.0.1 - - [14/Apr/2026 16:57:51] "GET /history HTTP/1.1" 200 -
+2026-04-14 16:57:58,501 INFO Generation succeeded for project=flask_crud_20260414_165757 module=crud
+2026-04-14 16:57:58,509 INFO 127.0.0.1 - - [14/Apr/2026 16:57:58] "POST /generate HTTP/1.1" 200 -
+2026-04-14 16:57:58,557 INFO 127.0.0.1 - - [14/Apr/2026 16:57:58] "GET /history HTTP/1.1" 200 -
+2026-04-14 16:58:10,771 INFO 127.0.0.1 - - [14/Apr/2026 16:58:10] "POST /chat HTTP/1.1" 200 -
+2026-04-14 17:08:06,271 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-14 17:08:06,271 INFO [33mPress CTRL+C to quit[0m
+2026-04-14 17:08:06,273 INFO  * Restarting with stat
+2026-04-14 17:08:18,759 WARNING  * Debugger is active!
+2026-04-14 17:08:18,767 INFO  * Debugger PIN: 118-888-737
+2026-04-14 17:08:20,698 INFO 127.0.0.1 - - [14/Apr/2026 17:08:20] "GET / HTTP/1.1" 200 -
+2026-04-14 17:08:20,797 INFO 127.0.0.1 - - [14/Apr/2026 17:08:20] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:08:20,797 INFO 127.0.0.1 - - [14/Apr/2026 17:08:20] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:08:20,931 INFO 127.0.0.1 - - [14/Apr/2026 17:08:20] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:08:20,939 INFO 127.0.0.1 - - [14/Apr/2026 17:08:20] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:08:28,239 INFO Generation succeeded for project=flask_crud_20260414_170827 module=crud
+2026-04-14 17:08:28,239 INFO 127.0.0.1 - - [14/Apr/2026 17:08:28] "POST /generate HTTP/1.1" 200 -
+2026-04-14 17:08:28,269 INFO 127.0.0.1 - - [14/Apr/2026 17:08:28] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:08:40,363 INFO 127.0.0.1 - - [14/Apr/2026 17:08:40] "POST /chat HTTP/1.1" 200 -
+2026-04-14 17:10:20,189 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 17:10:21,141 INFO  * Restarting with stat
+2026-04-14 17:10:30,937 WARNING  * Debugger is active!
+2026-04-14 17:10:30,949 INFO  * Debugger PIN: 118-888-737
+2026-04-14 17:10:32,998 INFO 127.0.0.1 - - [14/Apr/2026 17:10:32] "GET / HTTP/1.1" 200 -
+2026-04-14 17:10:33,217 INFO 127.0.0.1 - - [14/Apr/2026 17:10:33] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:10:33,217 INFO 127.0.0.1 - - [14/Apr/2026 17:10:33] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:10:33,241 INFO 127.0.0.1 - - [14/Apr/2026 17:10:33] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:10:33,249 INFO 127.0.0.1 - - [14/Apr/2026 17:10:33] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:10:34,145 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "GET / HTTP/1.1" 200 -
+2026-04-14 17:10:34,175 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:10:34,175 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:10:34,184 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:10:34,195 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:10:34,280 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "GET / HTTP/1.1" 200 -
+2026-04-14 17:10:34,299 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:10:34,308 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:10:34,319 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:10:34,325 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:10:34,488 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "GET / HTTP/1.1" 200 -
+2026-04-14 17:10:34,521 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:10:34,529 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:10:34,538 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:10:34,538 INFO 127.0.0.1 - - [14/Apr/2026 17:10:34] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:10:41,673 INFO Generation succeeded for project=flask_crud_20260414_171041 module=crud
+2026-04-14 17:10:41,676 INFO 127.0.0.1 - - [14/Apr/2026 17:10:41] "POST /generate HTTP/1.1" 200 -
+2026-04-14 17:10:41,709 INFO 127.0.0.1 - - [14/Apr/2026 17:10:41] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:10:54,059 INFO 127.0.0.1 - - [14/Apr/2026 17:10:54] "POST /chat HTTP/1.1" 200 -
+2026-04-14 17:11:10,569 INFO 127.0.0.1 - - [14/Apr/2026 17:11:10] "POST /chat HTTP/1.1" 200 -
+2026-04-14 17:13:04,405 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 17:13:05,252 INFO  * Restarting with stat
+2026-04-14 17:13:14,269 WARNING  * Debugger is active!
+2026-04-14 17:13:14,273 INFO  * Debugger PIN: 118-888-737
+2026-04-14 17:13:55,213 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-14 17:13:55,213 INFO [33mPress CTRL+C to quit[0m
+2026-04-14 17:13:55,213 INFO  * Restarting with stat
+2026-04-14 17:14:02,873 WARNING  * Debugger is active!
+2026-04-14 17:14:02,876 INFO  * Debugger PIN: 118-888-737
+2026-04-14 17:14:12,115 INFO 127.0.0.1 - - [14/Apr/2026 17:14:12] "GET / HTTP/1.1" 200 -
+2026-04-14 17:14:12,206 INFO 127.0.0.1 - - [14/Apr/2026 17:14:12] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:14:12,206 INFO 127.0.0.1 - - [14/Apr/2026 17:14:12] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:14:12,348 INFO 127.0.0.1 - - [14/Apr/2026 17:14:12] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:14:12,350 INFO 127.0.0.1 - - [14/Apr/2026 17:14:12] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:14:21,030 INFO Generation succeeded for project=flask_crud_20260414_171420 module=crud
+2026-04-14 17:14:21,030 INFO 127.0.0.1 - - [14/Apr/2026 17:14:21] "POST /generate HTTP/1.1" 200 -
+2026-04-14 17:14:21,061 INFO 127.0.0.1 - - [14/Apr/2026 17:14:21] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:14:32,993 INFO 127.0.0.1 - - [14/Apr/2026 17:14:32] "POST /chat HTTP/1.1" 200 -
+2026-04-14 17:15:15,369 INFO 127.0.0.1 - - [14/Apr/2026 17:15:15] "POST /chat HTTP/1.1" 200 -
+2026-04-14 17:21:47,994 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-14 17:21:47,994 INFO [33mPress CTRL+C to quit[0m
+2026-04-14 17:21:47,994 INFO  * Restarting with stat
+2026-04-14 17:22:03,933 WARNING  * Debugger is active!
+2026-04-14 17:22:03,952 INFO  * Debugger PIN: 118-888-737
+2026-04-14 17:22:04,438 INFO 127.0.0.1 - - [14/Apr/2026 17:22:04] "GET / HTTP/1.1" 200 -
+2026-04-14 17:22:04,653 INFO 127.0.0.1 - - [14/Apr/2026 17:22:04] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:22:04,653 INFO 127.0.0.1 - - [14/Apr/2026 17:22:04] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:22:04,677 INFO 127.0.0.1 - - [14/Apr/2026 17:22:04] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:22:04,684 INFO 127.0.0.1 - - [14/Apr/2026 17:22:04] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:22:05,503 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "GET / HTTP/1.1" 200 -
+2026-04-14 17:22:05,529 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:22:05,532 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:22:05,540 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:22:05,549 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:22:05,615 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "GET / HTTP/1.1" 200 -
+2026-04-14 17:22:05,638 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:22:05,648 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:22:05,654 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:22:05,662 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:22:05,830 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "GET / HTTP/1.1" 200 -
+2026-04-14 17:22:05,855 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:22:05,863 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:22:05,875 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:22:05,880 INFO 127.0.0.1 - - [14/Apr/2026 17:22:05] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:22:06,153 INFO 127.0.0.1 - - [14/Apr/2026 17:22:06] "GET / HTTP/1.1" 200 -
+2026-04-14 17:22:06,186 INFO 127.0.0.1 - - [14/Apr/2026 17:22:06] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:22:06,186 INFO 127.0.0.1 - - [14/Apr/2026 17:22:06] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:22:06,198 INFO 127.0.0.1 - - [14/Apr/2026 17:22:06] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:22:06,202 INFO 127.0.0.1 - - [14/Apr/2026 17:22:06] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:22:06,378 INFO 127.0.0.1 - - [14/Apr/2026 17:22:06] "GET / HTTP/1.1" 200 -
+2026-04-14 17:22:06,409 INFO 127.0.0.1 - - [14/Apr/2026 17:22:06] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:22:06,414 INFO 127.0.0.1 - - [14/Apr/2026 17:22:06] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:22:06,426 INFO 127.0.0.1 - - [14/Apr/2026 17:22:06] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:22:06,433 INFO 127.0.0.1 - - [14/Apr/2026 17:22:06] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:22:15,724 INFO Generation succeeded for project=flask_crud_20260414_172215 module=crud
+2026-04-14 17:22:15,728 INFO 127.0.0.1 - - [14/Apr/2026 17:22:15] "POST /generate HTTP/1.1" 200 -
+2026-04-14 17:22:15,750 INFO 127.0.0.1 - - [14/Apr/2026 17:22:15] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:23:20,913 INFO 127.0.0.1 - - [14/Apr/2026 17:23:20] "POST /chat HTTP/1.1" 200 -
+2026-04-14 17:24:25,927 INFO 127.0.0.1 - - [14/Apr/2026 17:24:25] "POST /chat HTTP/1.1" 200 -
+2026-04-14 17:33:04,627 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 17:33:05,876 INFO  * Restarting with stat
+2026-04-14 17:33:16,713 WARNING  * Debugger is active!
+2026-04-14 17:33:16,713 INFO  * Debugger PIN: 118-888-737
+2026-04-14 17:33:21,768 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine.py', reloading
+2026-04-14 17:33:22,534 INFO  * Restarting with stat
+2026-04-14 17:33:31,547 WARNING  * Debugger is active!
+2026-04-14 17:33:31,552 INFO  * Debugger PIN: 118-888-737
+2026-04-14 17:33:34,152 INFO 127.0.0.1 - - [14/Apr/2026 17:33:34] "GET / HTTP/1.1" 200 -
+2026-04-14 17:33:34,356 INFO 127.0.0.1 - - [14/Apr/2026 17:33:34] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-14 17:33:34,356 INFO 127.0.0.1 - - [14/Apr/2026 17:33:34] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-14 17:33:34,419 INFO 127.0.0.1 - - [14/Apr/2026 17:33:34] "GET /samples HTTP/1.1" 200 -
+2026-04-14 17:33:34,427 INFO 127.0.0.1 - - [14/Apr/2026 17:33:34] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:33:39,588 INFO Generation succeeded for project=flask_crud_20260414_173339 module=crud
+2026-04-14 17:33:39,588 INFO 127.0.0.1 - - [14/Apr/2026 17:33:39] "POST /generate HTTP/1.1" 200 -
+2026-04-14 17:33:39,627 INFO 127.0.0.1 - - [14/Apr/2026 17:33:39] "GET /history HTTP/1.1" 200 -
+2026-04-14 17:34:28,858 INFO 127.0.0.1 - - [14/Apr/2026 17:34:28] "POST /chat HTTP/1.1" 200 -
+2026-04-14 17:37:20,183 INFO 127.0.0.1 - - [14/Apr/2026 17:37:20] "POST /chat HTTP/1.1" 200 -
