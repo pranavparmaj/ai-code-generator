@@ -1,6 +1,18 @@
 [
   {
     "status": "success",
+    "project_name": "flask_crud_20260415_194020",
+    "module": "crud",
+    "framework": "flask",
+    "prompt": "",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260415_194020.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\flask_crud_20260415_194020.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260415_194020",
+    "quality_score": 90,
+    "created_at": "2026-04-15T14:10:21.412762"
+  },
+  {
+    "status": "success",
     "project_name": "flask_crud_20260414_202828",
     "module": "crud",
     "framework": "flask",
@@ -346,17 +358,5 @@
     "project_path": "D:\\ai_code_generator\\generated_projects\\flask_registration_20260410_185222",
     "quality_score": 95,
     "created_at": "2026-04-10T13:22:22.263578"
-  },
-  {
-    "status": "success",
-    "project_name": "flask_registration_20260410_184802",
-    "module": "registration",
-    "framework": "flask",
-    "prompt": "Generate a registration system with username, password, first name, last name and DOB followed by a login system with username and password and then a dashboard.",
-    "zip_path": "D:\\ai_code_generator\\generated_projects\\flask_registration_20260410_184802.zip",
-    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\flask_registration_20260410_184802.zip",
-    "project_path": "D:\\ai_code_generator\\generated_projects\\flask_registration_20260410_184802",
-    "quality_score": 90,
-    "created_at": "2026-04-10T13:18:02.342722"
   }
 ]

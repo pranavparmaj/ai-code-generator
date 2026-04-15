@@ -1207,3 +1207,19 @@ AttributeError: 'NoneType' object has no attribute 'strip'
 2026-04-14 20:34:46,152 INFO 127.0.0.1 - - [14/Apr/2026 20:34:46] "POST /chat HTTP/1.1" 200 -
 2026-04-14 20:35:10,052 INFO 127.0.0.1 - - [14/Apr/2026 20:35:10] "POST /chat HTTP/1.1" 200 -
 2026-04-14 20:36:06,673 INFO 127.0.0.1 - - [14/Apr/2026 20:36:06] "POST /chat HTTP/1.1" 200 -
+2026-04-15 19:40:04,983 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-15 19:40:04,983 INFO [33mPress CTRL+C to quit[0m
+2026-04-15 19:40:04,986 INFO  * Restarting with stat
+2026-04-15 19:40:13,284 WARNING  * Debugger is active!
+2026-04-15 19:40:13,291 INFO  * Debugger PIN: 118-888-737
+2026-04-15 19:40:16,106 INFO 127.0.0.1 - - [15/Apr/2026 19:40:16] "GET / HTTP/1.1" 200 -
+2026-04-15 19:40:16,220 INFO 127.0.0.1 - - [15/Apr/2026 19:40:16] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-15 19:40:16,293 INFO 127.0.0.1 - - [15/Apr/2026 19:40:16] "GET /static/workspace-enhanced.js HTTP/1.1" 200 -
+2026-04-15 19:40:16,400 INFO 127.0.0.1 - - [15/Apr/2026 19:40:16] "GET /samples HTTP/1.1" 200 -
+2026-04-15 19:40:16,414 INFO 127.0.0.1 - - [15/Apr/2026 19:40:16] "GET /history HTTP/1.1" 200 -
+2026-04-15 19:40:16,430 INFO 127.0.0.1 - - [15/Apr/2026 19:40:16] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-15 19:40:21,428 INFO Generation succeeded for project=flask_crud_20260415_194020 module=crud
+2026-04-15 19:40:21,428 INFO 127.0.0.1 - - [15/Apr/2026 19:40:21] "POST /generate HTTP/1.1" 200 -
+2026-04-15 19:40:21,451 INFO 127.0.0.1 - - [15/Apr/2026 19:40:21] "GET /history HTTP/1.1" 200 -
+2026-04-15 19:40:33,190 INFO 127.0.0.1 - - [15/Apr/2026 19:40:33] "POST /chat HTTP/1.1" 200 -
