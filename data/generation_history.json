@@ -1,6 +1,42 @@
 [
   {
     "status": "success",
+    "project_name": "flask_crud_20260416_111112",
+    "module": "crud",
+    "framework": "flask",
+    "prompt": "Create a CRUD app for products with name, status, price and description fields. Add search, filters, dashboard metrics and role-based access.",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260416_111112.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\flask_crud_20260416_111112.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260416_111112",
+    "quality_score": 90,
+    "created_at": "2026-04-16T05:41:12.856263"
+  },
+  {
+    "status": "success",
+    "project_name": "flask_crud_20260416_104624",
+    "module": "crud",
+    "framework": "flask",
+    "prompt": "Create a CRUD app for products with name, status, price and description fields. Add search, filters, dashboard metrics and role-based access.",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260416_104624.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\flask_crud_20260416_104624.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260416_104624",
+    "quality_score": 90,
+    "created_at": "2026-04-16T05:16:25.637206"
+  },
+  {
+    "status": "success",
+    "project_name": "flask_crud_20260415_202337",
+    "module": "crud",
+    "framework": "flask",
+    "prompt": "Create a CRUD app for products with name, status, price and description fields. Add search, filters, dashboard metrics and role-based access.",
+    "zip_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260415_202337.zip",
+    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\flask_crud_20260415_202337.zip",
+    "project_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260415_202337",
+    "quality_score": 90,
+    "created_at": "2026-04-15T14:53:37.863781"
+  },
+  {
+    "status": "success",
     "project_name": "flask_crud_20260414_173339",
     "module": "crud",
     "framework": "flask",
@@ -322,41 +358,5 @@
     "project_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260413_154251",
     "quality_score": 90,
     "created_at": "2026-04-13T10:12:51.353738"
-  },
-  {
-    "status": "success",
-    "project_name": "flask_crud_20260413_154057",
-    "module": "crud",
-    "framework": "flask",
-    "prompt": "Create a CRUD app for products with name, status, price and description fields. Add search, filters, dashboard metrics and role-based access.",
-    "zip_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260413_154057.zip",
-    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\flask_crud_20260413_154057.zip",
-    "project_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260413_154057",
-    "quality_score": 90,
-    "created_at": "2026-04-13T10:10:57.435866"
-  },
-  {
-    "status": "success",
-    "project_name": "flask_crud_20260413_153750",
-    "module": "crud",
-    "framework": "flask",
-    "prompt": "Create a CRUD app for products with name, status, price and description fields. Add search, filters, dashboard metrics and role-based access.",
-    "zip_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260413_153750.zip",
-    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\flask_crud_20260413_153750.zip",
-    "project_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260413_153750",
-    "quality_score": 90,
-    "created_at": "2026-04-13T10:07:51.067300"
-  },
-  {
-    "status": "success",
-    "project_name": "flask_crud_20260413_153513",
-    "module": "crud",
-    "framework": "flask",
-    "prompt": "Create a CRUD app for products with name, status, price and description fields. Add search, filters, dashboard metrics and role-based access.",
-    "zip_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260413_153513.zip",
-    "download_url": "/download?path=D:\\ai_code_generator\\generated_projects\\flask_crud_20260413_153513.zip",
-    "project_path": "D:\\ai_code_generator\\generated_projects\\flask_crud_20260413_153513",
-    "quality_score": 90,
-    "created_at": "2026-04-13T10:05:13.992709"
   }
 ]

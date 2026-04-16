@@ -3,7 +3,7 @@ import re
 from rag_engine import retrieve_relevant_snippets
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL_NAME = "mistral"
+MODEL_NAME = "phi"
 
 
 # =========================
@@ -63,6 +63,7 @@ Answer:
 
     return response if response in valid else "general_question"
 
+
 # =========================
 # STEP 2: FOCUS AREA EXTRACTION
 # =========================
@@ -82,28 +83,15 @@ def extract_focus_area(query):
 # STEP 3: CONTEXT BUILDER
 # =========================
 
-
-
 def clean_code(code):
     if not code:
         return ""
 
-    # Remove HTML/XML tags
     code = re.sub(r'<[^>]*>', '', code)
-
-    # Remove class="..." patterns
     code = re.sub(r'class="[^"]*"', '', code)
-
-    # Remove leftover class=
     code = re.sub(r'\bclass\s*=\s*', '', code)
-
-    # Remove token artifacts like token-string, token-comment
     code = re.sub(r'token-[a-zA-Z]+', '', code)
-
-    # Remove stray >
     code = code.replace('>', '')
-
-    # Normalize spaces
     code = re.sub(r'\s+', ' ', code)
 
     return code.strip()
@@ -117,26 +105,16 @@ def truncate(text, max_chars=2000):
 
 def build_context(context, intent, focus_area, query):
     try:
-        # =========================
-        # 🔥 STEP 1: CLEAN FIRST, THEN TRUNCATE
-        # =========================
         raw_code = context.get("backend_code", "")
         cleaned_code = clean_code(raw_code)
         backend_code = truncate(cleaned_code)
 
-        # Debug (IMPORTANT)
         print("FINAL CLEANED CODE:", backend_code[:300])
 
-        # =========================
-        # STEP 2: OTHER CONTEXT
-        # =========================
         explanation = context.get("explanation", "")
         module = context.get("module", "")
         framework = context.get("framework", "")
 
-        # =========================
-        # STEP 3: RAG SNIPPETS
-        # =========================
         try:
             snippets = retrieve_relevant_snippets(
                 query,
@@ -150,9 +128,6 @@ def build_context(context, intent, focus_area, query):
             print("RAG ERROR:", str(e))
             snippets = []
 
-        # =========================
-        # STEP 4: CLEAN SNIPPETS
-        # =========================
         snippets_text = ""
 
         if isinstance(snippets, list):
@@ -161,19 +136,14 @@ def build_context(context, intent, focus_area, query):
             for s in snippets[:5]:
                 if isinstance(s, str):
                     cleaned_snippets.append(clean_code(s))
-
                 elif isinstance(s, dict):
                     code_part = s.get("code", "")
                     cleaned_snippets.append(clean_code(str(code_part)))
-
                 else:
                     cleaned_snippets.append(clean_code(str(s)))
 
             snippets_text = "\n".join(cleaned_snippets)
 
-        # =========================
-        # STEP 5: RETURN FINAL CONTEXT
-        # =========================
         return {
             "backend_code": backend_code,
             "explanation": explanation,
@@ -191,6 +161,7 @@ def build_context(context, intent, focus_area, query):
             "framework": "",
             "snippets": ""
         }
+
 
 # =========================
 # STEP 4: PROMPT BUILDER
@@ -250,7 +221,7 @@ def call_local_llm(prompt):
             },
             timeout=120
         )
-      # ADD THIS LINE
+
         print("OLLAMA STATUS:", response.status_code, "RESPONSE:", response.text[:300])
 
         if response.status_code != 200:
@@ -262,10 +233,9 @@ def call_local_llm(prompt):
     except requests.exceptions.ConnectionError:
         return "⚠️ Local AI model not available. Please start Ollama."
 
-    except Exception:
+    except Exception as e:
+        print("OLLAMA EXCEPTION:", str(e))
         return "⚠️ Unable to process request."
-    
-
 
 
 # =========================
@@ -289,16 +259,23 @@ def generate_reply(query, context):
         # 5. LLM call
         response = call_local_llm(prompt)
 
+        # DEBUG - add these to trace the issue
+        print("RAW RESPONSE FROM LLM:", repr(response[:200] if response else None))
+        print("CONTAINS WARNING SYMBOL:", "⚠️" in str(response))
+
         # Safety fallback
         if not response or "⚠️" in response or "❌" in response:
             return "⚠️ Ollama is not reachable. Please ensure Ollama is running with: ollama serve"
-        
+
         # Strip prompt echo if model repeats it
         if "Answer:" in response:
             response = response.split("Answer:")[-1].strip()
 
+        # Final empty check after split
+        if not response.strip():
+            return "⚠️ Model returned an empty response. Please try again."
+
         return response
-        
 
     except Exception as e:
         print("CHATBOT ERROR:", str(e))
