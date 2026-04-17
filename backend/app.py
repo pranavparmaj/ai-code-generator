@@ -8,7 +8,7 @@ from code_validator import validate_module
 from project_generator import generate_project
 from generation_history import append_history, build_analytics, load_history
 
-
+import preview_engine
 import logging
 import sys
 import os
@@ -208,7 +208,7 @@ def generate():
             "analytics": build_analytics(),
         }), 500
 
-#Route for chatbot
+#=======================================Route for chatbot
 @app.route("/chat", methods=["POST"])
 def chat():
     try:
@@ -247,6 +247,43 @@ def chat():
         return jsonify({"reply": "❌ Backend error"}), 500
 
 
+
+# ================= LIVE PREVIEW ROUTES =================
+
+@app.route("/preview/start", methods=["POST"])
+def preview_start():
+    data = request.json or {}
+    try:
+        result = preview_engine.start_preview(data.get("project_path", ""))
+        return jsonify(result)
+    except (ValueError, RuntimeError) as exc:
+        return jsonify({"error": str(exc)}), 400
+
+
+@app.route("/preview/stop", methods=["POST"])
+def preview_stop():
+    data = request.json or {}
+    preview_engine.stop_preview(data.get("session_id", ""))
+    return jsonify({"stopped": True})
+
+
+@app.route("/preview/proxy/<session_id>/", defaults={"subpath": ""})
+@app.route("/preview/proxy/<session_id>/<path:subpath>")
+def preview_proxy(session_id, subpath):
+    result = preview_engine.proxy_preview(session_id, subpath)
+    content, headers_or_msg, status = result
+
+    if content is None:
+        return headers_or_msg, status
+
+    return app.response_class(
+        response=content,
+        status=status,
+        headers=headers_or_msg,
+    )
+
+# ======================================================
+
 if __name__ == "__main__":
     host = os.environ.get("FLASK_RUN_HOST", "127.0.0.1")
     port = int(os.environ.get("FLASK_RUN_PORT", "5000"))
@@ -254,5 +291,3 @@ if __name__ == "__main__":
     app.run(host=host, port=port, debug=True)
 
 
-#
-#
