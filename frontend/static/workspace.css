@@ -289,6 +289,52 @@ textarea {
     display: block;
 }
 
+.preview-status-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    border: 1px solid #dbe6f2;
+    border-radius: 16px;
+    background: #f8fbff;
+}
+
+.preview-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.preview-status-static {
+    background: #e8f1fb;
+    color: #35506b;
+}
+
+.preview-status-connecting {
+    background: #fff3d6;
+    color: #8a5b00;
+}
+
+.preview-status-live {
+    background: #e7f6ec;
+    color: #1f6b3c;
+}
+
+.preview-status-error {
+    background: #fde9e9;
+    color: #8c2d2d;
+}
+
+.preview-status-text {
+    color: #526071;
+    font-size: 13px;
+}
+
 .code-card {
     background: linear-gradient(180deg, #0f1728 0%, #0b1220 100%);
     border: 1px solid #1c2740;

@@ -13,14 +13,41 @@ const stageList = document.getElementById("stage_list");
 const downloadLink = document.getElementById("download_link");
 const projectHeading = document.getElementById("project_heading");
 const projectSubheading = document.getElementById("project_subheading");
+const previewStatusBadge = document.getElementById("preview_status_badge");
+const previewStatusText = document.getElementById("preview_status_text");
 
 let cachedSamples = [];
 let chatHistory = [];
+let _activePreviewSession = null;
 const rawCodeStore = {
     html_output: "",
     backend_output: "",
     validation_output: "",
 };
+
+function setPreviewStatus(mode, message) {
+    if (!previewStatusBadge || !previewStatusText) {
+        return;
+    }
+
+    previewStatusBadge.className = "preview-status-badge";
+
+    if (mode === "connecting") {
+        previewStatusBadge.classList.add("preview-status-connecting");
+        previewStatusBadge.textContent = "Connecting";
+    } else if (mode === "live") {
+        previewStatusBadge.classList.add("preview-status-live");
+        previewStatusBadge.textContent = "Live Preview Connected";
+    } else if (mode === "error") {
+        previewStatusBadge.classList.add("preview-status-error");
+        previewStatusBadge.textContent = "Live Preview Failed";
+    } else {
+        previewStatusBadge.classList.add("preview-status-static");
+        previewStatusBadge.textContent = "Static Preview";
+    }
+
+    previewStatusText.textContent = message || "";
+}
 
 function escapeHtml(value) {
     return (value || "")
@@ -153,6 +180,7 @@ function renderGeneration(data) {
     setHighlightedCode(validationOutput, JSON.stringify(data.validation, null, 2), "json");
     explanationOutput.textContent = data.explanation;
     previewFrame.srcdoc = data.preview_html;
+    setPreviewStatus("static", "Generated HTML is shown until the live app connects.");
 
     snippetList.innerHTML = (data.retrieved_snippets || []).map((snippet) => `<li>${snippet}</li>`).join("") || "<li>No snippets were matched.</li>";
     stageList.innerHTML = (data.steps || []).map((step) => `<li>${step}</li>`).join("");
@@ -161,6 +189,10 @@ function renderGeneration(data) {
     downloadLink.classList.remove("disabled");
 
     updateAnalytics(data.analytics || {});
+
+    if (data.project_path) {
+        startLivePreview(data.project_path);
+    }
 }
 
 async function refreshHistory() {
@@ -271,7 +303,13 @@ function addChatMessage(text, sender) {
         msg.classList.add("bot-bubble");
     }
 
-    msg.innerHTML = text.replace(/\n/g, "<br>");
+    const lines = String(text || "").split("\n");
+    lines.forEach((line, index) => {
+        if (index > 0) {
+            msg.appendChild(document.createElement("br"));
+        }
+        msg.appendChild(document.createTextNode(line));
+    });
 
     container.appendChild(msg);
     container.scrollTop = container.scrollHeight;
@@ -325,7 +363,7 @@ async function sendChatMessage() {
 
         addChatMessage(reply, "bot");
 
-        // ✅ ADD THIS LINE HERE
+        
         chatHistory.push({ role: "assistant", content: reply });
 
     } catch (err) {
@@ -360,3 +398,72 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ---chatbot exit
+
+// ================= LIVE PREVIEW ENGINE =================
+async function startLivePreview(projectPath) {
+    setPreviewStatus("connecting", "Starting the generated app and attaching the proxied preview.");
+
+    if (_activePreviewSession) {
+        try {
+            await fetch("/preview/stop", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ session_id: _activePreviewSession }),
+            });
+        } catch (_) { /* best-effort */ }
+        _activePreviewSession = null;
+    }
+
+    try {
+        const res = await fetch("/preview/start", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ project_path: projectPath }),
+        });
+
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            console.warn("Live preview failed to start:", err.error || res.status);
+            setPreviewStatus(
+                "error",
+                err.error || "Live preview could not start. Static HTML preview is still available."
+            );
+            return;
+        }
+
+        const data = await res.json();
+        _activePreviewSession = data.session_id;
+
+        if (previewFrame) {
+            previewFrame.removeAttribute("srcdoc");
+            previewFrame.src = data.proxy_url;
+        }
+    } catch (err) {
+        console.warn("Live preview error:", err);
+        setPreviewStatus("error", "Live preview could not connect. Static HTML preview is still available.");
+    }
+}
+
+if (previewFrame) {
+    previewFrame.addEventListener("load", () => {
+        if (_activePreviewSession && previewFrame.src) {
+            setPreviewStatus("live", "The preview is connected to the generated Flask app through the backend proxy.");
+        } else {
+            setPreviewStatus("static", "Generated HTML is shown until the live app connects.");
+        }
+    });
+}
+
+window.addEventListener("beforeunload", () => {
+    if (_activePreviewSession) {
+        const payload = new Blob(
+            [JSON.stringify({ session_id: _activePreviewSession })],
+            { type: "application/json" }
+        );
+        navigator.sendBeacon(
+            "/preview/stop",
+            payload
+        );
+    }
+});
+// ======================================================
