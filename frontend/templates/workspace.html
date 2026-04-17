@@ -149,6 +149,7 @@
                 <button class="tab" data-tab="validation" type="button">Validation</button>
                 <button class="tab" data-tab="explanation" type="button">Why This Was Generated</button>
                 <button class="tab" data-tab="history" type="button">History</button>
+                <button class="tab" data-tab="chatbot" type="button">Ask ME</button>
             </div>
 
             <div class="tab-panel active" id="tab-preview">
@@ -211,6 +212,36 @@
             <div class="tab-panel" id="tab-history">
                 <div id="history_list" class="history-list"></div>
             </div>
+
+            <div class="tab-panel" id="tab-chatbot">
+                <div class="chatbot-wrapper">
+
+                    <div class="chat-header">
+                        <div>
+                            <p class="code-title">AI Code Assistant</p>
+                            <p class="code-subtitle">Ask anything about your generated code</p>
+                        </div>
+
+                        <select id="model-select" style="padding:6px; border-radius:8px;">
+                            <option value="gemini">Gemini</option>
+                            <option value="ollama">Ollama Phi</option>
+                        </select>
+                    </div>
+
+                    <div id="chat-messages" class="chat-messages"></div>
+
+                    <div class="chat-input-bar">
+                        <input 
+                            type="text" 
+                            id="chat-input" 
+                            placeholder="Ask about routes, logic, validation..."
+                        />
+                        <button id="chat-send-btn" type="button">Send</button>
+                    </div>
+
+                </div>
+            </div>
+
         </section>
     </main>
 </div>

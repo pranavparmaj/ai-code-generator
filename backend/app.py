@@ -8,6 +8,7 @@ from code_validator import validate_module
 from project_generator import generate_project
 from generation_history import append_history, build_analytics, load_history
 
+
 import logging
 import sys
 import os
@@ -207,6 +208,43 @@ def generate():
             "analytics": build_analytics(),
         }), 500
 
+#Route for chatbot
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        data = request.json or {}
+
+        # 🔹 Extract inputs
+        message = data.get("message", "")
+        history = data.get("history", [])   # (for future use / extension)
+        context = data.get("context", {})
+        model = data.get("model", "gemini")  # default = gemini
+
+        print("MODEL:", model)
+        print("MESSAGE:", message)
+        print("CONTEXT:", context)
+
+        # 🔹 Route to correct model
+        if model == "gemini":
+            from chatbot_engine_gemini import generate_reply
+            reply = generate_reply(message, context)
+
+        elif model == "ollama":
+            from chatbot_engine_ollama import generate_reply
+            reply = generate_reply(message, context)
+
+        else:
+            reply = "⚠️ Invalid model selected"
+
+        print("BOT RESPONSE:", reply)
+
+        return jsonify({
+            "reply": reply if reply else "⚠️ Empty response"
+        })
+
+    except Exception as e:
+        print("CHAT ERROR:", str(e))
+        return jsonify({"reply": "❌ Backend error"}), 500
 
 
 if __name__ == "__main__":
@@ -214,3 +252,7 @@ if __name__ == "__main__":
     port = int(os.environ.get("FLASK_RUN_PORT", "5000"))
     print(f"Open the app at: http://{host}:{port}")
     app.run(host=host, port=port, debug=True)
+
+
+#
+#
