@@ -15,6 +15,7 @@ const projectHeading = document.getElementById("project_heading");
 const projectSubheading = document.getElementById("project_subheading");
 
 let cachedSamples = [];
+let chatHistory = [];
 const rawCodeStore = {
     html_output: "",
     backend_output: "",
@@ -255,7 +256,7 @@ refreshHistory();
 
 
 // ================= CHATBOT =================
-let chatHistory = [];
+
 
 function addChatMessage(text, sender) {
     const container = document.getElementById("chat-messages");
@@ -292,6 +293,7 @@ async function sendChatMessage() {
 
     addChatMessage(message, "user");
     input.value = "";
+    chatHistory.push({ role: "user", content: message });
 
     addChatMessage("Thinking...", "bot");
 
@@ -303,13 +305,14 @@ async function sendChatMessage() {
             },
             body: JSON.stringify({
                 message: message,
+                history: chatHistory,
                 context: {
                     backend_code: backendOutput.textContent || "",
-                    
                     explanation: explanationOutput.textContent || "",
                     module: document.getElementById("module").value,
                     framework: document.getElementById("framework").value
-                }
+                },
+                model: document.getElementById("model-select").value
             })
         });
 
@@ -318,7 +321,12 @@ async function sendChatMessage() {
         const container = document.getElementById("chat-messages");
         container.removeChild(container.lastChild);
 
-        addChatMessage(data.response || "No response", "bot");
+        const reply = data.reply || "No response";
+
+        addChatMessage(reply, "bot");
+
+        // ✅ ADD THIS LINE HERE
+        chatHistory.push({ role: "assistant", content: reply });
 
     } catch (err) {
         console.error(err);

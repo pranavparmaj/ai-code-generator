@@ -1694,3 +1694,88 @@ AttributeError: 'NoneType' object has no attribute 'strip'
 2026-04-16 11:11:12,917 INFO 127.0.0.1 - - [16/Apr/2026 11:11:12] "GET /history HTTP/1.1" 200 -
 2026-04-16 11:11:30,550 INFO 127.0.0.1 - - [16/Apr/2026 11:11:30] "POST /chat HTTP/1.1" 200 -
 2026-04-16 11:15:33,783 INFO 127.0.0.1 - - [16/Apr/2026 11:15:33] "POST /chat HTTP/1.1" 200 -
+2026-04-16 18:27:12,105 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-16 18:27:12,105 INFO [33mPress CTRL+C to quit[0m
+2026-04-16 18:27:12,105 INFO  * Restarting with stat
+2026-04-16 18:27:19,524 WARNING  * Debugger is active!
+2026-04-16 18:27:19,544 INFO  * Debugger PIN: 118-888-737
+2026-04-16 18:27:35,428 INFO 127.0.0.1 - - [16/Apr/2026 18:27:35] "GET / HTTP/1.1" 200 -
+2026-04-16 18:27:35,658 INFO 127.0.0.1 - - [16/Apr/2026 18:27:35] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-16 18:27:35,701 INFO 127.0.0.1 - - [16/Apr/2026 18:27:35] "GET /static/workspace-enhanced.js HTTP/1.1" 200 -
+2026-04-16 18:27:35,719 INFO 127.0.0.1 - - [16/Apr/2026 18:27:35] "GET /samples HTTP/1.1" 200 -
+2026-04-16 18:27:35,731 INFO 127.0.0.1 - - [16/Apr/2026 18:27:35] "GET /history HTTP/1.1" 200 -
+2026-04-16 18:27:35,759 INFO 127.0.0.1 - - [16/Apr/2026 18:27:35] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-16 18:27:45,643 INFO Generation succeeded for project=flask_crud_20260416_182745 module=crud
+2026-04-16 18:27:45,644 INFO 127.0.0.1 - - [16/Apr/2026 18:27:45] "POST /generate HTTP/1.1" 200 -
+2026-04-16 18:27:45,675 INFO 127.0.0.1 - - [16/Apr/2026 18:27:45] "GET /history HTTP/1.1" 200 -
+2026-04-16 18:28:03,238 INFO 127.0.0.1 - - [16/Apr/2026 18:28:03] "POST /chat HTTP/1.1" 200 -
+2026-04-16 18:28:19,707 INFO 127.0.0.1 - - [16/Apr/2026 18:28:19] "POST /chat HTTP/1.1" 200 -
+2026-04-17 10:26:25,598 INFO Generation succeeded for project=flask_crud_20260417_102620 module=crud
+2026-04-17 10:26:25,695 INFO 127.0.0.1 - - [17/Apr/2026 10:26:25] "POST /generate HTTP/1.1" 200 -
+2026-04-17 10:26:26,056 INFO 127.0.0.1 - - [17/Apr/2026 10:26:26] "GET /history HTTP/1.1" 200 -
+2026-04-17 10:26:29,637 INFO 127.0.0.1 - - [17/Apr/2026 10:26:29] "GET / HTTP/1.1" 200 -
+2026-04-17 10:26:30,071 INFO 127.0.0.1 - - [17/Apr/2026 10:26:30] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-17 10:26:30,078 INFO 127.0.0.1 - - [17/Apr/2026 10:26:30] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-17 10:26:30,150 INFO 127.0.0.1 - - [17/Apr/2026 10:26:30] "GET /history HTTP/1.1" 200 -
+2026-04-17 10:26:30,192 INFO 127.0.0.1 - - [17/Apr/2026 10:26:30] "GET /samples HTTP/1.1" 200 -
+2026-04-17 10:26:36,408 INFO Generation succeeded for project=flask_crud_20260417_102635 module=crud
+2026-04-17 10:26:36,410 INFO 127.0.0.1 - - [17/Apr/2026 10:26:36] "POST /generate HTTP/1.1" 200 -
+2026-04-17 10:26:36,462 INFO 127.0.0.1 - - [17/Apr/2026 10:26:36] "GET /history HTTP/1.1" 200 -
+2026-04-17 10:27:03,123 INFO 127.0.0.1 - - [17/Apr/2026 10:27:03] "POST /chat HTTP/1.1" 200 -
+2026-04-17 10:28:58,037 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine_gemini.py', reloading
+2026-04-17 10:29:20,786 INFO  * Restarting with stat
+2026-04-17 10:29:55,587 WARNING  * Debugger is active!
+2026-04-17 10:29:55,605 INFO  * Debugger PIN: 118-888-737
+2026-04-17 10:29:56,136 INFO 127.0.0.1 - - [17/Apr/2026 10:29:56] "GET / HTTP/1.1" 200 -
+2026-04-17 10:29:56,651 INFO 127.0.0.1 - - [17/Apr/2026 10:29:56] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-17 10:29:56,659 INFO 127.0.0.1 - - [17/Apr/2026 10:29:56] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-17 10:29:56,725 INFO 127.0.0.1 - - [17/Apr/2026 10:29:56] "GET /samples HTTP/1.1" 200 -
+2026-04-17 10:29:56,725 INFO 127.0.0.1 - - [17/Apr/2026 10:29:56] "GET /history HTTP/1.1" 200 -
+2026-04-17 10:30:04,917 INFO Generation succeeded for project=flask_crud_20260417_103003 module=crud
+2026-04-17 10:30:04,917 INFO 127.0.0.1 - - [17/Apr/2026 10:30:04] "POST /generate HTTP/1.1" 200 -
+2026-04-17 10:30:04,960 INFO 127.0.0.1 - - [17/Apr/2026 10:30:04] "GET /history HTTP/1.1" 200 -
+2026-04-17 10:30:24,229 INFO 127.0.0.1 - - [17/Apr/2026 10:30:24] "POST /chat HTTP/1.1" 200 -
+2026-04-17 10:31:04,138 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine_gemini.py', reloading
+2026-04-17 10:31:09,822 INFO  * Restarting with stat
+2026-04-17 10:31:34,372 WARNING  * Debugger is active!
+2026-04-17 10:31:34,379 INFO  * Debugger PIN: 118-888-737
+2026-04-17 10:31:34,655 INFO 127.0.0.1 - - [17/Apr/2026 10:31:34] "GET / HTTP/1.1" 200 -
+2026-04-17 10:31:44,014 INFO 127.0.0.1 - - [17/Apr/2026 10:31:44] "GET / HTTP/1.1" 200 -
+2026-04-17 10:31:44,382 INFO 127.0.0.1 - - [17/Apr/2026 10:31:44] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-17 10:31:44,385 INFO 127.0.0.1 - - [17/Apr/2026 10:31:44] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-17 10:31:44,506 INFO 127.0.0.1 - - [17/Apr/2026 10:31:44] "GET /samples HTTP/1.1" 200 -
+2026-04-17 10:31:44,527 INFO 127.0.0.1 - - [17/Apr/2026 10:31:44] "GET /history HTTP/1.1" 200 -
+2026-04-17 10:32:06,744 INFO Generation succeeded for project=flask_crud_20260417_103205 module=crud
+2026-04-17 10:32:06,746 INFO 127.0.0.1 - - [17/Apr/2026 10:32:06] "POST /generate HTTP/1.1" 200 -
+2026-04-17 10:32:06,793 INFO 127.0.0.1 - - [17/Apr/2026 10:32:06] "GET /history HTTP/1.1" 200 -
+2026-04-17 10:32:20,283 INFO 127.0.0.1 - - [17/Apr/2026 10:32:20] "POST /chat HTTP/1.1" 200 -
+2026-04-17 10:32:45,991 INFO 127.0.0.1 - - [17/Apr/2026 10:32:45] "POST /chat HTTP/1.1" 200 -
+2026-04-17 10:34:08,114 INFO 127.0.0.1 - - [17/Apr/2026 10:34:08] "POST /chat HTTP/1.1" 200 -
+2026-04-17 10:35:06,174 INFO 127.0.0.1 - - [17/Apr/2026 10:35:06] "POST /chat HTTP/1.1" 200 -
+2026-04-17 10:35:34,038 INFO Generation succeeded for project=flask_employee_management_20260417_103533 module=employee_management
+2026-04-17 10:35:34,044 INFO 127.0.0.1 - - [17/Apr/2026 10:35:34] "POST /generate HTTP/1.1" 200 -
+2026-04-17 10:35:34,078 INFO 127.0.0.1 - - [17/Apr/2026 10:35:34] "GET /history HTTP/1.1" 200 -
+2026-04-17 10:36:02,697 INFO 127.0.0.1 - - [17/Apr/2026 10:36:02] "POST /chat HTTP/1.1" 200 -
+2026-04-17 10:41:43,696 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine_gemini.py', reloading
+2026-04-17 10:41:49,997 INFO  * Restarting with stat
+2026-04-17 10:43:44,622 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-17 10:43:44,622 INFO [33mPress CTRL+C to quit[0m
+2026-04-17 10:43:44,630 INFO  * Restarting with stat
+2026-04-17 10:44:07,434 WARNING  * Debugger is active!
+2026-04-17 10:44:07,448 INFO  * Debugger PIN: 118-888-737
+2026-04-17 11:03:13,752 INFO 127.0.0.1 - - [17/Apr/2026 11:03:13] "GET / HTTP/1.1" 200 -
+2026-04-17 11:03:14,074 INFO 127.0.0.1 - - [17/Apr/2026 11:03:14] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-17 11:03:14,156 INFO 127.0.0.1 - - [17/Apr/2026 11:03:14] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-17 11:03:14,174 INFO 127.0.0.1 - - [17/Apr/2026 11:03:14] "GET /samples HTTP/1.1" 200 -
+2026-04-17 11:03:14,223 INFO 127.0.0.1 - - [17/Apr/2026 11:03:14] "GET /history HTTP/1.1" 200 -
+2026-04-17 11:03:21,604 INFO Generation succeeded for project=flask_crud_20260417_110319 module=crud
+2026-04-17 11:03:21,607 INFO 127.0.0.1 - - [17/Apr/2026 11:03:21] "POST /generate HTTP/1.1" 200 -
+2026-04-17 11:03:21,664 INFO 127.0.0.1 - - [17/Apr/2026 11:03:21] "GET /history HTTP/1.1" 200 -
+2026-04-17 11:03:41,980 INFO 127.0.0.1 - - [17/Apr/2026 11:03:41] "POST /chat HTTP/1.1" 200 -
+2026-04-17 11:04:13,526 INFO 127.0.0.1 - - [17/Apr/2026 11:04:13] "POST /chat HTTP/1.1" 200 -
+2026-04-17 11:21:41,417 INFO  * Detected change in 'D:\\ai_code_generator\\backend\\chatbot_engine_ollama.py', reloading
+2026-04-17 11:21:47,961 INFO  * Restarting with stat
+2026-04-17 11:22:01,754 WARNING  * Debugger is active!
+2026-04-17 11:22:01,758 INFO  * Debugger PIN: 118-888-737

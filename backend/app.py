@@ -7,7 +7,7 @@ from code_assembler import assemble_module
 from code_validator import validate_module
 from project_generator import generate_project
 from generation_history import append_history, build_analytics, load_history
-import chatbot_engine
+
 
 import logging
 import sys
@@ -213,23 +213,38 @@ def generate():
 def chat():
     try:
         data = request.json or {}
-        user_query = data.get("message", "")
-        context = data.get("context", {})
 
-        print("USER QUERY:", user_query)
+        # 🔹 Extract inputs
+        message = data.get("message", "")
+        history = data.get("history", [])   # (for future use / extension)
+        context = data.get("context", {})
+        model = data.get("model", "gemini")  # default = gemini
+
+        print("MODEL:", model)
+        print("MESSAGE:", message)
         print("CONTEXT:", context)
 
-        response = chatbot_engine.generate_reply(user_query, context)
+        # 🔹 Route to correct model
+        if model == "gemini":
+            from chatbot_engine_gemini import generate_reply
+            reply = generate_reply(message, context)
 
-        print("BOT RESPONSE:", response)
+        elif model == "ollama":
+            from chatbot_engine_ollama import generate_reply
+            reply = generate_reply(message, context)
+
+        else:
+            reply = "⚠️ Invalid model selected"
+
+        print("BOT RESPONSE:", reply)
 
         return jsonify({
-            "response": response if response else "⚠️ Empty response from chatbot"
+            "reply": reply if reply else "⚠️ Empty response"
         })
 
     except Exception as e:
         print("CHAT ERROR:", str(e))
-        return jsonify({"response": "❌ Backend error"}), 500
+        return jsonify({"reply": "❌ Backend error"}), 500
 
 
 if __name__ == "__main__":

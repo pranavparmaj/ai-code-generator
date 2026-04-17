@@ -219,7 +219,7 @@ def call_local_llm(prompt):
                 "prompt": prompt,
                 "stream": False
             },
-            timeout=120
+            timeout=150
         )
 
         print("OLLAMA STATUS:", response.status_code, "RESPONSE:", response.text[:300])
