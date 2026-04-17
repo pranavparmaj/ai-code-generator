@@ -3,7 +3,7 @@ import google.generativeai as genai
 import re
 
 genai.configure(api_key="")
-#AQ.Ab8RN6Lhc_tzQjEp9y9sTY_5RQymy5QfoXOpbEXNrEWPzK43Fg
+
 
 model = genai.GenerativeModel("models/gemini-flash-latest")
 
