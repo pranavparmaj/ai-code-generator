@@ -4,20 +4,24 @@ from field_extractor import build_field_schema
 from code_generator import generate_module
 from rag_engine import retrieve_relevant_snippets
 from code_assembler import assemble_module
-from code_validator import validate_module
+from code_validator import run_generated_tests, run_project_smoke_checks, validate_module
 from project_generator import generate_project
 from generation_history import append_history, build_analytics, load_history
+from repair_engine import repair_generated_project
 
 import preview_engine
 import logging
 import sys
 import os
 
-sys.path.append(os.path.abspath(".."))
+BASE_DIR = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, ".."))
+
+sys.path.append(PROJECT_ROOT)
 
 from utils.zip_exporter import create_zip
 
-LOG_PATH = os.path.abspath("../data/app.log")
+LOG_PATH = os.path.abspath(os.path.join(PROJECT_ROOT, "data", "app.log"))
 os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
 logging.basicConfig(
     filename=LOG_PATH,
@@ -65,8 +69,8 @@ SAMPLE_PROMPTS = [
 
 app = Flask(
     __name__,
-    template_folder="../frontend/templates",
-    static_folder="../frontend/static"
+    template_folder=os.path.join(PROJECT_ROOT, "frontend", "templates"),
+    static_folder=os.path.join(PROJECT_ROOT, "frontend", "static")
 )
 
 
@@ -97,7 +101,7 @@ def health():
 def download():
     zip_path = request.args.get("path", "")
     resolved = os.path.abspath(zip_path)
-    generated_root = os.path.abspath("../generated_projects")
+    generated_root = os.path.abspath(os.path.join(PROJECT_ROOT, "generated_projects"))
     if not resolved.startswith(generated_root) or not os.path.exists(resolved):
         return jsonify({"error": "File not found"}), 404
     return send_file(resolved, as_attachment=True)
@@ -136,8 +140,23 @@ def generate():
             workflows=parsed_prompt["workflows"],
         )
         assembled = assemble_module(module, generated_html, snippets, parsed_prompt)
-        validation = validate_module(assembled["html"], assembled["backend"])
+        validation = validate_module(
+            assembled["html"],
+            assembled["backend"],
+            app_spec=parsed_prompt.get("app_spec"),
+        )
         project_path = generate_project(parsed_prompt, assembled["html"], assembled["backend"])
+        smoke_result = run_project_smoke_checks(project_path, parsed_prompt.get("app_spec"))
+        validation.update(smoke_result)
+        validation.update(run_generated_tests(project_path))
+        if not smoke_result.get("project_smoke_ok"):
+            repair_result = repair_generated_project(project_path, smoke_result)
+            validation["repair_attempted"] = repair_result.get("repair_attempted", False)
+            validation["repair_actions"] = repair_result.get("applied_fixes", [])
+            if repair_result.get("repair_attempted"):
+                repaired_smoke = run_project_smoke_checks(project_path, parsed_prompt.get("app_spec"))
+                validation.update(repaired_smoke)
+                validation.update(run_generated_tests(project_path))
         zip_path = create_zip(project_path)
         download_url = f"/download?path={zip_path}"
 

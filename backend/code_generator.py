@@ -2,7 +2,8 @@ import os
 from jinja2 import Environment, FileSystemLoader
 from template_selector import select_template
 
-TEMPLATE_DIR = os.path.abspath("../templates/flask")
+BASE_DIR = os.path.dirname(__file__)
+TEMPLATE_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "templates", "flask"))
 
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 

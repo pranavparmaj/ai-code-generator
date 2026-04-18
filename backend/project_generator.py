@@ -1,8 +1,7 @@
 import os
 import json
 
-
-BASE_DIR = os.path.abspath("../generated_projects")
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "generated_projects"))
 
 
 def create_project_structure(project_name):
@@ -323,18 +322,12 @@ def render_crud_dashboard_template(resource_label, storage_label):
     return f"""{{% extends "base.html" %}}
 {{% block content %}}
 <section class="metric-grid">
+    {{% for card in dashboard_cards %}}
     <article class="metric-card">
-        <p>Total {resource_label.lower()}s</p>
-        <h2>{{{{ stats.total_items }}}}</h2>
+        <p>{{{{ card.label }}}}</p>
+        <h2>{{{{ card.value }}}}</h2>
     </article>
-    <article class="metric-card">
-        <p>Active items</p>
-        <h2>{{{{ stats.active_items }}}}</h2>
-    </article>
-    <article class="metric-card">
-        <p>Draft items</p>
-        <h2>{{{{ stats.draft_items }}}}</h2>
-    </article>
+    {{% endfor %}}
 </section>
 <section class="hero-card">
     <div>
@@ -342,13 +335,21 @@ def render_crud_dashboard_template(resource_label, storage_label):
         <ul>
             <li><a href="/{{{{ resource_plural }}}}">Open table view</a></li>
             <li><a href="/{{{{ resource_plural }}}}/new">Create a new {resource_label.lower()}</a></li>
-            <li>Use search and status filters from the list screen</li>
+            <li>Use search and list filters from the table screen</li>
         </ul>
     </div>
     <div class="info-panel">
         <h3>Access summary</h3>
         <p>Signed in as <strong>{{{{ current_role }}}}</strong>. Admin users can create, edit, and delete records.</p>
         <p>Storage backend: <code>{storage_label}</code></p>
+        {{% if facet_summary and facet_summary["values"] %}}
+        <h3>{{{{ facet_summary["field"].replace('_', ' ').title() }}}} breakdown</h3>
+        <ul>
+            {{% for item in facet_summary["values"] %}}
+            <li>{{{{ item.label }}}}: {{{{ item.count }}}}</li>
+            {{% endfor %}}
+        </ul>
+        {{% endif %}}
     </div>
 </section>
 {{% endblock %}}
@@ -384,9 +385,17 @@ def render_crud_login_template():
 """
 
 
-def render_crud_list_template(fields, resource_label, resource_plural):
+def render_crud_list_template(fields, resource_label, resource_plural, filter_fields):
     searchable_columns = "".join([f"<th>{field['label']}</th>" for field in fields[:4]])
     row_values = "".join([f"<td>{{{{ item.get('{field['name']}', '') }}}}</td>" for field in fields[:4]])
+    filter_markup = ""
+    for filter_field in filter_fields:
+        label = filter_field.replace("_", " ").title()
+        filter_markup += f"""
+            <div class="field">
+                <label for="{filter_field}">{label}</label>
+                <input id="{filter_field}" name="{filter_field}" type="text" value="{{{{ active_filters.get('{filter_field}', '') }}}}" placeholder="Filter by {label.lower()}">
+            </div>"""
     return f"""{{% extends "base.html" %}}
 {{% block content %}}
 <section class="hero-card">
@@ -401,10 +410,7 @@ def render_crud_list_template(fields, resource_label, resource_plural):
                 <label for="q">Search</label>
                 <input id="q" name="q" type="text" value="{{{{ query }}}}" placeholder="Search records">
             </div>
-            <div class="field">
-                <label for="status">Status</label>
-                <input id="status" name="status" type="text" value="{{{{ status }}}}" placeholder="active or draft">
-            </div>
+{filter_markup}
         </div>
         <div class="button-row">
             <button class="button primary" type="submit">Apply filters</button>
@@ -1181,14 +1187,22 @@ class Config:
 def render_app_py(context):
     module = context["module"]
     if context.get("app_family") == "workflow":
-        return """from flask import Flask, render_template
+        return """import os
+
+from flask import Flask, render_template
 from config import Config
 from routes.workflow import bp as workflow_bp
 from services.storage import init_storage
 
+BASE_DIR = os.path.dirname(__file__)
+
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        template_folder=os.path.join(BASE_DIR, "templates"),
+        static_folder=os.path.join(BASE_DIR, "static"),
+    )
     app.config.from_object(Config)
     app.register_blueprint(workflow_bp)
     init_storage()
@@ -1207,15 +1221,23 @@ if __name__ == "__main__":
     app.run(debug=True)
 """
     if context.get("app_family") == "crud":
-        return f"""from flask import Flask, render_template
+        return f"""import os
+
+from flask import Flask, render_template
 from config import Config
 from routes.auth import bp as auth_bp
 from routes.{module} import bp as crud_bp
 from services.storage import init_storage, seed_items
 
+BASE_DIR = os.path.dirname(__file__)
+
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        template_folder=os.path.join(BASE_DIR, "templates"),
+        static_folder=os.path.join(BASE_DIR, "static"),
+    )
     app.config.from_object(Config)
     app.register_blueprint(auth_bp)
     app.register_blueprint(crud_bp)
@@ -1247,14 +1269,22 @@ if __name__ == "__main__":
         stats = build_dashboard_stats()
         return render_template("dashboard.html", page_title="Project Dashboard", description="A lightweight operational view for the generated starter.", stats=stats)
 """
-    return f"""from flask import Flask, render_template
+    return f"""import os
+
+from flask import Flask, render_template
 from config import Config
 from services.storage import build_dashboard_stats, init_storage
 {dashboard_import}
 
+BASE_DIR = os.path.dirname(__file__)
+
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        template_folder=os.path.join(BASE_DIR, "templates"),
+        static_folder=os.path.join(BASE_DIR, "static"),
+    )
     app.config.from_object(Config)
     app.register_blueprint(module_bp)
     init_storage()
@@ -1275,9 +1305,41 @@ if __name__ == "__main__":
 """
 
 
-def render_tests(module):
+def render_tests(context):
+    module = "workflow" if context.get("app_family") == "workflow" else context["module"]
+    app_spec = context.get("app_spec", {})
+    test_plan = app_spec.get("tests", {})
+    fields = list(context.get("fields", []))
+
+    def sample_value(field):
+        lowered = field.lower()
+        if "email" in lowered:
+            return "tester@example.com"
+        if "password" in lowered:
+            return "secret123"
+        if lowered in {"status", "state"}:
+            return "active"
+        if lowered in {"priority"}:
+            return "high"
+        if lowered in {"rating", "score", "quantity"}:
+            return "5"
+        if lowered in {"dob", "date", "due_date"} or "date" in lowered:
+            return "2026-04-18"
+        return f"sample_{lowered}"
+
+    def python_payload(selected_fields):
+        items = ", ".join([f'"{field}": "{sample_value(field)}"' for field in selected_fields])
+        return "{" + items + "}"
+
     if module == "workflow":
-        return """from app import create_app
+        registration_fields = []
+        for form in app_spec.get("forms", []):
+            if form.get("route") == "/registration":
+                registration_fields = form.get("fields", [])
+                break
+        registration_payload = python_payload(registration_fields or ["username", "password", "first_name", "last_name", "dob"])
+        return f"""from app import create_app
+from services.storage import get_user_by_username
 
 
 def test_home_page():
@@ -1299,9 +1361,34 @@ def test_login_page():
     client = app.test_client()
     response = client.get("/login")
     assert response.status_code == 200
+
+
+def test_dashboard_redirects_when_logged_out():
+    app = create_app()
+    client = app.test_client()
+    response = client.get("/dashboard")
+    assert response.status_code in (302, 308)
+
+
+def test_workflow_registration_and_login():
+    app = create_app()
+    client = app.test_client()
+    payload = {registration_payload}
+    response = client.post("/registration", data=payload, follow_redirects=True)
+    assert response.status_code == 200
+    assert get_user_by_username(payload["username"]) is not None
+    login = client.post("/login", data={{"username": payload["username"], "password": payload["password"]}}, follow_redirects=False)
+    assert login.status_code in (302, 303)
 """
     if module in {"crud", "inventory_management", "employee_management", "customer_management", "ticket_system", "task_manager", "product_catalog"}:
-        return """from app import create_app
+        protected_route = test_plan.get("protected_routes", ["/resources"])[0]
+        create_route = app_spec.get("forms", [{}])[0].get("route", protected_route + "/new")
+        resource_name = context.get("resource_name")
+        list_call = "list_items"
+        first_field = fields[0] if fields else "name"
+        create_payload = python_payload(fields)
+        return f"""from app import create_app
+from services.storage import {list_call}
 
 
 def test_home_page():
@@ -1321,10 +1408,51 @@ def test_login_page():
 def test_crud_redirect_when_logged_out():
     app = create_app()
     client = app.test_client()
-    response = client.get("/resources")
-    assert response.status_code == 302
+    response = client.get("{protected_route}")
+    assert response.status_code in (302, 308)
+
+
+def test_crud_login_and_dashboard():
+    app = create_app()
+    client = app.test_client()
+    response = client.post("/login", data={{"username": "admin", "password": "admin123"}}, follow_redirects=True)
+    assert response.status_code == 200
+    dashboard = client.get("/dashboard")
+    assert dashboard.status_code == 200
+
+
+def test_crud_create_flow_persists_record():
+    app = create_app()
+    client = app.test_client()
+    client.post("/login", data={{"username": "admin", "password": "admin123"}}, follow_redirects=True)
+    payload = {create_payload}
+    response = client.post("{create_route}", data=payload, follow_redirects=True)
+    assert response.status_code == 200
+    items = {list_call}("{resource_name}")
+    assert any(item.get("{first_field}") == payload["{first_field}"] for item in items)
+"""
+    public_route = test_plan.get("public_routes", [f"/{module}"])[0]
+    submit_route = app_spec.get("forms", [{}])[0].get("route", public_route)
+    submit_payload = python_payload(fields)
+    storage_import = "from services.storage import list_records"
+    post_assert = 'assert any(record.get("category") == "' + module + '" for record in list_records())'
+    if module == "login":
+        post_assert = 'assert response.status_code == 200'
+    submit_test = ""
+    if module != "dashboard":
+        submit_test = f"""
+
+
+def test_module_submit_flow():
+    app = create_app()
+    client = app.test_client()
+    payload = {submit_payload}
+    response = client.post("{submit_route}", data=payload, follow_redirects=True)
+    assert response.status_code == 200
+    {post_assert}
 """
     return f"""from app import create_app
+{storage_import}
 
 
 def test_home_page():
@@ -1337,8 +1465,9 @@ def test_home_page():
 def test_module_page():
     app = create_app()
     client = app.test_client()
-    response = client.get("/{module}")
+    response = client.get("{public_route}")
     assert response.status_code == 200
+{submit_test}
 """
 
 
@@ -1656,7 +1785,7 @@ def write_files(project_path, context, html_code, backend_code):
 
     tests_path = os.path.join(project_path, "tests", "test_app.py")
     with open(tests_path, "w", encoding="utf-8") as f:
-        f.write(render_tests(module))
+        f.write(render_tests(context))
 
     if context["database"] == "json":
         data_path = os.path.join(project_path, "data", "app_data.json")
@@ -1699,7 +1828,14 @@ def write_files(project_path, context, html_code, backend_code):
         resource = context["resource_name"]
         list_path = os.path.join(project_path, "templates", f"{resource}_list.html")
         with open(list_path, "w", encoding="utf-8") as f:
-            f.write(render_crud_list_template(context["field_schema"], resource.title(), context["resource_plural"]))
+            f.write(
+                render_crud_list_template(
+                    context["field_schema"],
+                    resource.title(),
+                    context["resource_plural"],
+                    context.get("app_spec", {}).get("filter_fields", ["status"] if "status" in context.get("fields", []) else []),
+                )
+            )
 
         form_path = os.path.join(project_path, "templates", f"{resource}_form.html")
         with open(form_path, "w", encoding="utf-8") as f:

@@ -238,11 +238,39 @@ def build_crud_backend(fields, snippets, context):
     list_template = f"{resource}_list.html"
     form_template = f"{resource}_form.html"
     detail_template = f"{resource}_detail.html"
+    app_spec = context.get("app_spec", {})
     field_names = [field["name"] for field in fields]
-    search_fields = [field for field in field_names if field not in {"description", "notes"}][:3] or field_names[:2]
-    filter_field = "status" if "status" in field_names else field_names[0]
+    search_fields = app_spec.get("search_fields") or ([field for field in field_names if field not in {"description", "notes"}][:3] or field_names[:2])
+    filter_fields = app_spec.get("filter_fields") or (["status"] if "status" in field_names else ([field_names[0]] if field_names else []))
+    primary_filter_field = filter_fields[0] if filter_fields else None
     create_payload = ",\n            ".join([f'"{field["name"]}": request.form.get("{field["name"]}", "").strip()' for field in fields])
     form_defaults = ", ".join([f'"{field["name"]}": ""' for field in fields])
+    filter_input_lines = []
+    filter_apply_lines = []
+    for filter_field in filter_fields:
+        filter_input_lines.append(f'    {filter_field} = request.args.get("{filter_field}", "").strip().lower()')
+        filter_apply_lines.append(
+            f'''    if {filter_field}:
+        items = [item for item in items if str(item.get("{filter_field}", "")).lower() == {filter_field}]'''
+        )
+    active_filters_literal = "{" + ", ".join([f'"{field}": {field}' for field in filter_fields]) + "}" if filter_fields else "{}"
+    status_stats_block = ""
+    if primary_filter_field:
+        status_stats_block = f'''
+    summary_values = sorted({{str(item.get("{primary_filter_field}", "")).strip() for item in items if str(item.get("{primary_filter_field}", "")).strip()}})
+    facet_summary = {{
+        "field": "{primary_filter_field}",
+        "values": [
+            {{
+                "label": value.title(),
+                "count": len([item for item in items if str(item.get("{primary_filter_field}", "")).strip() == value])
+            }}
+            for value in summary_values[:6]
+        ]
+    }}
+'''
+    else:
+        status_stats_block = '\n    facet_summary = {"field": "", "values": []}\n'
     return f'''from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 from services.storage import (
     build_dashboard_stats,
@@ -284,12 +312,12 @@ def list_view():
     if redirect_response:
         return redirect_response
     query = request.args.get("q", "").strip().lower()
-    status = request.args.get("status", "").strip().lower()
+{chr(10).join(filter_input_lines) if filter_input_lines else '    active_filters = {}'}
     items = list_items(RESOURCE)
     if query:
         items = [item for item in items if any(query in str(item.get(field, "")).lower() for field in {search_fields})]
-    if status:
-        items = [item for item in items if str(item.get("{filter_field}", "")).lower() == status]
+{chr(10).join(filter_apply_lines) if filter_apply_lines else ''}
+    active_filters = {active_filters_literal}
     return render_template(
         "{list_template}",
         page_title="{context["title"]}",
@@ -299,7 +327,8 @@ def list_view():
         resource_label=RESOURCE_LABEL,
         items=items,
         query=query,
-        status=status,
+        active_filters=active_filters,
+        filter_fields={filter_fields},
         role=session.get("role", "member"),
     )
 
@@ -379,7 +408,24 @@ def dashboard():
     if redirect_response:
         return redirect_response
     stats = build_dashboard_stats(RESOURCE)
-    return render_template("dashboard.html", page_title="{context["title"]}", description="{context["description"]}", stats=stats)
+    items = list_items(RESOURCE)
+{status_stats_block}
+    dashboard_cards = [
+        {{"label": "Total {resource.title()}s", "value": stats.get("total_items", 0)}},
+        {{"label": "Active items", "value": stats.get("active_items", 0)}},
+        {{"label": "Draft items", "value": stats.get("draft_items", 0)}},
+        {{"label": "Last updated", "value": stats.get("last_updated", "No items yet")}},
+    ]
+    return render_template(
+        "dashboard.html",
+        page_title="{context["title"]}",
+        description="{context["description"]}",
+        stats=stats,
+        dashboard_cards=dashboard_cards,
+        facet_summary=facet_summary,
+        resource_plural="{plural}",
+        current_role=session.get("role", "member"),
+    )
 '''
 
 

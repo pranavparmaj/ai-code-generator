@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 
-INDEX_PATH = os.path.abspath("../vector_db/snippet_index.faiss")
+INDEX_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "vector_db", "snippet_index.faiss"))
 
 
 def create_faiss_index(embedded_snippets):

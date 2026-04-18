@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 
-HISTORY_PATH = os.path.abspath("../data/generation_history.json")
+HISTORY_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "generation_history.json"))
 
 
 def ensure_history_store():
