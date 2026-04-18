@@ -2110,3 +2110,82 @@ AttributeError: 'NoneType' object has no attribute 'strip'
 2026-04-17 23:10:49,048 INFO 127.0.0.1 - - [17/Apr/2026 23:10:49] "[36mGET /preview/proxy/c24973641a6341b5abf9f77f6fced0cc/static/style.css HTTP/1.1[0m" 304 -
 2026-04-17 23:10:58,069 INFO 127.0.0.1 - - [17/Apr/2026 23:10:58] "[31m[1mPOST /preview/proxy/c24973641a6341b5abf9f77f6fced0cc/login HTTP/1.1[0m" 405 -
 2026-04-17 23:12:25,021 INFO 127.0.0.1 - - [17/Apr/2026 23:12:25] "GET /download?path=D:\\ai_code_generator\\generated_projects\\flask_ticket_system_20260417_231035.zip HTTP/1.1" 200 -
+2026-04-18 12:50:14,246 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-18 12:50:14,246 INFO [33mPress CTRL+C to quit[0m
+2026-04-18 12:50:14,246 INFO  * Restarting with stat
+2026-04-18 12:50:20,941 WARNING  * Debugger is active!
+2026-04-18 12:50:20,941 INFO  * Debugger PIN: 186-425-935
+2026-04-18 12:50:25,712 INFO 127.0.0.1 - - [18/Apr/2026 12:50:25] "GET / HTTP/1.1" 200 -
+2026-04-18 12:50:25,899 INFO 127.0.0.1 - - [18/Apr/2026 12:50:25] "GET /static/workspace.css HTTP/1.1" 200 -
+2026-04-18 12:50:25,939 INFO 127.0.0.1 - - [18/Apr/2026 12:50:25] "GET /static/workspace-enhanced.js HTTP/1.1" 200 -
+2026-04-18 12:50:25,987 INFO 127.0.0.1 - - [18/Apr/2026 12:50:25] "GET /samples HTTP/1.1" 200 -
+2026-04-18 12:50:26,003 INFO 127.0.0.1 - - [18/Apr/2026 12:50:26] "GET /history HTTP/1.1" 200 -
+2026-04-18 12:50:26,011 INFO 127.0.0.1 - - [18/Apr/2026 12:50:26] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-18 12:50:38,269 INFO Generation succeeded for project=flask_employee_management_20260418_125037 module=employee_management
+2026-04-18 12:50:38,269 INFO 127.0.0.1 - - [18/Apr/2026 12:50:38] "POST /generate HTTP/1.1" 200 -
+2026-04-18 12:50:38,326 INFO 127.0.0.1 - - [18/Apr/2026 12:50:38] "GET /history HTTP/1.1" 200 -
+2026-04-18 12:50:39,554 INFO 127.0.0.1 - - [18/Apr/2026 12:50:39] "POST /preview/start HTTP/1.1" 200 -
+2026-04-18 12:50:39,586 INFO 127.0.0.1 - - [18/Apr/2026 12:50:39] "GET /preview/proxy/60520d3e42ec4f59bebd41429dd3023c/ HTTP/1.1" 200 -
+2026-04-18 12:50:39,637 INFO 127.0.0.1 - - [18/Apr/2026 12:50:39] "GET /preview/proxy/60520d3e42ec4f59bebd41429dd3023c/static/style.css HTTP/1.1" 200 -
+2026-04-18 12:50:44,582 INFO 127.0.0.1 - - [18/Apr/2026 12:50:44] "GET /preview/proxy/60520d3e42ec4f59bebd41429dd3023c/login HTTP/1.1" 200 -
+2026-04-18 12:50:44,605 INFO 127.0.0.1 - - [18/Apr/2026 12:50:44] "[36mGET /preview/proxy/60520d3e42ec4f59bebd41429dd3023c/static/style.css HTTP/1.1[0m" 304 -
+2026-04-18 12:50:52,154 INFO 127.0.0.1 - - [18/Apr/2026 12:50:52] "[31m[1mPOST /preview/proxy/60520d3e42ec4f59bebd41429dd3023c/login HTTP/1.1[0m" 405 -
+2026-04-18 12:51:05,847 INFO 127.0.0.1 - - [18/Apr/2026 12:51:05] "POST /preview/stop HTTP/1.1" 200 -
+2026-04-18 12:51:33,666 INFO 127.0.0.1 - - [18/Apr/2026 12:51:33] "GET / HTTP/1.1" 200 -
+2026-04-18 12:51:33,721 INFO 127.0.0.1 - - [18/Apr/2026 12:51:33] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-18 12:51:33,725 INFO 127.0.0.1 - - [18/Apr/2026 12:51:33] "[36mGET /static/workspace-enhanced.js HTTP/1.1[0m" 304 -
+2026-04-18 12:51:33,752 INFO 127.0.0.1 - - [18/Apr/2026 12:51:33] "GET /samples HTTP/1.1" 200 -
+2026-04-18 12:51:33,756 INFO 127.0.0.1 - - [18/Apr/2026 12:51:33] "GET /history HTTP/1.1" 200 -
+2026-04-18 12:51:45,593 INFO Generation succeeded for project=flask_employee_management_20260418_125145 module=employee_management
+2026-04-18 12:51:45,606 INFO 127.0.0.1 - - [18/Apr/2026 12:51:45] "POST /generate HTTP/1.1" 200 -
+2026-04-18 12:51:45,621 INFO 127.0.0.1 - - [18/Apr/2026 12:51:45] "GET /history HTTP/1.1" 200 -
+2026-04-18 12:51:46,237 INFO 127.0.0.1 - - [18/Apr/2026 12:51:46] "POST /preview/start HTTP/1.1" 200 -
+2026-04-18 12:51:46,273 INFO 127.0.0.1 - - [18/Apr/2026 12:51:46] "GET /preview/proxy/ffc6101a4c6f44ffb8ca8ccb98341be7/ HTTP/1.1" 200 -
+2026-04-18 12:51:46,327 INFO 127.0.0.1 - - [18/Apr/2026 12:51:46] "GET /preview/proxy/ffc6101a4c6f44ffb8ca8ccb98341be7/static/style.css HTTP/1.1" 200 -
+2026-04-18 12:51:48,739 INFO 127.0.0.1 - - [18/Apr/2026 12:51:48] "GET /preview/proxy/ffc6101a4c6f44ffb8ca8ccb98341be7/login HTTP/1.1" 200 -
+2026-04-18 12:51:48,759 INFO 127.0.0.1 - - [18/Apr/2026 12:51:48] "[36mGET /preview/proxy/ffc6101a4c6f44ffb8ca8ccb98341be7/static/style.css HTTP/1.1[0m" 304 -
+2026-04-18 12:51:59,277 INFO 127.0.0.1 - - [18/Apr/2026 12:51:59] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2026-04-18 12:51:59,286 INFO 127.0.0.1 - - [18/Apr/2026 12:51:59] "[36mGET /static/workspace.css HTTP/1.1[0m" 304 -
+2026-04-18 12:51:59,293 INFO 127.0.0.1 - - [18/Apr/2026 12:51:59] "[36mGET /preview/proxy/ffc6101a4c6f44ffb8ca8ccb98341be7/static/style.css HTTP/1.1[0m" 304 -
+2026-04-18 12:52:04,779 INFO Generation succeeded for project=flask_employee_management_20260418_125204 module=employee_management
+2026-04-18 12:52:04,779 INFO 127.0.0.1 - - [18/Apr/2026 12:52:04] "POST /generate HTTP/1.1" 200 -
+2026-04-18 12:52:04,814 INFO 127.0.0.1 - - [18/Apr/2026 12:52:04] "GET /history HTTP/1.1" 200 -
+2026-04-18 12:52:04,840 INFO 127.0.0.1 - - [18/Apr/2026 12:52:04] "POST /preview/stop HTTP/1.1" 200 -
+2026-04-18 12:52:05,468 INFO 127.0.0.1 - - [18/Apr/2026 12:52:05] "POST /preview/start HTTP/1.1" 200 -
+2026-04-18 12:52:05,480 INFO 127.0.0.1 - - [18/Apr/2026 12:52:05] "[33mGET /preview/proxy/ffc6101a4c6f44ffb8ca8ccb98341be7/ HTTP/1.1[0m" 404 -
+2026-04-18 12:52:05,504 INFO 127.0.0.1 - - [18/Apr/2026 12:52:05] "GET /preview/proxy/093176f6b9ee408aa0fde174315145c3/ HTTP/1.1" 200 -
+2026-04-18 12:52:05,567 INFO 127.0.0.1 - - [18/Apr/2026 12:52:05] "GET /preview/proxy/093176f6b9ee408aa0fde174315145c3/static/style.css HTTP/1.1" 200 -
+2026-04-18 12:55:07,444 INFO Generation succeeded for project=flask_crud_20260418_125506 module=crud
+2026-04-18 12:55:07,446 INFO 127.0.0.1 - - [18/Apr/2026 12:55:07] "POST /generate HTTP/1.1" 200 -
+2026-04-18 12:55:07,466 INFO 127.0.0.1 - - [18/Apr/2026 12:55:07] "GET /history HTTP/1.1" 200 -
+2026-04-18 12:55:07,512 INFO 127.0.0.1 - - [18/Apr/2026 12:55:07] "POST /preview/stop HTTP/1.1" 200 -
+2026-04-18 12:55:08,132 INFO 127.0.0.1 - - [18/Apr/2026 12:55:08] "POST /preview/start HTTP/1.1" 200 -
+2026-04-18 12:55:08,138 INFO 127.0.0.1 - - [18/Apr/2026 12:55:08] "[33mGET /preview/proxy/093176f6b9ee408aa0fde174315145c3/ HTTP/1.1[0m" 404 -
+2026-04-18 12:55:08,160 INFO 127.0.0.1 - - [18/Apr/2026 12:55:08] "GET /preview/proxy/a617ea097ac1480fb96927420a40b94f/ HTTP/1.1" 200 -
+2026-04-18 12:55:08,219 INFO 127.0.0.1 - - [18/Apr/2026 12:55:08] "GET /preview/proxy/a617ea097ac1480fb96927420a40b94f/static/style.css HTTP/1.1" 200 -
+2026-04-18 12:56:48,901 INFO Generation succeeded for project=flask_registration_20260418_125648 module=registration
+2026-04-18 12:56:48,901 INFO 127.0.0.1 - - [18/Apr/2026 12:56:48] "POST /generate HTTP/1.1" 200 -
+2026-04-18 12:56:48,909 INFO 127.0.0.1 - - [18/Apr/2026 12:56:48] "GET /history HTTP/1.1" 200 -
+2026-04-18 12:56:48,931 INFO 127.0.0.1 - - [18/Apr/2026 12:56:48] "POST /preview/stop HTTP/1.1" 200 -
+2026-04-18 12:56:49,553 INFO 127.0.0.1 - - [18/Apr/2026 12:56:49] "POST /preview/start HTTP/1.1" 200 -
+2026-04-18 12:56:49,561 INFO 127.0.0.1 - - [18/Apr/2026 12:56:49] "[33mGET /preview/proxy/a617ea097ac1480fb96927420a40b94f/ HTTP/1.1[0m" 404 -
+2026-04-18 12:56:49,594 INFO 127.0.0.1 - - [18/Apr/2026 12:56:49] "GET /preview/proxy/4973e4bd91fa4600ab1a09e150bb92f5/ HTTP/1.1" 200 -
+2026-04-18 12:56:49,638 INFO 127.0.0.1 - - [18/Apr/2026 12:56:49] "GET /preview/proxy/4973e4bd91fa4600ab1a09e150bb92f5/static/style.css HTTP/1.1" 200 -
+2026-04-18 12:57:11,238 INFO Generation succeeded for project=flask_registration_20260418_125711 module=registration
+2026-04-18 12:57:11,239 INFO 127.0.0.1 - - [18/Apr/2026 12:57:11] "POST /generate HTTP/1.1" 200 -
+2026-04-18 12:57:11,252 INFO 127.0.0.1 - - [18/Apr/2026 12:57:11] "GET /history HTTP/1.1" 200 -
+2026-04-18 12:57:11,284 INFO 127.0.0.1 - - [18/Apr/2026 12:57:11] "POST /preview/stop HTTP/1.1" 200 -
+2026-04-18 12:57:11,918 INFO 127.0.0.1 - - [18/Apr/2026 12:57:11] "POST /preview/start HTTP/1.1" 200 -
+2026-04-18 12:57:11,925 INFO 127.0.0.1 - - [18/Apr/2026 12:57:11] "[33mGET /preview/proxy/4973e4bd91fa4600ab1a09e150bb92f5/ HTTP/1.1[0m" 404 -
+2026-04-18 12:57:11,940 INFO 127.0.0.1 - - [18/Apr/2026 12:57:11] "GET /preview/proxy/c615a79de3a142a7b48c1286f32c8dfd/ HTTP/1.1" 200 -
+2026-04-18 12:57:11,987 INFO 127.0.0.1 - - [18/Apr/2026 12:57:11] "GET /preview/proxy/c615a79de3a142a7b48c1286f32c8dfd/static/style.css HTTP/1.1" 200 -
+2026-04-18 12:58:31,550 INFO Generation succeeded for project=flask_registration_20260418_125831 module=registration
+2026-04-18 12:58:31,550 INFO 127.0.0.1 - - [18/Apr/2026 12:58:31] "POST /generate HTTP/1.1" 200 -
+2026-04-18 12:58:31,559 INFO 127.0.0.1 - - [18/Apr/2026 12:58:31] "GET /history HTTP/1.1" 200 -
+2026-04-18 12:58:31,580 INFO 127.0.0.1 - - [18/Apr/2026 12:58:31] "POST /preview/stop HTTP/1.1" 200 -
+2026-04-18 12:58:32,207 INFO 127.0.0.1 - - [18/Apr/2026 12:58:32] "POST /preview/start HTTP/1.1" 200 -
+2026-04-18 12:58:32,215 INFO 127.0.0.1 - - [18/Apr/2026 12:58:32] "[33mGET /preview/proxy/c615a79de3a142a7b48c1286f32c8dfd/ HTTP/1.1[0m" 404 -
+2026-04-18 12:58:32,232 INFO 127.0.0.1 - - [18/Apr/2026 12:58:32] "GET /preview/proxy/739348dd1af74534b438ffaaa8a83117/ HTTP/1.1" 200 -
+2026-04-18 12:58:32,289 INFO 127.0.0.1 - - [18/Apr/2026 12:58:32] "GET /preview/proxy/739348dd1af74534b438ffaaa8a83117/static/style.css HTTP/1.1" 200 -
+2026-04-18 13:01:54,490 INFO 127.0.0.1 - - [18/Apr/2026 13:01:54] "POST /chat HTTP/1.1" 200 -

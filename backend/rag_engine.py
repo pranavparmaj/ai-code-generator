@@ -4,10 +4,12 @@ import numpy as np
 from embedding_engine import generate_embedding
 from vector_store import load_faiss_index
 
+BASE_DIR = os.path.dirname(__file__)
+
 
 def load_snippet_metadata():
 
-    metadata_path = os.path.abspath("../data/snippet_metadata.json")
+    metadata_path = os.path.abspath(os.path.join(BASE_DIR, "..", "data", "snippet_metadata.json"))
 
     with open(metadata_path, "r") as f:
         metadata = json.load(f)
@@ -17,7 +19,7 @@ def load_snippet_metadata():
 
 def load_snippet_code(file_path):
 
-    full_path = os.path.abspath(f"../{file_path}")
+    full_path = os.path.abspath(os.path.join(BASE_DIR, "..", file_path))
 
     with open(full_path, "r") as f:
         code = f.read()

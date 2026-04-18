@@ -1,6 +1,8 @@
 import re
 from datetime import datetime
 
+from app_spec import build_app_spec
+
 
 MODULE_ALIASES = {
     "crud": "crud",
@@ -72,6 +74,10 @@ CRUD_FAMILY_MODULES = {
 
 WORKFLOW_MODULES = {"registration", "login", "dashboard", "profile", "contact", "feedback"}
 WORKFLOW_CONNECTOR_PATTERN = re.compile(r"\b(?:followed by|and then|then|after that|next|plus)\b", re.IGNORECASE)
+FIELD_SECTION_END_PATTERN = re.compile(
+    r"(?=\b(?:include|add|followed by|and then|then|after that|next|plus)\b|[.?!]|$)",
+    re.IGNORECASE,
+)
 
 ROLE_PATTERNS = [
     "admin",
@@ -108,7 +114,8 @@ CONSTRAINT_PATTERNS = {
 
 
 def slugify(value):
-    slug = re.sub(r"[^a-zA-Z0-9]+", "_", value.strip().lower()).strip("_")
+    value = (value or "").strip().lower()
+    slug = re.sub(r"[^a-zA-Z0-9]+", "_", value).strip("_")
     return slug or "generated_project"
 
 
@@ -178,14 +185,12 @@ def parse_field_list(raw_fields):
 
 def extract_fields(prompt):
     prompt = normalize_prompt(prompt).lower()
-    prompt = prompt.replace("fields as", "")
-    prompt = prompt.replace("fields", "")
-
-    match = re.search(r"with (.*)", prompt)
+    match = re.search(r"\bwith\s+(.+?)" + FIELD_SECTION_END_PATTERN.pattern, prompt, flags=re.IGNORECASE)
     if not match:
         return []
 
     field_text = match.group(1)
+    field_text = re.sub(r"\bfields?\b", "", field_text)
     field_text = field_text.replace(" and ", ",")
     field_text = field_text.replace(";", ",")
 
@@ -423,4 +428,5 @@ def parse_prompt(prompt, options=None):
             f"Fields: {', '.join(fields) if fields else 'none'}"
         )
 
+    result["app_spec"] = build_app_spec(result)
     return result
