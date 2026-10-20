@@ -2,6 +2,8 @@
 
 A local Flask application that turns natural-language prompts into starter Flask projects. It includes prompt parsing, HTML and backend generation, snippet retrieval, generated-project checks, ZIP export, project previews, generation history, and an optional chatbot backed by Gemini or a local Ollama server.
 
+New to Git and Python? Follow the [step-by-step PC setup guide](output/pdf/ai_code_generator_pc_setup_guide.pdf) to install prerequisites, clone the repository, run the app, and optionally configure Gemini or Ollama.
+
 ## Requirements
 
 - Python 3.10 or newer
