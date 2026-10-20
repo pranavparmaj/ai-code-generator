@@ -1,7 +1,12 @@
 venv/
+.venv/
 __pycache__/
 *.pyc
 vector_db/
 generated_projects/
 .env
-.DS_Storegi
+.DS_Store
+data/app.log
+data/generation_history.json
+data/*.sqlite3
+data/*.sqlite3-journal

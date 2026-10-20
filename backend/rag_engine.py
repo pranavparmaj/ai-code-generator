@@ -1,7 +1,5 @@
 import json
 import os
-import numpy as np
-from embedding_engine import generate_embedding
 from vector_store import load_faiss_index
 
 BASE_DIR = os.path.dirname(__file__)
@@ -89,6 +87,7 @@ def score_snippet(snippet, query, module=None, framework=None, intent=None, enti
     return score
 
 def retrieve_relevant_snippets(query, module=None, framework=None, intent=None, entities=None, workflows=None, top_k=3):
+    use_vector_search = os.environ.get("AI_CODE_GENERATOR_USE_VECTOR_RAG", "").lower() in {"1", "true", "yes"}
     index = load_faiss_index()
     snippets = get_snippets()
     filtered_snippets = snippets
@@ -98,7 +97,7 @@ def retrieve_relevant_snippets(query, module=None, framework=None, intent=None, 
         if framework_matches:
             filtered_snippets = framework_matches
 
-    if not index or not snippets:
+    if not use_vector_search or not index or not snippets:
         ranked = sorted(
             filtered_snippets,
             key=lambda snippet: score_snippet(
@@ -115,6 +114,8 @@ def retrieve_relevant_snippets(query, module=None, framework=None, intent=None, 
         return ranked[:top_k]
 
     try:
+        import numpy as np
+        from embedding_engine import generate_embedding
         query_vector = generate_embedding(query)
         query_vector = np.array([query_vector]).astype("float32")
         distances, indices = index.search(query_vector, min(top_k, len(snippets)))

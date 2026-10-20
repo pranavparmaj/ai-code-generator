@@ -1,5 +1,3 @@
-import faiss
-import numpy as np
 import os
 
 
@@ -7,6 +5,11 @@ INDEX_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "vect
 
 
 def create_faiss_index(embedded_snippets):
+    try:
+        import faiss
+        import numpy as np
+    except Exception:
+        return None
 
     dimension = len(embedded_snippets[0]["embedding"])
 
@@ -27,11 +30,16 @@ def create_faiss_index(embedded_snippets):
 
 
 def load_faiss_index():
+    try:
+        import faiss
+    except Exception:
+        return None
 
     if os.path.exists(INDEX_PATH):
-
-        index = faiss.read_index(INDEX_PATH)
-
-        return index
+        try:
+            index = faiss.read_index(INDEX_PATH)
+            return index
+        except Exception:
+            return None
 
     return None

@@ -2,7 +2,9 @@ import os
 import google.generativeai as genai
 import re
 
-genai.configure(api_key="")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
 
 
 model = genai.GenerativeModel("models/gemini-flash-latest")
@@ -114,6 +116,9 @@ def clean_code(text):
 
 
 def generate_answer(query, context, intent):
+    if not GEMINI_API_KEY:
+        return "Gemini chat is unavailable. Set the GEMINI_API_KEY environment variable to enable it."
+
     context_str = clean_code(str(context))[:4000]
 
     # 🔥 COMMON SYSTEM HEADER (VERY IMPORTANT)
@@ -207,5 +212,4 @@ Answer the user's question clearly using the given code.
 
     except Exception as e:
         return f"❌ AI Error: {str(e)}"
-    
     

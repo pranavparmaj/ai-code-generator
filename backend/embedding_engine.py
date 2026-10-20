@@ -1,21 +1,31 @@
 import hashlib
 import math
 
-from sentence_transformers import SentenceTransformer
-
 
 MODEL_NAME = "all-MiniLM-L6-v2"
 EMBED_DIMENSION = 32
+model = None
+model_load_attempted = False
 
-try:
-    model = SentenceTransformer(MODEL_NAME, local_files_only=True)
-except Exception:
-    model = None
+
+def get_model():
+    global model, model_load_attempted
+    if model_load_attempted:
+        return model
+
+    model_load_attempted = True
+    try:
+        from sentence_transformers import SentenceTransformer
+        model = SentenceTransformer(MODEL_NAME, local_files_only=True)
+    except Exception:
+        model = None
+    return model
 
 
 def generate_embedding(text):
-    if model is not None:
-        return model.encode(text)
+    loaded_model = get_model()
+    if loaded_model is not None:
+        return loaded_model.encode(text)
 
     vector = [0.0] * EMBED_DIMENSION
     for token in (text or "").lower().split():
